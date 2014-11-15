@@ -1,0 +1,518 @@
+#[
+EMBER CECILIA
+
+"That's what makes her special!"
+
+HOW TO USE:
+Take fists out, PUNCH SOME STUFF! M1 fires regular punch, M2 fires super double punch
+R and E reloads each gauntlet
+
+REQUIRES:
+PropCore
+SetVelocity
+Particle
+TF2 (Sounds)
+CS:S (Sounds)
+
+http://rwby.wikia.com/wiki/Ember_Celica
+
+Written by Alix
+]#
+
+@name RWBY Ember Cecilia
+@persist [Pivot Base Slide Pivot2 Base2 Slide2 PlayerTarget]:entity  
+@persist [C1 C2]:vector 
+@persist [E R Hold Ch1 Ch2 M1 M2 Clip1 Clip2 I NumHolo]:number
+@persist [Fists]:string
+
+runOnTick(1)
+
+if(first())
+{
+    #include "lib/HoloStyleFunction"
+    
+    PlayerTarget = owner()
+    
+    #Hold=1
+    
+    C1 = vec(255,249,4)
+    C2 = vec(255,100,4)
+    
+    Fists = "weapon_fists"
+    
+    Pivot = holoCreate(0,entity():toWorld(vec(0,0,0)),0*vec(1,1,1),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(0,entity())
+    Base = holoCreate(1,entity():toWorld(vec(0,0,0)),0*vec(1,1,1),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0)
+    
+    I = 2
+
+    NumHolo = 81
+    
+    entity():setAlpha(0)
+}
+if(I<=NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I,vec())
+    I++    
+}
+elseif(I>NumHolo & I > 0)
+{
+
+    ###
+    #RIGHT
+    ###
+    
+    #Back
+
+    holoStyle(2,entity():toWorld(vec(0,0,4.8)),vec(0.6,0.6,0.6),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(2,1,1) holoClipEnabled(2,2,1) holoClipEnabled(2,3,1)
+    holoClip(2,1,vec(1.5,0,3.2),vec(0,1.7,-1),0) holoClip(2,2,vec(1.5,0,3.2),vec(0,-1.7,-1),0) holoClip(2,3,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(3,entity():toWorld(vec(0,0,7.9)),vec(0.5999,0.828 * sqrt(2),0.01),entity():toWorld(ang(0,0,59.5)),C1,"hq_tube_thin")
+    holoClipEnabled(3,1,1) holoClipEnabled(3,2,1) holoClip(3,1,vec(1.5,0,0),vec(0,-1,1),0) holoClip(3,2,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(4,entity():toWorld(vec(0,0,7.9)),vec(0.5999,0.828 * sqrt(2),0.01),entity():toWorld(ang(0,0,-59.5)),C1,"hq_tube_thin")
+    holoClipEnabled(4,1,1) holoClipEnabled(4,2,1) holoClip(4,1,vec(1.5,0,0),vec(0,1,1),0) holoClip(4,2,vec(1.5,0,0),vec(1,0,0),0)
+    #Front
+    holoStyle(5,entity():toWorld(vec(0,0,-0.6)),vec(0.6,0.6,0.3),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(5,1,1) holoClipEnabled(5,2,1) holoClipEnabled(5,3,1)
+    holoClip(5,1,vec(0,0,-1),vec(0,0.6,1),0) holoClip(5,2,vec(0,0,-1),vec(0,-0.6,1),0) holoClip(5,3,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(6,entity():toWorld(vec(0,0,-1.6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,-30)),C1,"hq_tube_thin")
+    holoClipEnabled(6,1,1) holoClipEnabled(6,2,1) holoClip(6,1,vec(1.5,0,0),vec(0,-2,-1),0) holoClip(6,2,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(7,entity():toWorld(vec(0,0,-1.6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,30)),C1,"hq_tube_thin")
+    holoClipEnabled(7,1,1) holoClipEnabled(7,2,1) holoClip(7,1,vec(1.5,0,0),vec(0,2,-1),0) holoClip(7,2,vec(1.5,0,0),vec(1,0,0),0)
+    
+    Slide = holoStyle(8,entity():toWorld(vec(0,0,3)),vec(0,0,0),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(8,1)
+    for(J=2,7){holoParent(J,8)}
+    #Inner circle/bracelet
+    holoStyle(9,entity():toWorld(vec(0,0,-1)),vec(0.33,0.33,0.05),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(9,Base)
+    holoStyle(10,entity():toWorld(vec(0,0,0.5)),vec(0.3,0.3,0.2),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(10,Base)
+    #Shells
+    for(J=0,11){holoStyle(J+11,entity():toWorld(vec(sin(J*30)*2,cos(J*30)*2 ,0.5)),vec(0.08,0.08,0.17),entity():toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(J+11,10)
+    }
+    
+    holoStyle(24,entity():toWorld(vec(0,0,3)),vec(0.4,0.4,0.2),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(24,Base)
+    holoStyle(25,entity():toWorld(vec(0,0,3.5)),vec(0.28,0.28,0.9),entity():toWorld(ang(0,0,0)),vec(33,33,33),"hq_cylinder") holoParent(25,Base)
+    holoStyle(26,entity():toWorld(vec(0,0,1)),vec(0.43,0.43,0.2),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin") holoParent(26,Base)
+    holoClipEnabled(26,1) holoClip(26,vec(1,0,0),vec(1,0,0),0)
+    
+    #front covers
+    holoStyle(27,entity():toWorld(vec(-1.3,0,-2.6)),vec(0.6,0.6,0.3),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(27,1,1) holoClipEnabled(27,2,1) holoClipEnabled(27,3,1)
+    holoClip(27,1,vec(0,0,-1.5),vec(0,0.6,1),0) holoClip(27,2,vec(0,0,-1.5),vec(0,-0.6,1),0) holoClip(27,3,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(28,entity():toWorld(vec(-1.3,0,-4)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,-30)),C1,"hq_tube_thin")
+    holoClipEnabled(28,1,1) holoClipEnabled(28,2,1) holoClip(28,1,vec(1.5,0,0),vec(0,-2,-1),0) holoClip(28,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(29,entity():toWorld(vec(-1.3,0,-4)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,30)),C1,"hq_tube_thin")
+    holoClipEnabled(29,1,1) holoClipEnabled(29,2,1) holoClip(29,1,vec(1.5,0,0),vec(0,2,-1),0) holoClip(29,2,vec(2.5,0,0),vec(1,0,0),0)
+
+    holoStyle(30,entity():toWorld(vec(-1.5,0,-4.6)),vec(0.6,0.6,0.3),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(30,1,1) holoClipEnabled(30,2,1) holoClipEnabled(30,3,1)
+    holoClip(30,1,vec(0,0,-1.5),vec(0,0.6,1),0) holoClip(30,2,vec(0,0,-1.5),vec(0,-0.6,1),0) holoClip(30,3,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(31,entity():toWorld(vec(-1.5,0,-6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,-30)),C1,"hq_tube_thin")
+    holoClipEnabled(31,1,1)                     holoClipEnabled(31,2,1)
+    holoClip(31,1,vec(1.5,0,0),vec(0,-2,-1),0)  holoClip(31,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(32,entity():toWorld(vec(-1.5,0,-6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,30)),C1,"hq_tube_thin")
+    holoClipEnabled(32,1,1) holoClipEnabled(32,2,1) holoClip(32,1,vec(1.5,0,0),vec(0,2,-1),0) holoClip(32,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    #Back covers
+    holoStyle(33,entity():toWorld(vec(-0.5,0,6.4)),vec(0.5,0.5,0.4),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(33,1,1) holoClipEnabled(33,2,1) holoClipEnabled(33,3,1)
+    holoClip(33,1,vec(0,0,2.5),vec(0,1,-1),0) holoClip(33,2,vec(0,0,2.5),vec(0,-1,-1),0) holoClip(33,3,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(34,entity():toWorld(vec(-0.5,0,8.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,-45)),C1,"hq_tube_thin")
+    holoClipEnabled(34,1,1) holoClipEnabled(34,2,1) holoClip(34,1,vec(1.5,0,0),vec(0,2,1),0) holoClip(34,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(35,entity():toWorld(vec(-0.5,0,8.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,45)),C1,"hq_tube_thin")
+    holoClipEnabled(35,1,1) holoClipEnabled(35,2,1) holoClip(35,1,vec(1.5,0,0),vec(0,-2,1),0) holoClip(35,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    ##
+    holoStyle(36,entity():toWorld(vec(-0.8,0,8.4)),vec(0.5,0.5,0.4),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(36,1,1) holoClipEnabled(36,2,1) holoClipEnabled(36,3,1)
+    
+    holoClip(36,1,vec(0,0,2.5),vec(0,1,-1),0) holoClip(36,2,vec(0,0,2.5),vec(0,-1,-1),0) holoClip(36,3,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(37,entity():toWorld(vec(-0.8,0,10.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,-45)),C1,"hq_tube_thin")
+    holoClipEnabled(37,1,1) holoClipEnabled(37,2,1) holoClip(37,1,vec(1.5,0,0),vec(0,2,1),0) holoClip(37,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(38,entity():toWorld(vec(-0.8,0,10.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,45)),C1,"hq_tube_thin")
+    holoClipEnabled(38,1,1) holoClipEnabled(38,2,1) holoClip(38,1,vec(1.5,0,0),vec(0,-2,1),0) holoClip(38,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(39,entity():toWorld(vec(1.4,1,-3.5)),vec(0.08,0.08,0.45),entity():toWorld(ang(0,0,0)),vec(188,188,188),"hq_cylinder")
+
+    holoStyle(40,entity():toWorld(vec(0,0,0.5)),vec(0.35,0.35,0.1),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") 
+    
+    for(J=27,40){
+     holoParent(J,Base)   
+    }
+    
+    holoPos(0,entity():toWorld(vec(0,15,0)))
+    
+    
+    ###
+    #LEFT
+    ###
+    Pivot2 = holoStyle(41,entity():toWorld(vec(0,0,0)),0*vec(1,1,1),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(41,entity())
+    Base2 = holoStyle(42,entity():toWorld(vec(0,0,0)),0*vec(1,1,1),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(42,41)
+    #Back
+    
+    holoStyle(43,entity():toWorld(vec(0,0,4.8)),vec(0.6,0.6,0.6),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(43,1,1) holoClipEnabled(43,2,1) holoClipEnabled(43,3,1)
+    holoClip(43,1,vec(1.5,0,3.2),vec(0,1.7,-1),0) holoClip(43,2,vec(1.5,0,3.2),vec(0,-1.7,-1),0) holoClip(43,3,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(44,entity():toWorld(vec(0,0,7.9)),vec(0.5999,0.828 * sqrt(2),0.01),entity():toWorld(ang(0,0,59.5)),C1,"hq_tube_thin")
+    holoClipEnabled(44,1,1) holoClipEnabled(44,2,1) holoClip(44,1,vec(1.5,0,0),vec(0,-1,1),0) holoClip(44,2,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(45,entity():toWorld(vec(0,0,7.9)),vec(0.5999,0.828 * sqrt(2),0.01),entity():toWorld(ang(0,0,-59.5)),C1,"hq_tube_thin")
+    holoClipEnabled(45,1,1) holoClipEnabled(45,2,1) holoClip(45,1,vec(1.5,0,0),vec(0,1,1),0) holoClip(45,2,vec(1.5,0,0),vec(1,0,0),0)
+    #Front
+    holoStyle(46,entity():toWorld(vec(0,0,-0.6)),vec(0.6,0.6,0.3),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(46,1,1) holoClipEnabled(46,2,1) holoClipEnabled(46,3,1)
+    holoClip(46,1,vec(0,0,-1),vec(0,0.6,1),0) holoClip(46,2,vec(0,0,-1),vec(0,-0.6,1),0) holoClip(46,3,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(47,entity():toWorld(vec(0,0,-1.6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,-30)),C1,"hq_tube_thin")
+    holoClipEnabled(47,1,1) holoClipEnabled(47,2,1) holoClip(47,1,vec(1.5,0,0),vec(0,-2,-1),0) holoClip(47,2,vec(1.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(48,entity():toWorld(vec(0,0,-1.6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,30)),C1,"hq_tube_thin")
+    holoClipEnabled(48,1,1) holoClipEnabled(48,2,1) holoClip(48,1,vec(1.5,0,0),vec(0,2,-1),0) holoClip(48,2,vec(1.5,0,0),vec(1,0,0),0)
+    
+    Slide = holoStyle(49,entity():toWorld(vec(0,0,3)),vec(0,0,0),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(49,Base2)
+    for(J=43,48){holoParent(J,49)}
+    
+    #Inner circle/bracelet
+    holoStyle(50,entity():toWorld(vec(0,0,-1)),vec(0.33,0.33,0.05),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(50,Base2)
+    holoStyle(51,entity():toWorld(vec(0,0,0.5)),vec(0.3,0.3,0.2),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(51,Base2)
+    #Shells
+    for(J=0,11){holoStyle(J+52,entity():toWorld(vec(sin(J*30)*2,cos(J*30)*2 ,0.5)),vec(0.08,0.08,0.17),entity():toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(J+52,51)}
+    
+    holoStyle(65,entity():toWorld(vec(0,0,3)),vec(0.4,0.4,0.2),entity():toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(65,Base2)
+    holoStyle(66,entity():toWorld(vec(0,0,3.5)),vec(0.28,0.28,0.9),entity():toWorld(ang(0,0,0)),vec(33,33,33),"hq_cylinder") holoParent(66,Base2)
+    holoStyle(67,entity():toWorld(vec(0,0,1)),vec(0.43,0.43,0.2),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin") holoParent(67,Base2)
+    holoClipEnabled(67,1) holoClip(67,vec(1,0,0),vec(1,0,0),0)
+    
+    #front covers
+    holoStyle(68,entity():toWorld(vec(-1.3,0,-2.6)),vec(0.6,0.6,0.3),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(68,1,1) holoClipEnabled(68,2,1) holoClipEnabled(68,3,1)
+    holoClip(68,1,vec(0,0,-1.5),vec(0,0.6,1),0) holoClip(68,2,vec(0,0,-1.5),vec(0,-0.6,1),0) holoClip(68,3,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(69,entity():toWorld(vec(-1.3,0,-4)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,-30)),C1,"hq_tube_thin")
+    holoClipEnabled(69,1,1) holoClipEnabled(69,2,1) holoClip(69,1,vec(1.5,0,0),vec(0,-2,-1),0) holoClip(69,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(70,entity():toWorld(vec(-1.3,0,-4)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,30)),C1,"hq_tube_thin")
+    holoClipEnabled(70,1,1) holoClipEnabled(70,2,1) holoClip(70,1,vec(1.5,0,0),vec(0,2,-1),0) holoClip(70,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(71,entity():toWorld(vec(-1.5,0,-4.6)),vec(0.6,0.6,0.3),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(71,1,1) holoClipEnabled(71,2,1) holoClipEnabled(71,3,1)
+    holoClip(71,1,vec(0,0,-1.5),vec(0,0.6,1),0) holoClip(71,2,vec(0,0,-1.5),vec(0,-0.6,1),0) holoClip(71,3,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(72,entity():toWorld(vec(-1.5,0,-6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,-30)),C1,"hq_tube_thin")
+    holoClipEnabled(72,1,1)                     holoClipEnabled(72,2,1)
+    holoClip(72,1,vec(1.5,0,0),vec(0,-2,-1),0)  holoClip(72,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(73,entity():toWorld(vec(-1.5,0,-6)),vec(0.5999,0.495 * sqrt(2),0.01),entity():toWorld(ang(0,0,30)),C1,"hq_tube_thin")
+    holoClipEnabled(73,1,1) holoClipEnabled(73,2,1) holoClip(73,1,vec(1.5,0,0),vec(0,2,-1),0) holoClip(73,2,vec(2.5,0,0),vec(1,0,0),0)
+    
+    #Back covers
+    holoStyle(74,entity():toWorld(vec(-0.5,0,6.4)),vec(0.5,0.5,0.4),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(74,1,1) holoClipEnabled(74,2,1) holoClipEnabled(74,3,1)
+    holoClip(74,1,vec(0,0,2.5),vec(0,1,-1),0) holoClip(74,2,vec(0,0,2.5),vec(0,-1,-1),0) holoClip(74,3,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(75,entity():toWorld(vec(-0.5,0,8.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,-45)),C1,"hq_tube_thin")
+    holoClipEnabled(75,1,1) holoClipEnabled(75,2,1) holoClip(75,1,vec(1.5,0,0),vec(0,2,1),0) holoClip(75,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(76,entity():toWorld(vec(-0.5,0,8.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,45)),C1,"hq_tube_thin")
+    holoClipEnabled(76,1,1) holoClipEnabled(76,2,1) holoClip(76,1,vec(1.5,0,0),vec(0,-2,1),0) holoClip(76,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    ##
+    holoStyle(77,entity():toWorld(vec(-0.8,0,8.4)),vec(0.5,0.5,0.4),entity():toWorld(ang(0,0,0)),C1,"hq_tube_thin")
+    holoClipEnabled(77,1,1) holoClipEnabled(77,2,1) holoClipEnabled(77,3,1)
+    holoClip(77,1,vec(0,0,2.5),vec(0,1,-1),0) holoClip(77,2,vec(0,0,2.5),vec(0,-1,-1),0) holoClip(77,3,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(78,entity():toWorld(vec(-0.8,0,10.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,-45)),C1,"hq_tube_thin")
+    holoClipEnabled(78,1,1) holoClipEnabled(78,2,1) holoClip(78,1,vec(1.5,0,0),vec(0,2,1),0) holoClip(78,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    holoStyle(79,entity():toWorld(vec(-0.8,0,10.7)),vec(0.4999,0.49 * sqrt(2),0.01),entity():toWorld(ang(0,0,45)),C1,"hq_tube_thin")
+    holoClipEnabled(79,1,1) holoClipEnabled(79,2,1) holoClip(79,1,vec(1.5,0,0),vec(0,-2,1),0) holoClip(79,2,vec(0.5,0,0),vec(1,0,0),0)
+    
+    for(J=68,79){
+     holoParent(J,Base2)   
+    }
+    
+    holoStyle(80,Base2:toWorld(vec(1.4,-1,-3.5)),vec(0.08,0.08,0.45),Base2:toWorld(ang(0,0,0)),vec(188,188,188),"hq_cylinder")
+    holoStyle(81,Base2:toWorld(vec(0,0,0.5)),vec(0.35,0.35,0.1),Base2:toWorld(ang(0,0,0)),C1,"hq_cylinder") 
+    holoParent(80,Base2)
+    holoParent(81,Base2) 
+        
+    Clip1 = 12
+    Clip2 = 12
+    
+    I = 0
+    
+    print("Ember Cecilia spawned!")
+}
+elseif(I==0)
+{
+
+###
+#fucking FINALLY
+###
+
+M1 = PlayerTarget:keyAttack1()
+M2 = PlayerTarget:keyAttack2()
+R = PlayerTarget:keyReload()
+E = PlayerTarget:keyUse()
+Shift = PlayerTarget:keySprint()
+
+#These weapons can be changed if you have a more suitable SWEP to use, such as blank sweps
+#Nothing but fists work in this case I'm afraid, go find a punchy SWEP somewhere!
+if(PlayerTarget:weapon():type() == Fists)
+{
+    Hold = 1
+    #Slide R
+    if(Clip1>0){holoPos(8,Base:toWorld(vec(-0.7,0,R*7)))}
+    else{holoPos(8,Base:toWorld(vec(-0.7,0,7)))}
+    
+    #Slide L
+    if(Clip2>0){holoPos(49,Base2:toWorld(vec(-0.7,0,E*7)))}
+    else{holoPos(49,Base2:toWorld(vec(-0.7,0,7)))}
+
+    #Rechambering L
+    if(Clip2 > 0){
+        if(E & $E & Ch2 == 0)
+        {
+            Base2:soundPlay(1,0,"weapons/stickybomblauncher_boltback.wav")
+        }
+        elseif(!E & $E)
+        {   
+            Ch2 = 1
+            Base2:soundPlay(1,0,"weapons/stickybomblauncher_boltforward.wav")
+            holoAng(51,Base2:toWorld(ang(0,Clip2*-30 - 90,0)))
+        }
+    }
+    #Reloading L
+    else
+    {
+        if(E & $E & Ch2 == 0)
+        {
+            Base2:soundPlay(1,0,"weapons/sg552/sg552_boltpull.wav")
+            Clip2 = 12
+            Ch2=0
+            for(I=52,63){
+             holoAlpha(I,255)   
+            }
+            holoAng(51,Base2:toWorld(ang(0,Clip2*30-90,0)))
+        }
+    }
+    
+    if(Clip1 > 0){
+    #Rechambering R
+        if(R & $R & Ch1 == 0)
+        {
+            Base:soundPlay(2,0,"weapons/stickybomblauncher_boltback.wav")
+        }
+        elseif(!R & $R)
+        {
+            Ch1 = 1
+            Base:soundPlay(2,0,"weapons/stickybomblauncher_boltforward.wav")
+            holoAng(10,Base:toWorld(ang(0,Clip1*30-90,0)))
+        }
+    }
+    #Reloading R
+      else
+    {
+        if(R & $R & Ch1 == 0)
+        {
+            Ch1=0
+            Clip1=12
+            Base:soundPlay(1,0,"weapons/sg552/sg552_boltpull.wav")
+            for(I=11,22){
+                holoAlpha(I,255)   
+            }
+            holoAng(10,Base:toWorld(ang(0,Clip1*30-90,0)))
+        }
+    }
+}
+else
+{
+    Hold = 0   
+    holoPos(8,Base:toWorld(vec(-1,0,0)))
+    holoPos(49,Base2:toWorld(vec(-1,0,0)))
+}
+
+if(Hold==1 & $Hold)
+{
+    #R
+    holoPos(0,PlayerTarget:attachmentPos("anim_attachment_rh"))
+    holoAng(0,PlayerTarget:attachmentAng("anim_attachment_rh"))
+    holoParentAttachment(0,PlayerTarget,"anim_attachment_rh")
+    holoPos(1,Pivot:toWorld(vec(-5,-1.5,0.8)))
+    holoAng(1,Pivot:toWorld(ang(0,-90,70)))
+    
+    for(I=1,40){holoAlpha(I,255)}
+    
+    #L
+    holoPos(41,PlayerTarget:attachmentPos("anim_attachment_lh"))
+    holoAng(41,PlayerTarget:attachmentAng("anim_attachment_lh"))
+    holoParentAttachment(41,PlayerTarget,"anim_attachment_lh")
+    holoPos(42,Pivot2:toWorld(vec(-4,1.2,0.4)))
+    holoAng(42,Pivot2:toWorld(ang(180,-90,92)))
+    
+    for(I=41,81){holoAlpha(I,255)}
+}
+elseif(Hold==0 & $Hold)
+{
+    #R
+    holoPos(0,PlayerTarget:attachmentPos("anim_attachment_rh"))
+    holoAng(0,PlayerTarget:attachmentAng("anim_attachment_rh"))
+    holoParentAttachment(0,PlayerTarget,"anim_attachment_rh")
+    holoPos(1,Pivot:toWorld(vec(-5,-1.5,0.8)))
+    holoAng(1,Pivot:toWorld(ang(0,-90,70)))
+    
+    for(I=1,40){holoAlpha(I,0)}
+    
+    #L
+    holoPos(41,PlayerTarget:attachmentPos("anim_attachment_lh"))
+    holoAng(41,PlayerTarget:attachmentAng("anim_attachment_lh"))
+    holoParentAttachment(41,PlayerTarget,"anim_attachment_lh")
+    holoPos(42,Pivot2:toWorld(vec(-4,1.2,0.4)))
+    holoAng(42,Pivot2:toWorld(ang(180,-90,92)))
+    
+    for(I=41,81){holoAlpha(I,0)}
+}
+
+#Firing
+if(Hold==1)
+{
+    if(M1 & $M1)
+    {
+        if(PlayerTarget:aimPos():distance(PlayerTarget:pos() + vec(0,0,40))<100)
+            {
+                PlayerTarget:aimEntity():applyForce(PlayerTarget:eye()*PlayerTarget:aimEntity():mass()*(150 + (500*Ch1) + (500*Ch2)))
+                #PlayerTarget:aimEntity():setTrails(1,1,1,"trails/smoke",vec(255,0,0),150)
+                   Base:soundPlay(5,1,"weapons/metal_gloves_hit_flesh"+randint(1,4)+".wav")
+                #PlayerTarget:aimEntity():propBreak()#takeDamage(15,PlayerTarget:aimPos(),PlayerTarget:eye() * 1000)
+            }
+            
+        if(Ch1==1 & R==0 & Clip1>0)
+        {
+            Ch1 = 0
+            Clip1--
+            holoAlpha(11+Clip1,0)
+            
+            Base:soundPlay(3,1,"weapons/short_stop_shoot.wav")
+            #ifdef entity:applyPlayerForce(vector)
+                PlayerTarget:applyPlayerForce(-PlayerTarget:eye()*40)
+                if(PlayerTarget:aimEntity())
+                {
+                    PlayerTarget:aimEntity():applyPlayerForce(PlayerTarget:eye()*400)
+                }   #Where there's smoke...
+            #endif
+            #Server-compatible particle effect
+            #ifdef particle(number,number,number,string,vector,vector,vector)
+                for(I=0,10){
+                    particle(0.5,5,6,"sprites/flamelet"+randint(1,5),vec(255,255,255),Base:toWorld(vec(randint(-5,5),randint(-5,5),0)),(-Base:up() * 120) + (Base:forward()*randint(-45,145)) + (Base:right()*randint(-45,45)))
+                }
+            #endif
+            #Particles don't quite work in singleplayer right now
+            
+                #Firing props if shift is held down
+                if(Shift)
+                {
+                    P = propSpawn("models/props_junk/gascan001a.mdl",PlayerTarget:pos() + vec(0,0,60) + PlayerTarget:eye() * 40,PlayerTarget:eye():toAngle(),0)
+                    P:setMass(500)
+                    P:propGravity(0)
+                    P:setAlpha(0)
+                    P:setTrails(20,0,1,"trails/smoke",vec(255,150,10),255)
+                    P:applyForce(PlayerTarget:eye() * P:mass() * P:mass() * 10000)
+                }
+            
+            }
+        elseif(Ch2==1 & E==0 & Clip2>0)
+        { 
+            Ch2 = 0
+            Clip2--
+            holoAlpha(63-(Clip2),0)   
+            Base2:soundPlay(4,1,"weapons/short_stop_shoot.wav")
+            #ifdef entity:applyPlayerForce(vector)
+                PlayerTarget:applyPlayerForce(-PlayerTarget:eye()*40)
+                if(PlayerTarget:aimEntity())
+                {
+                    PlayerTarget:aimEntity():applyPlayerForce(PlayerTarget:eye()*400)
+                }   ##... They push back!
+            #endif
+            #ifdef particle(number,number,number,string,vector,vector,vector)
+                for(I=0,10){
+                    particle(0.5,5,6,"sprites/flamelet"+randint(1,5),vec(255,255,255),Base2:toWorld(vec(randint(-5,5),randint(-5,5),0)),(-Base2:up() * 120) + (Base2:forward()*randint(-45,145)) + (Base2:right()*randint(-45,45)))
+                        }
+            #endif
+            
+            #Firing props if shift is held down
+                if(Shift)
+                {
+                    P = propSpawn("models/props_junk/gascan001a.mdl",PlayerTarget:pos() + vec(0,0,60) + PlayerTarget:eye() * 40,PlayerTarget:eye():toAngle(),0)
+                    P:setMass(500)
+                    P:propGravity(0)
+                    P:setAlpha(0)
+                    P:setTrails(20,0,1,"trails/smoke",vec(255,200,10),150)
+                    P:applyForce(PlayerTarget:eye() * P:mass() * P:mass() * 10000)
+                }
+            
+        }
+        else
+        {
+            Rand = randint(1,5)
+            if(Rand==3){
+                Base:soundPlay(3,1,"weapons/boxing_gloves_swing1.wav")}
+            else
+                {
+                Base:soundPlay(3,1,"weapons/boxing_gloves_swing"+Rand+".wav")}
+            
+        }
+    }  
+    #Firing both
+    if(M2 & $M2 & Ch1==1 & Ch2==1 & Clip1 > 0 & Clip2 > 0)
+    {
+        if(PlayerTarget:aimPos():distance(PlayerTarget:pos() + vec(0,0,40))<100)
+            {
+                PlayerTarget:aimEntity():applyOffsetForce(PlayerTarget:eye()*PlayerTarget:aimEntity():mass()*(2500),PlayerTarget:aimPos())
+                   Base:soundPlay(5,1,"weapons/metal_gloves_hit_flesh"+randint(1,4)+".wav")
+            }
+        Base:soundPlay(5,1,"weapons/short_stop_shoot_crit.wav")
+        Base2:soundPlay(6,1,"weapons/short_stop_shoot_crit.wav") 
+        #ifdef entity:setVelocity(vector)
+            PlayerTarget:setVelocity(-PlayerTarget:eye()*400)
+        #endif
+        #ifdef entity:applyPlayerForce(vector)
+                PlayerTarget:applyPlayerForce(-PlayerTarget:eye()*800)
+                if(PlayerTarget:aimEntity())
+                {
+                    PlayerTarget:aimEntity():applyPlayerForce(PlayerTarget:eye()*8000)
+                } #Send'em flying
+        #endif
+        Ch1 = 0
+        Ch2 = 0
+        Clip1--
+            holoAlpha(11+Clip1,0)
+        Clip2--
+            holoAlpha(64-Clip2,0)
+        #ifdef particle(number,number,number,string,vector,vector,vector)
+            for(I=0,10){
+                    particle(0.5,5,6,"sprites/flamelet"+randint(1,4),vec(255,0,0),Base:toWorld(vec(randint(-5,5),randint(-5,5),0)),(PlayerTarget:eye()*200))
+                    particle(0.5,5,6,"sprites/flamelet"+randint(1,4),vec(255,0,0),Base2:toWorld(vec(randint(-5,5),randint(-5,5),0)),(PlayerTarget:eye()*200))
+               }
+            #endif
+    }   
+}
+
+if(PlayerTarget:keyAttack1() && PlayerTarget:lastSaid() == ":st")
+{
+    PlayerTarget = owner():aimEntity()
+    print("Target set!")   
+}
+
+
+}

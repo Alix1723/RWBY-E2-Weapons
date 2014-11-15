@@ -1,0 +1,417 @@
+#[
+Magnhild
+
+It's a goddamn hammer grenade launcher!
+
+HOW TO USE:
+Take out crowbar, whack stuff with M1, hold down M2 and whack stuff to explode things
+Take out crossbow, press M1 to launch grenades
+
+REQUIRES:
+HoloModelAny
+PropCore
+SetVelocity
+TF2(Grenade and sounds)
+
+http://rwby.wikia.com/wiki/Magnhild
+
+Written by Alix
+]#
+
+
+@name JNPR Magnhild
+@outputs Hold
+@persist [Anim SmAnim T Ba BarrelAng M1 M2 Cd I NumHolo]
+@persist [Pivot Base PlayerTarget]:entity 
+@persist [C1 C2 C3]:vector
+@persist [Proj]:array
+
+runOnTick(1)
+
+if(first())
+{
+    PlayerTarget=owner()
+    #I accidentally replaced "T" with "SmAnim" so some comments may look strange, you SmAnimwat
+    C1   = vec(128,128,128)
+    C2   = vec(192,0,170)
+    C3   = vec(150,150,150)
+    entity():setAlpha(0)
+    entity():setAng(ang())
+
+    #Centre section
+    Pivot = holoCreate(0,entity():toWorld(vec(0,0,0))) holoParent(0,entity()) holoAlpha(0,0)
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.75,0.75,0.08),Pivot:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(1,0) #Back cylinder
+    
+    #include "lib/HoloStyleFunction"
+    NumHolo = 89 
+    I = 2
+}
+if(I <= NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I,entity():pos(),vec())
+    I++   
+}
+elseif(I>NumHolo & I>0)
+{
+    holoStyle(2,Pivot:toWorld(vec(8,0,0)),vec(0.8,0.8,0.05),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(2,1) #Front cylinder
+    holoStyle(3,Pivot:toWorld(vec(4.2,0,0)),vec(0.11,0.11,0.6),Pivot:toWorld(ang(90,0,0)),C1,"cylinder") holoParent(3,1) #Centre spindle
+    holoStyle(4,Pivot:toWorld(vec(4.2,0,0)),vec(),Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(4,1) #Barrels spindle HINGE
+    Dist = 3
+    for(I=0,5) #Dust barrel things
+    {
+        holoStyle(5+I,Pivot:toWorld(vec(2.82,sin(60*I)*Dist,cos(60*I)*Dist)),vec(0.22,0.22,0.4),Pivot:toWorld(ang(90,0,0)),C2,"hq_cylinder") holoParent(5+I,4)
+        holoStyle(11+I,Pivot:toWorld(vec(6.4,sin(60*I)*Dist,cos(60*I)*Dist)),vec(0.23,0.23,0.21),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(11+I,4)
+    }
+    holoStyle(17,Pivot:toWorld(vec(0.5,0,0)),vec(0.8,0.8,0.178),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube_thin") holoParent(17,1) #Overlap tube cover thing
+    
+    #Front piece
+    
+    holoStyle(18,Pivot:toWorld(vec(-0.6,0,4.5)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(18,1) #BACK HINGE
+    holoStyle(19,Pivot:toWorld(vec(8.2,0,4.9)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(19,18) #FRONSmAnim HINGE
+    holoAlpha(18,50)
+    holoAlpha(19,50)
+    
+    holoStyle(20,Pivot:toWorld(vec(11.5,0,3.2)),vec(0.28,0.28,0.6),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube") holoParent(20,19) #LaunchSmAnimube
+    holoStyle(21,Pivot:toWorld(vec(11.5,0,-1)),vec(0.1,0.1,0.8),Pivot:toWorld(ang(-5,0,0)),C1,"cube") holoParent(21,19) #Foregrip
+    holoStyle(22,Pivot:toWorld(vec(14,0,3.2)),vec(0.25,0.25,0.1),Pivot:toWorld(ang(90,0,0)),vec(),"cylinder") holoParent(22,19) #Dark bit
+    holoStyle(23,Pivot:toWorld(vec(14.5,0,3.2)),vec(0.45,0.45,0.15),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube") holoParent(23,19) #Very front tube cover
+    holoStyle(24,Pivot:toWorld(vec(10,0,3.2)),vec(0.45,0.45,0.6),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube_thin") holoParent(24,23) #Very front clipped cylinder
+    holoClipEnabled(24,1,1) holoClipEnabled(24,2,1) holoClip(24,1,vec(0,0,0),vec(-1,0.5,0.86),0) holoClip(24,2,vec(0,0,0),vec(-1,-0.5,0.86),0)
+    holoStyle(25,Pivot:toWorld(vec(11.7,0,0.92)),vec(0.15,0.56,0.17),Pivot:toWorld(ang(0,90,180)),C3,"prism") holoParent(25,19) #Annoying angled underneath bit  
+    
+    #Arm that holds the front piece
+    holoStyle(26,Pivot:toWorld(vec(3.85,0,5)),vec(0.74,0.1,0.08),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(26,18) #SmAnimop bridge 
+    holoStyle(27,Pivot:toWorld(vec(0,0,5.9)),vec(0.1,0.1,0.08),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(27,18) #SmAnimop br. rise
+    holoStyle(28,Pivot:toWorld(vec(2.7,0,5.46)),vec(0.4,0.1,0.08),Pivot:toWorld(ang(11,0,0)),C1,"cube") holoParent(28,18) #Angled part between
+    
+    #Lower arm
+    holoStyle(29,Pivot:toWorld(vec(4,0,-5.08)),vec(0.65,0.14,0.12),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(29,1) #Bridge
+    holoStyle(30,Pivot:toWorld(vec(7.93,0,-5.2)),vec(0.06,0.14,0.1),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(30,1) #Front angled
+    holoStyle(31,Pivot:toWorld(vec(0.1,0,-5.2)),vec(0.10,0.14,0.1),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(31,1) #Back angled
+    holoStyle(32,Pivot:toWorld(vec(-0.8,0,-4.9)),vec(0.08,0.08,0.14),Pivot:toWorld(ang(0,0,90)),C3,"cylinder") holoParent(32,1) #Back big hinge
+
+    #Lower cover, or half of it because I'm an idiot and don't think ahead
+    holoStyle(33,Pivot:toWorld(vec(2,0,0)),vec(0.9,0.9,1),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube") holoParent(33,1) #Big semicylinder cover base L
+    holoClipEnabled(33,1,1) holoClipEnabled(33,2,1) holoClip(33,1,vec(-1,0,0),vec(1,0,0),0) holoClip(33,2,vec(0,0,-3.5),vec(-0.4,0,1),0)
+    holoClipEnabled(33,3,1) holoClip(33,3,vec(0,-1,0),vec(0,1,0.65),0)
+    holoStyle(34,Pivot:toWorld(vec(-1.5,0,0)),vec(0.97,0.9,0.01),Pivot:toWorld(vec(-0.4,0,1):toAngle()),C3,"hq_tube") holoParent(34,33) # LDisc covering up the back
+    holoClipEnabled(34,1,1) holoClipEnabled(34,2,1) holoClip(34,1,vec(1,0,0),vec(-0.5,0,-1),0) holoClip(34,2,vec(0,0,0),vec(0,-1,0),0)
+    
+    #GOSmAnimO where I remembered this part splits in two and copy paste this
+    holoStyle(35,Pivot:toWorld(vec(3.05,4.65,1)),vec(0.06,0.115,0.83),Pivot:toWorld(ang(90,0,0)),C3,"cylinder") holoParent(35,33) #SmAnimop ridges
+    holoClipEnabled(35,1) holoClip(35,vec(0,0,0),vec(-1,0,0),0)
+    #...
+    #
+    #[holoCreate(36,Pivot:toWorld(vec(3.05,-4.65,1)),vec(0.06,0.115,0.83),Pivot:toWorld(ang(90,0,0)),C3,"cylinder") holoParent(36,33) #SmAnimop ridges
+    holoClipEnabled(36,1) holoClip(36,vec(0,0,0),vec(-1,0,0),0)]#
+    
+    #Hammer mode front barrel bit
+    holoStyle(37,Pivot:toWorld(vec(8.5,0,3.2)),vec(0.26,0.26,0.05),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube") holoParent(37,1) #LaunchSmAnimube
+    holoStyle(38,Pivot:toWorld(vec(8.5,0,3.2)),vec(0.25,0.25,0.02),Pivot:toWorld(ang(90,0,0)),vec(),"cylinder") holoParent(38,1) #Dark bit
+    #Handle pieces
+    holoStyle(39,Pivot:toWorld(vec(-0.8,0,-4.85)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(39,1) #BACK HINGE
+    holoAlpha(39,50)
+    
+    #Right pylon cover
+    holoStyle(40,Pivot:toWorld(vec(-0.5,-0.7,-3.8)),vec(0.2,0.02,0.18),Pivot:toWorld(ang(60,0,0)),C1,"prism") holoParent(40,39)
+    holoStyle(41,Pivot:toWorld(vec(-1.8,-0.7,-3.5)),vec(0.35,0.03,0.06),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(41,39)
+    holoStyle(42,Pivot:toWorld(vec(-1.7,-0.7,-0.5)),vec(0.15,0.03,0.45),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(42,39)
+    holoStyle(43,Pivot:toWorld(vec(-0.75,-0.7,-1.82)),vec(0.18,0.03,0.22),Pivot:toWorld(ang(0,0,0)),C1,"prism") holoParent(43,39)
+    holoStyle(44,Pivot:toWorld(vec(-2.35,-0.7,-1.82)),vec(0.25,0.03,0.22),Pivot:toWorld(ang(0,0,0)),C1,"prism") holoParent(44,39)
+    
+    #Left pylon cover
+    holoStyle(45,Pivot:toWorld(vec(-0.5,0.7,-3.8)),vec(0.2,0.02,0.18),Pivot:toWorld(ang(60,0,0)),C1,"prism") holoParent(45,39)
+    holoStyle(46,Pivot:toWorld(vec(-1.8,0.7,-3.5)),vec(0.35,0.03,0.06),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(46,39)
+    holoStyle(47,Pivot:toWorld(vec(-1.7,0.7,-0.5)),vec(0.15,0.03,0.45),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(47,39)
+    holoStyle(48,Pivot:toWorld(vec(-0.75,0.7,-1.82)),vec(0.18,0.03,0.22),Pivot:toWorld(ang(0,0,0)),C1,"prism") holoParent(48,39)
+    holoStyle(49,Pivot:toWorld(vec(-2.35,0.7,-1.82)),vec(0.25,0.03,0.22),Pivot:toWorld(ang(0,0,0)),C1,"prism") holoParent(49,39)
+    
+    #Middle pylon cover
+    holoStyle(50,Pivot:toWorld(vec(0.17,0,-3.5)),vec(0.03,0.09,0.06),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(50,39)
+    holoStyle(51,Pivot:toWorld(vec(-0.35,0,-2)),vec(0.03,0.09,0.25),Pivot:toWorld(ang(-22,0,0)),C1,"cube") holoParent(51,39)
+    holoStyle(52,Pivot:toWorld(vec(-0.98,0,0.83)),vec(0.03,0.09,0.23),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(52,39)
+    
+    #Scissor-ish handle pieces
+    #HANDLE A
+    holoStyle(53,Pivot:toWorld(vec(-1.7,0,2)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(53,39) #HINGE A
+    holoAlpha(53,50)
+    holoStyle(54,Pivot:toWorld(vec(-5,0,2)),vec(0.6,0.08,0.08),Pivot:toWorld(ang(0,0,0)),C3,"cube") holoParent(54,53) #Handle 1
+    holoStyle(55,Pivot:toWorld(vec(-8.6,0,1.52)),vec(0.08,0.08,0.1),Pivot:toWorld(ang(0,0,90)),C1,"cylinder") holoParent(55,53) #H1 cylinder
+    #HANDLE B
+    holoStyle(56,Pivot:toWorld(vec(-8.6,0,1.52)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(56,53) #HINGE B
+    holoAlpha(56,50)
+    holoStyle(57,Pivot:toWorld(vec(-5,0,1.04)),vec(0.6,0.08,0.08),Pivot:toWorld(ang(0,0,0)),C3,"cube") holoParent(57,56) #Handle 2
+    holoStyle(58,Pivot:toWorld(vec(-1.4,0,0.57)),vec(0.08,0.08,0.1),Pivot:toWorld(ang(0,0,90)),C1,"cylinder") holoParent(58,56) #H2 cylinder
+    
+    #HANDLE C
+    holoStyle(59,Pivot:toWorld(vec(-1.4,0,0.57)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(59,57) #HINGE C
+    holoAlpha(59,50)
+    holoStyle(60,Pivot:toWorld(vec(-4,0,0.13)),vec(0.5,0.08,0.07),Pivot:toWorld(ang(0,0,0)),C3,"cube") holoParent(60,59) #Handle 3 
+    #HANDLE D
+    holoStyle(61,Pivot:toWorld(vec(-6.8,0,-0.3)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(61,59) #HINGE D
+    holoAlpha(61,50)
+    holoStyle(62,Pivot:toWorld(vec(-4.5,0.6,-0.7)),vec(0.4,0.02,0.08),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(62,61) #Flap
+    holoStyle(63,Pivot:toWorld(vec(-4.5,-0.6,-0.7)),vec(0.4,0.02,0.08),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(63,61) #Flaps
+    #HANDLE E
+    holoStyle(64,Pivot:toWorld(vec(-5.5,0,-0.7)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(64,61) #HINGE E
+    holoAlpha(64,50)
+    holoStyle(65,Pivot:toWorld(vec(-6.2,0,-2.2)),vec(0.37,0.08,0.08),Pivot:toWorld(ang(-60,0,0)),C1,"cube") holoParent(65,64) #Handle 4
+    #HANDLE F ucking hell there's a lot of handle
+    holoStyle(66,Pivot:toWorld(vec(-7.3,0,-3.8)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(66,64) #HINGE F
+    holoAlpha(66,50)
+    holoStyle(67,Pivot:toWorld(vec(-9.5,0,-2.8)),vec(0.45,0.08,0.06),Pivot:toWorld(ang(25,0,0)),C1,"cube") holoParent(67,66) #Handle 5
+    #HANDLE G 
+    holoStyle(68,Pivot:toWorld(vec(-11.8,0,-1.8)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(68,66) #HINGE G
+    holoAlpha(68,50)
+
+    holoStyle(69,Pivot:toWorld(vec(-12,0,0.3)),vec(0.1,0.08,0.4),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(69,68) #Handle 6
+    #END
+    holoStyle(70,Pivot:toWorld(vec(-12,0,2.8)),vec(0.05,0.5,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(70,68) #HINGE H
+    holoAlpha(70,50)
+    holoStyle(71,Pivot:toWorld(vec(-8.1,0,2.8)),vec(0.7,0.1,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(71,70) #Handle 6
+    holoStyle(72,Pivot:toWorld(vec(-5.1,0,3.8)),vec(0.2,0.1,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(72,70)
+    holoStyle(73,Pivot:toWorld(vec(-7.8,0,3.3)),vec(0.3,0.1,0.1),Pivot:toWorld(ang(-18,0,0)),C1,"cube") holoParent(73,70)
+
+#This is where I remember the split cover crap
+
+holoStyle(74,Pivot:toWorld(vec(2,0,0)),vec(0.9,0.9,1),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube") holoParent(74,1) #Big semicylinder cover base R
+    holoClipEnabled(74,1,1) holoClipEnabled(74,2,1) holoClip(74,1,vec(-1,0,0),vec(1,0,0),0) holoClip(74,2,vec(0,0,-3.5),vec(-0.4,0,1),0)
+    holoClipEnabled(74,3,1) holoClip(74,3,vec(0,1,0),vec(0,-1,0.65),0)
+holoStyle(75,Pivot:toWorld(vec(-1.5,0,0)),vec(0.97,0.9,0.01),Pivot:toWorld(vec(-0.4,0,1):toAngle()),C3,"hq_tube") holoParent(75,74) # RDisc covering up the back
+    holoClipEnabled(75,1,1) holoClipEnabled(75,2,1) holoClip(75,1,vec(1,0,0),vec(-0.5,0,-1),0) holoClip(75,2,vec(0,0,0),vec(0,1,0),0)
+
+holoStyle(36,Pivot:toWorld(vec(3.05,-4.65,1)),vec(0.06,0.115,0.83),Pivot:toWorld(ang(90,0,0)),C3,"cylinder") holoParent(36,74) #SmAnimop ridges
+    holoClipEnabled(36,1) holoClip(36,vec(0,0,0),vec(-1,0,0),0)
+
+
+#Extra extending cover
+    holoStyle(76,Pivot:toWorld(vec(-4,0,0)),vec(0.87,0.87,0.8),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube_thin") holoParent(76,1) #Very front clipped cylinder
+    holoClipEnabled(76,1,1) holoClipEnabled(76,2,1) holoClip(76,1,vec(0,0,0),vec(-1,0.7,0.86),0) holoClip(76,2,vec(0,0,0),vec(-1,-0.5,0.86),0)
+    holoClipEnabled(76,3,1) holoClip(76,3,vec(0,0.5,0),vec(0,1,0),0)
+    
+    holoStyle(77,Pivot:toWorld(vec(-4,0,0)),vec(0.87,0.87,0.8),Pivot:toWorld(ang(90,0,0)),C3,"hq_tube_thin") holoParent(77,1) #Very front clipped cylinder
+    holoClipEnabled(77,1,1) holoClipEnabled(77,2,1) holoClip(77,1,vec(0,0,0),vec(-1,0.7,0.86),0) holoClip(77,2,vec(0,0,0),vec(-1,-0.5,0.86),0)
+    holoClipEnabled(77,3,1) holoClip(77,3,vec(0,-0.5,0),vec(0,-1,0),0)
+
+#Wingy bits
+
+    holoStyle(78,Pivot:toWorld(vec(-0.6,-0.6,5)),vec(0.5,0.05,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(78,1) #RIGHSmAnim
+    holoStyle(79,Pivot:toWorld(vec(-0.6,0.6,5)),vec(0.5,0.05,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(79,1) #LEFSmAnim
+    #wahey out of holo spawns
+    #can I just get the fucking .3ds file and import it please    
+
+    #L
+    holoStyle(80,Pivot:toWorld(vec(-3,0.6,4)),vec(0.4,0.02,0.2),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(80,79)
+    holoStyle(81,Pivot:toWorld(vec(-5.45,0.6,4)),vec(0.8,0.02,0.2),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(81,79)
+    holoStyle(82,Pivot:toWorld(vec(-0.6,0.6,2.8)),vec(0.5,0.05,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(82,79) #Wingy Bit pt2 HINGE
+    holoStyle(83,Pivot:toWorld(vec(-1.6,0.6,1.6)),vec(0.2,0.02,0.2),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(83,82)
+    holoStyle(84,Pivot:toWorld(vec(-2.2,0.6,1.6)),vec(0.4,0.02,0.2),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(84,82)
+
+    #R
+    holoStyle(85,Pivot:toWorld(vec(-3,-0.6,4)),vec(0.4,0.02,0.2),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(85,78)
+    holoStyle(86,Pivot:toWorld(vec(-5.45,-0.6,4)),vec(0.8,0.02,0.2),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(86,78)
+    holoStyle(87,Pivot:toWorld(vec(-0.6,-0.6,2.8)),vec(0.5,0.05,0.05)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(87,78) #Wingy Bit pt2 HINGE 
+
+    holoStyle(88,Pivot:toWorld(vec(-1.6,-0.6,1.6)),vec(0.2,0.02,0.2),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(88,87)
+    holoStyle(89,Pivot:toWorld(vec(-2.2,-0.6,1.6)),vec(0.4,0.02,0.2),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(89,87)    
+    #Hold = 2
+    print("Spawned Magnhild successfully!")
+    I = 0
+}
+elseif(I<=0)
+{
+
+##Finally out of holo spawning
+if(PlayerTarget:weapon():type() == "weapon_crowbar")
+{Hold = 1 PlayerTarget:weapon():setAlpha(0) }
+elseif(PlayerTarget:weapon():type() == "weapon_crossbow"||PlayerTarget:weapon():type() == "weapon_shotgun")
+{Hold = 2 PlayerTarget:weapon():setAlpha(0)}
+else
+{Hold = 0 PlayerTarget:weapon():setAlpha(255)}
+
+#Inputs
+E = PlayerTarget:keyUse()
+M1 = PlayerTarget:keyAttack1()
+M2 = PlayerTarget:keyAttack2()
+
+#Sounds
+if(SmAnim==0.9){Base:soundPlay(2,1,"weapons/grenade_launcher_drum_close.wav")}
+if(SmAnim==0.1){Base:soundPlay(2,1,"weapons/grenade_launcher_drum_open.wav")}
+
+if($Hold){
+    #Hammer mode
+    if(Hold == 1)
+    {
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_RH"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_RH"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_RH")
+        holoAng(1,Pivot:toWorld(ang(90,0,0)))
+        holoPos(1,Pivot:toWorld(vec(1,-1,35)))
+        Anim=1
+        #print("Hammer")
+        
+        Base:soundPlay(1,1,"weapons/draw_shovel_soldier.wav")
+        soundPitch(1,90)
+    }
+    
+    #Launcher mode
+    elseif(Hold == 2)
+    {
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_RH"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_RH"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_RH")
+        holoAng(1,Pivot:toWorld(ang(80,0,0)))
+        holoPos(1,Pivot:toWorld(vec(8,-1,2)))
+        Anim=0
+        #print("Launcher")
+        Base:soundPlay(1,1,"weapons/draw_primary.wav")
+    }
+    
+    #Carry mode
+    elseif(!Hold)
+    {
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(0,PlayerTarget,"chest")
+        holoAng(1,Pivot:toWorld(ang(60,-75,0)))
+        holoPos(1,Pivot:toWorld(vec(-8,-3,-4)))
+        Anim=0
+        #print("Carry") weapons/draw_default.wav
+        Base:soundPlay(1,1,"weapons/draw_default.wav")
+    }
+}
+
+if(SmAnim<Anim){SmAnim+=0.05}
+if(SmAnim>Anim){SmAnim-=0.05}
+
+#top back hinge
+holoAng(18,Base:toWorld(ang(SmAnim*-180 - 90,0,0)))
+#top front hinge
+holoAng(19,Base:toWorld(ang(SmAnim*-360 - 90,0,0)))
+#Foregrip
+holoAng(21,holoEntity(19):toWorld(ang(-15 + SmAnim*-25,0,0)))
+holoPos(21,holoEntity(20):toWorld(vec(3+SmAnim,0,0.2 + SmAnim*3)))
+#Front cover
+holoPos(23,holoEntity(20):toWorld(vec(0,0,3 - SmAnim*5)))
+#Lower handle 
+holoAng(39,Base:toWorld(ang(SmAnim*-180 - 90,0,0)))
+#Hammer Handle Hinge A
+holoAng(53,Base:toWorld(ang(SmAnim*-90 - 90,0,0)))
+#HHH B
+holoAng(56,Base:toWorld(ang(SmAnim*90 - 90,0,0)))
+#HHH C
+holoAng(59,Base:toWorld(ang(SmAnim*-90 - 90,0,0)))
+#HHH D
+holoAng(61,Base:toWorld(ang(SmAnim*90 - 90,0,0)))
+#HHH E
+holoAng(64,Base:toWorld(ang(SmAnim*-30 - 90,0,0)))
+#HHH F
+holoAng(66,Base:toWorld(ang(SmAnim*-115 - 90,0,0)))
+#HHH G
+holoAng(68,Base:toWorld(ang(SmAnim*-180 - 90,0,0)))
+#HHH H
+holoAng(70,Base:toWorld(ang(SmAnim*-270 - 90,0,0)))
+
+#Wingys
+holoAng(78,Base:toWorld(ang(-90,0,round(SmAnim)*-40)))
+holoAng(79,Base:toWorld(ang(-90,0,round(SmAnim)*40)))
+holoAng(82,Base:toWorld(ang(-90,0,0)))
+holoAng(87,Base:toWorld(ang(-90,0,0)))
+
+#Bottom cover(s)
+if(SmAnim*100>80){
+    holoAng(33,Base:toWorld(ang(0,SmAnim*78,0)))
+    holoAng(74,Base:toWorld(ang(0,SmAnim*-78,0)))
+    holoAlpha(76,255) holoAlpha(77,255)
+}
+else
+{
+    holoAng(33,Base:toWorld(ang(0,0,0)))
+    holoAng(74,Base:toWorld(ang(0,0,0))) 
+    holoAlpha(76,0) holoAlpha(77,0)
+}
+#Firing in launcher mode
+if(Hold==2){    
+    if(M1 == 1 && $M1 && Cd ==0)
+    {
+        Ba = (Ba + 1) % 6
+        Base:soundPlay(1,1,"weapons/grenade_launcher1.wav")
+        if(Ba==0){Cd = 50}
+        else{Cd = 20}
+        
+        #ifdef propSpawn(string,angle,number)
+        #m models/props_junk/watermelon01.mdl
+            G = propSpawn("models/props_junk/PopCan01a.mdl",Base:toWorld(vec(-30,0,20)),owner():eyeAngles(),0)
+            G:setMaterial("models/debug/debugwhite")
+            G:setColor(C2)
+            G:propFreeze(0)
+            G:applyForce(PlayerTarget:eye() * G:mass() *2000)
+            G:setTrails(5,0,0.5,"trails/smoke",C2,150)
+            
+            G:setMass(10)
+            Proj:pushEntity(G)
+        #endif
+        
+    }
+    if(Cd>0){Cd--}
+    if(Cd == 39){Base:soundPlay(2,1,"weapons/357/357_spin1.wav") soundPitch(2,80)}
+    if(Cd == 1){Base:soundPlay(3,1,"weapons/scatter_gun_double_tube_open.wav")}
+    
+    if(BarrelAng<Ba){BarrelAng+=0.1}
+    if(BarrelAng>Ba){BarrelAng-=0.1}
+    holoAng(4,Base:toWorld(ang(-90,BarrelAng*60,0)))
+}
+
+#Firing in Hammer mode
+if(Hold==1){        
+    if(M2==1 & M1 == 1 & $M1 & Cd == 0)
+    {
+        #P = PlayerTarget:aimEntity()
+        #P:applyForce(PlayerTarget:eye()*10000)
+        #print(P:name())
+        Ba = (Ba + 1) % 6
+        if(Ba==0){Cd = 50}
+        else{Cd = 20}
+                
+        ##ifdef propSpawn(string,angle,number)
+            Base:soundPlay(1,1,"weapons/explode3.wav")
+            G = propSpawn("models/props_c17/oildrum001_explosive.mdl",PlayerTarget:aimPos(),Base:angles(),0)
+            G:propBreak()
+        ##endif
+        
+        #ifdef entity:setVel(vector)
+            PlayerTarget:setVel(-PlayerTarget:eye()*1000)
+        #endif
+        
+        #ifdef entity:applyPlayerForce(vector)
+            PlayerTarget:applyPlayerForce(-PlayerTarget:eye()*550)
+        #endif    
+        
+    } 
+    if(Cd>0){Cd--}
+    if(Cd == 39){Base:soundPlay(2,1,"weapons/357/357_spin1.wav") soundPitch(2,80)}
+    if(Cd == 1){Base:soundPlay(3,1,"weapons/scatter_gun_double_tube_open.wav")}
+    
+    if(BarrelAng<Ba){BarrelAng+=0.1}
+    if(BarrelAng>Ba){BarrelAng-=0.1}
+    holoAng(4,Base:toWorld(ang(-90,BarrelAng*60,0)))
+}
+
+#Managing grenades
+if(Proj:count() > 0)
+{
+    for (I=1,Proj:count())
+    {        
+        if(Proj[I,entity]:vel():length()<450)
+        {   #ifdef propSpawn(string,angle,number)
+                B = propSpawn("models/props_c17/oildrum001_explosive.mdl",Proj[I,entity]:pos(),ang(),1)
+                B:propBreak()
+            #endif
+            Proj[I,entity]:propBreak()
+            Proj:remove(I) 
+        }  
+    }
+}
+
+###
+}

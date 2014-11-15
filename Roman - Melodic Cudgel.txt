@@ -1,0 +1,282 @@
+#[
+Melodic Cudgel
+
+Ladies... Ice Queen.
+
+USES:
+Take out pistol or Laserpointer, M2 to fire a 'firework'
+
+REQUIRES:
+TF2 (Sounds)
+PropCore
+
+http://rwby.wikia.com/wiki/Melodic_Cudgel
+
+Written by Alix
+]#
+
+@name Melodic Cudgel
+@persist [Pivot Base PlayerTarget Prop E G Hook HookedObject]:entity
+@persist [C1 C2 C3]:vector
+@persist [Anim SmAnim Hold M1 M2 Cd HookMode HookFire HookLand R]
+@persist [Proj]:array
+
+runOnTick(1)
+if(first())
+{
+    entity():setAlpha(0)
+    
+    C1 = vec(151,0,0) # Red
+    C2 = vec(200,200,200) # Grey (LIKE GREY LIKE THE GUY WHO VOICES TORCHWICK HUEHEHUEHUE)
+    C3 = vec(100,100,100) # Dark grey
+    
+    Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.6,0.6,0.6),Pivot:toWorld(ang(90,0,0)),C2,"hq_torus_thick") holoParent(1,0)
+    holoClipEnabled(1,1)
+    holoClip(1,vec(),vec(-1,0,0),0)
+    holoCreate(2,Pivot:toWorld(vec(0,2.71,-2.4)),vec(0.15,0.15,0.4),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(2,1)
+    holoCreate(3,Pivot:toWorld(vec(0,-2.71,-0.1)),vec(0.15,0.15,0.05),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(3,1)
+    holoCreate(4,Pivot:toWorld(vec(0,2.71,-15)),vec(0.12,0.12,2),Pivot:toWorld(ang(0,0,0)),C3,"hq_cylinder") holoParent(4,1)
+    holoCreate(5,Pivot:toWorld(vec(0,2.71,-5)),vec(0.16,0.16,0.2),Pivot:toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(5,1)
+    holoCreate(6,Pivot:toWorld(vec(0,2.71,-30)),vec(0.16,0.16,0.5),Pivot:toWorld(ang(0,0,0)),C1,"hq_tube") holoParent(6,1)
+    holoCreate(7,Pivot:toWorld(vec(0,3.6,-33)),0*vec(0.2,0.02,0.02),Pivot:toWorld(ang(0,0,0)),vec(255,255,255),"cube") holoParent(7,1) #Hinge
+    holoCreate(8,Pivot:toWorld(vec(0,2.7,-33.15)),vec(0.16,0.16,0.02),Pivot:toWorld(ang(0,0,0)),C3,"hq_tube") holoParent(8,7)
+    holoCreate(9,Pivot:toWorld(vec(0,2.7,-33.15)),vec(0.15,0.15,0.01),Pivot:toWorld(ang(0,0,0)),vec(255,255,255),"hq_cylinder") holoParent(9,7)
+    holoMaterial(9,"models/props_c17/fisheyelens")
+    holoCreate(10,Pivot:toWorld(vec(0,2.7,-33.15)),vec(0.01,0.1,0.01),Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(10,7)
+    holoCreate(11,Pivot:toWorld(vec(0,2.7,-33.15)),vec(0.1,0.01,0.01),Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(11,7)
+    
+    Hook = holoCreate(12,Pivot:toWorld(vec(0,0,0)),vec(),ang(-90,0,-90))
+    
+    holoCreate(13,Pivot:toWorld(vec(0,0,0)),vec(0.6,0.6,0.6),Pivot:toWorld(ang(90,0,0)),C2,"hq_torus_thick") holoParent(13,12)
+    holoClipEnabled(13,1)
+    holoClip(13,vec(),vec(-1,0,0),0)
+    holoCreate(14,Pivot:toWorld(vec(0,2.71,-2.4)),vec(0.15,0.15,0.4),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(14,12)
+    holoCreate(15,Pivot:toWorld(vec(0,-2.71,-0.1)),vec(0.15,0.15,0.05),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(15,12)
+    
+    holoCreate(16) holoColor(16,vec(30,30,30)) holoScale(16,vec())
+    
+    holoAng(7,Pivot:toWorld(ang(0,0,180)))
+    
+    holoAlpha(13,0)
+    holoAlpha(14,0)
+    holoAlpha(15,0)
+}
+else
+{
+    M1 = owner():keyAttack2()
+    R = owner():keyReload()
+    
+    if(SmAnim<Anim){SmAnim+=10}
+    if(SmAnim>Anim){SmAnim-=10}
+    
+    holoAng(7,Base:toWorld(ang(-90,0,SmAnim*1.8)))   
+    
+    if(Cd>0){Cd--}
+    
+    #Right hand 
+    if(owner():weapon():type() == "weapon_pistol" | owner():weapon():type() == "laserpointer")
+    {
+        Hold = 1 
+        owner():weapon():setAlpha(0)
+        
+        #Firing
+        if(M1 & $M1 & Cd == 0 & HookMode == 0)
+        {
+            G:soundPlay(1,2,"weapons/flaregun_shoot.wav")
+            Cd = 15
+            #ifdef propSpawn(string,angle,number)
+            
+            #Whatever you do, DO NOT REPLACE THIS MODEL WITH SOMETHING HILARIOUS LIKE A TRAIN
+                G = propSpawn("models/props_junk/PopCan01a.mdl",owner():pos() + owner():eye()*20 + vec(0,0,60),owner():eyeAngles(),0)
+                G:setMaterial("models/debug/debugwhite")
+                G:setColor(vec(255,0,0))
+                G:propGravity(0)
+                G:applyForce(owner():eye() * G:mass() * 10000)
+                G:setTrails(20,0,0.25,"trails/smoke",vec(255,0,0),200)
+                G:setMass(250)
+                G:soundPlay(2,2,"weapons/flare_detonator_launch.wav")
+                lightCreate(Proj:count())
+                lightColor(Proj:count(),C1)
+                lightParent(Proj:count(),G)
+                Proj:pushEntity(G)
+            #endif
+        }
+        
+        #Grapple hooking stuff
+        if(R & $R & HookMode == 0)
+        {
+            holoAng(1,Pivot:toWorld(ang(0,180,90)))
+            holoPos(1,Pivot:toWorld(vec(20,-0.5,-2.5)))
+            HookMode = 1
+            Base:soundPlay(3,2,"weapons/draw_machete_sniper.wav")
+        }
+        elseif(R & $R & HookMode == 1)
+        {
+            holoPos(1,Pivot:toWorld(vec(4,0,0)))
+            holoAng(1,Pivot:toWorld(ang(0,0,90)))
+            
+            Base:soundPlay(3,2,"weapons/draw_primary.wav")
+            
+            HookMode = 0    
+            HookFire = 0
+            HookLand = 0 
+            holoAlpha(1,255) holoAlpha(2,255) holoAlpha(3,255)
+            holoAlpha(13,0) holoAlpha(14,0) holoAlpha(15,0) holoAlpha(16,0)            
+        }
+    }
+    #Left hand
+    elseif(owner():weapon():type() == "weapon_crowbar" | owner():weapon():type() == "none" | owner():weapon():type() == "gmod_tool")
+    {
+        Hold = 2 #owner():weapon():setAlpha(0)
+    }
+    #Invis 
+    else
+    {
+        Hold = 0
+    }
+
+    if($Hold)
+    {
+        if(Hold==1)
+        { #Right
+            for(I=1,11){holoAlpha(I,255)}
+            Pivot:soundPlay(1,2,"weapons/flaregun_tube_closefinish.wav") soundPitch(1,120)
+            
+            holoPos(0,owner():attachmentPos("anim_attachment_rh"))   
+            holoAng(0,owner():attachmentAng("anim_attachment_rh")) 
+            holoParentAttachment(0,owner(),"anim_attachment_rh")
+            holoPos(1,Pivot:toWorld(vec(4,0,0)))
+            holoAng(1,Pivot:toWorld(ang(0,0,90)))
+            
+            HookMode = 0    
+            HookFire = 0
+            HookLand = 0 
+            holoAlpha(1,255) holoAlpha(2,255) holoAlpha(3,255)
+            holoAlpha(13,0) holoAlpha(14,0) holoAlpha(15,0) holoAlpha(16,0)
+            
+            Anim = 100
+        }
+        elseif(Hold==2)
+        { #Left
+            for(I=1,11){holoAlpha(I,255)}
+            Pivot:soundPlay(1,2,"weapons/flaregun_tube_closestart.wav") soundPitch(1,120)
+            
+            holoPos(0,owner():attachmentPos("anim_attachment_lh"))   
+            holoAng(0,owner():attachmentAng("anim_attachment_lh")) 
+            holoParentAttachment(0,owner(),"anim_attachment_lh")
+            holoPos(1,Pivot:toWorld(vec(3,1,15)))
+            holoAng(1,Pivot:toWorld(ang(110,0,90)))
+            
+            holoAlpha(1,255) holoAlpha(2,255) holoAlpha(3,255)
+            holoAlpha(13,0) holoAlpha(14,0) holoAlpha(15,0)
+            
+            HookMode = 0
+            
+            Anim = 0
+        }
+        else
+        {
+            #Invisible
+            for(I=1,16){holoAlpha(I,0)}
+            
+            Anim = 0
+            HookMode = 0    
+            HookFire = 0
+            HookLand = 0 
+        }   
+    }
+
+    if(HookMode)
+    {
+        if(M1 & $M1 & !HookFire)
+        {
+            #Firing hook
+            HookFire = 1
+            HookLand = 0   
+            HookedObject = noentity()
+            holoUnparent(12) 
+            
+            holoPos(12,Pivot:toWorld(vec(20,0,0)))
+            holoAng(12,owner():eyeAngles())
+            
+            holoAlpha(1,0) holoAlpha(2,0) holoAlpha(3,0)
+            holoAlpha(13,255) holoAlpha(14,255) holoAlpha(15,255) holoAlpha(16,255)
+            
+            Base:soundPlay(3,1,"weapons/tripwire/ropeshoot.wav")
+            Base:soundPlay(4,2,"weapons/sniper_bazaarbargain_shoot.wav")
+            
+            #print("Fired!")
+        }
+        elseif(M1 & $M1 & HookFire)
+        {
+            #if(HookLand)
+            holoPos(12,Pivot:toWorld(vec(20,0,0))) #holoParent(12,1)   
+            
+            holoAlpha(1,255) holoAlpha(2,255) holoAlpha(3,255)
+            holoAlpha(13,0) holoAlpha(14,0) holoAlpha(15,0) holoAlpha(16,0)
+            HookFire = 0
+        }
+        elseif(HookFire & !HookLand)
+        {
+            #In flight
+            holoPos(12,Hook:pos() + Hook:forward() * 20)
+            rangerFilter(owner())
+            Rng = rangerOffset(100,Hook:toWorld(vec(-5,0,0)),Hook:forward())
+            
+            if(Rng:distance() < 15)
+            {
+                #Hook has hit something
+                HookLand = 1       
+                #print("Landed!")
+                Base:soundPlay(5,4,"physics/concrete/rock_impact_hard"+randint(1,6)+".wav")
+                if(Rng:entity())
+                {
+                    HookedObject = Rng:entity()
+                    holoParent(12,HookedObject)   
+                }
+            }     
+        }
+        if(HookFire & HookLand)
+        {
+            if(HookedObject & HookedObject:owner() == owner())
+            {
+                Distance = owner():pos():distance(Hook:pos())
+                if(Distance > 250)
+                {
+                    HookedObject:applyOffsetForce((owner():pos() - Hook:pos()) * HookedObject:mass() - HookedObject:vel() * HookedObject:mass() * 0.9,Hook:pos())   
+                }
+            }
+        }
+        
+        if(HookFire)
+        {
+            #Rope
+            holoPos(16,(holoEntity(15):pos() + Base:pos())/2)
+            Dist = Base:pos():distance(holoEntity(15):pos())
+            holoScale(16,vec(Dist / 11.8,0.05,0.05))
+            holoAng(16,(holoEntity(15):pos() - Base:pos()):normalized():toAngle())    
+        }
+        
+        
+    }
+
+    if(Proj:count() > 0)
+    {
+        for (I=1,Proj:count())
+        {       
+            if(Proj[I,entity]:vel():length()<3000)
+                {   
+                    #ifdef propSpawn(string,angle,number)
+                        B = propSpawn("models/props_junk/gascan001a.mdl",Proj[I,entity]:pos(),ang(),1)
+                        B:propBreak()
+                    #endif
+                    Proj[I,entity]:propBreak()
+                    Proj:remove(I) 
+                }  
+            }
+        }
+}
+#http://i.imgur.com/IF0Tilg.jpg
+#What kind of idiot reads all the way to the end, hah
+

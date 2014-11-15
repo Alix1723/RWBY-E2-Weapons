@@ -1,0 +1,208 @@
+#[
+Junior's Bazooka
+
+He paid up front, I lent him my men, and none of them ever came back!
+
+HOW TO USE:
+Take out the RPG for the Launcher, M2 to launch homing rockets
+Take out the crowbar to smack some props about!
+
+REQUIRES:
+TF2 (Sound)
+PropCore
+
+http://rwby.wikia.com/wiki/Junior%27s_Bazooka
+
+Written by Alix
+]#
+
+@name Junior's Bazooka
+@persist [Pivot Base PlayerTarget]:entity
+@persist [C1 C2]:vector
+@persist [Anim SmAnim Hold M1 M2 D Cd]
+@persist [Proj]:array
+@persist [BazookaWeapon BatWeapon]:string
+
+runOnTick(1)
+if(first())
+{
+    BazookaWeapon = "weapon_rpg"
+    BatWeapon = "weapon_crowbar"
+    
+    C1 = vec(120,0,0) # Red
+    C2 = vec(100,100,100) #Dark gray
+    Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
+    #Centre
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(1,0)
+    holoCreate(2,Pivot:toWorld(vec(28,0,0)),vec(0.52,0.52,2.5),Pivot:toWorld(ang(90,0,0)),C2,"hq_cylinder") holoParent(2,1)
+    #Red Sliding piece
+    holoCreate(3,Pivot:toWorld(vec(5,0,0)),vec(0.6,0.6,2),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(3,1)
+    #Barrel
+    holoCreate(4,Pivot:toWorld(vec(43,0,0)),vec(0.65,0.65,0.65),Pivot:toWorld(ang(90,0,0)),C2*1.2,"hq_tube") holoParent(4,1)
+    #Hole
+    holoCreate(5,Pivot:toWorld(vec(45,0,0)),vec(0.5,0.55,0.1),Pivot:toWorld(ang(90,0,0)),vec(),"cylinder") holoParent(5,1)
+    #Sight
+    holoCreate(6,Pivot:toWorld(vec(43,0,4.5)),vec(0.5,0.1,0.16),Pivot:toWorld(ang(0,0,0)),C2*1.2,"cube") holoParent(6,1)
+    holoCreate(7,Pivot:toWorld(vec(39.5,0,4.98)),vec(0.2,0.1,0.08),Pivot:toWorld(ang(0,0,0)),C2*1.2,"cube") holoParent(7,6)
+    holoCreate(8,Pivot:toWorld(vec(39.5,0,4.5)),vec(0.15,0.1,0.2),Pivot:toWorld(ang(-90,0,0)),C2*1.2,"prism") holoParent(8,6)
+    holoCreate(9,Pivot:toWorld(vec(46,0,4.5)),vec(0.1,0.1,0.15),Pivot:toWorld(ang(0,0,0)),C2*1.2,"prism") holoParent(9,6)
+    holoCreate(10,Pivot:toWorld(vec(43.5,0,4.5)),vec(0.25,0.11,0.161),Pivot:toWorld(ang(0,0,0)),C1*1.5,"cube") holoParent(10,6)
+    
+    #Back cube thing
+    holoCreate(11,Pivot:toWorld(vec(-8,0,-0.5)),vec(0.6,0.7,0.75),Pivot:toWorld(ang(0,0,0)),C2*1.2,"cube") holoParent(11,1)
+    holoClipEnabled(11,1)
+    holoClip(11,vec(0,0,-6.8),vec(-1,0,1),0)
+    holoCreate(12,Pivot:toWorld(vec(-5.15,0,-4.28)),vec(0.02,0.7,0.15),Pivot:toWorld(ang(45,0,0)),C2*1.2,"cube") holoParent(12,1)
+    
+    holoCreate(13,Pivot:toWorld(vec(-8,0,-0.5)),vec(0.45,0.72,0.6),Pivot:toWorld(ang(0,0,0)),C2*1.8,"cube") holoParent(13,11)
+    holoClipEnabled(13,1)
+    holoClip(13,vec(0,0,-5.5),vec(-1,0,1),0)
+    
+    holoCreate(14,Pivot:toWorld(vec(-11.5,0,-0.5)),vec(0.1,0.5,0.6),Pivot:toWorld(ang(0,0,0)),C2*1,"cube") holoParent(14,11)
+    
+    #Inner handle    
+    holoCreate(15,Pivot:toWorld(vec(5,0,0)),vec(0.15,0.15,2),Pivot:toWorld(ang(90,0,0)),C2*1.5,"hq_cylinder") holoParent(15,1)
+    holoCreate(16,Pivot:toWorld(vec(10,0,0)),vec(0.52,0.52,0.5),Pivot:toWorld(ang(-90,0,0)),C2,"hq_cone") holoParent(16,1)
+    holoClipEnabled(16,1)
+    holoClip(16,vec(0,0,-0.5),vec(0,0,-1),0)
+    holoCreate(17,Pivot:toWorld(vec(10.62,0,0)),vec(0.303,0.303,0.02),Pivot:toWorld(ang(-90,0,0)),C2,"hq_cylinder") holoParent(17,1)
+    holoCreate(18,Pivot:toWorld(vec(2.5,0,0)),vec(0.17,0.17,0.8),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(18,1)
+    
+    #Handle
+    holoCreate(19,Pivot:toWorld(vec(32,0,-3.5)),vec(1,0.15,0.2),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(19,1)
+    holoCreate(20,Pivot:toWorld(vec(27.5,0,-6)),vec(0.17,0.15,0.5),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(20,19)
+    holoCreate(21,Pivot:toWorld(vec(34.5,0,-4)),vec(0.6,0.16,0.35),Pivot:toWorld(ang(0,0,0)),C2*1.2,"cube") holoParent(21,19)
+    holoClipEnabled(21,1)
+    holoClip(21,vec(0,0,-4.5),vec(-1,0,1),0)
+    holoCreate(22,Pivot:toWorld(vec(37.45,0,-5.47)),vec(0.01,0.16,0.14),Pivot:toWorld(ang(45,0,0)),C2*1.2,"cube") holoParent(22,19)
+    holoCreate(23,Pivot:toWorld(vec(34.7,0,-4)),vec(0.3,0.165,0.36),Pivot:toWorld(ang(0,0,0)),C1*1.2,"cube") holoParent(23,19)
+    holoCreate(24,Pivot:toWorld(vec(29.8,0,-5.9)),vec(0.21,0.11,0.03),Pivot:toWorld(ang(0,0,0)),C2*0.8,"cube") holoParent(24,19)
+    holoCreate(25,Pivot:toWorld(vec(27.5,0,-9)),vec(0.1,0.15,0.17),Pivot:toWorld(ang(-90,0,0)),C2,"prism") holoParent(25,19)
+    holoCreate(26,Pivot:toWorld(vec(23.5,0,-3.5)),vec(0.5,0.16,0.18),Pivot:toWorld(ang(0,0,0)),C1*0.7,"cube") holoParent(26,19)
+    Hold = 4
+    D = -1     
+}
+
+#Animation
+holoPos(3,Base:toWorld(vec(7+0.2*Anim,0,0)))
+holoPos(6,Base:toWorld(vec(43 - Anim*0.03,0,4.5 - Anim*0.05)))
+holoAlpha(11,!Anim*255)
+holoAlpha(12,!Anim*255)
+holoPos(13,Base:toWorld(vec(-8,0,-0.5 +  0.005* Anim)))
+holoScale(13,Anim ? vec(0.22,0.2,0.27) : vec(0.45,0.72,0.6))
+holoAlpha(14,!Anim*255)
+holoPos(19,Base:toWorld(vec(32,0,-3.5 + 0.055 * Anim)))
+holoAlpha(25,!Anim*255)
+
+#Inputs
+M1 = owner():keyAttack1()
+M2 = owner():keyAttack2()
+
+if(Cd>0){Cd--}
+
+#Launcher
+if(owner():weapon():type() == BazookaWeapon)
+    {
+        Hold = 1 owner():weapon():setAlpha(0)
+        
+        #Firing rockets
+        #ifdef propSpawn(string,number)
+        if(M2&$M2 & Cd == 0)
+        {
+            #for(I=1,4){ cos(I*90)*50,0,30 + sin(I*90) * 50)
+            Rocket = propSpawn("models/props_junk/PopCan01a.mdl",owner():toWorld(vec(0,0,30)) + owner():eye() * 150,0)
+            Rocket:propGravity(0)
+            Rocket:setTrails(15,0,0.5,"trails/smoke",C1,100)
+            Proj:pushEntity(Rocket)
+            Base:soundPlay(1,2,"weapons/doom_rocket_launcher.wav")
+            Rocket:soundPlay(2,0,"weapons/flame_thrower_bb_start.wav")
+            
+            #}
+            Cd = 25
+        }
+        #endif
+    }
+#Bat
+elseif(owner():weapon():type() == BatWeapon)
+    {
+        Hold = 2 owner():weapon():setAlpha(0)
+        
+        #Prop whacking
+        if(M1 & $M1 & D==-1){D = 5} if(D>0){D--}
+        if(D==0)
+        {
+            findInCone(owner():attachmentPos("forward") + owner():eye()*35,owner():eye(),120,110)
+            for(I=1,findCount())
+            {
+                if(findResult(I):type() == "prop_physics" & findResult(I):owner() == owner())
+                {
+                    findResult(I):applyForce(owner():eye() * findResult(I):mass() * 2200)
+                    Base:soundPlay(I,2,"weapons/neon_sign_hit_world_0"+randint(1,4)+".wav")
+                } 
+            }
+            D = -1
+        }
+    }
+else
+    {
+        Hold = 0   
+    }
+
+if($Hold)
+{
+    if(Hold==1)
+    {
+        holoPos(0,owner():attachmentPos("anim_attachment_rh"))
+        holoAng(0,owner():attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(0,owner(),"anim_attachment_rh")
+        holoPos(1,Pivot:toWorld(vec(-27,0,1)))
+        holoAng(1,Pivot:toWorld(ang(-12,0,0)))
+        Anim = 0
+        Base:soundPlay(2,2,"weapons/sniper_railgun_bolt_forward.wav")
+    }
+    elseif(Hold==2)
+    {
+        holoPos(0,owner():attachmentPos("anim_attachment_rh"))
+        holoAng(0,owner():attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(0,owner(),"anim_attachment_rh")
+        holoPos(1,Pivot:toWorld(vec(0,0,0)))
+        holoAng(1,Pivot:toWorld(ang(-90,0,0)))
+        Anim = 100    
+        Base:soundPlay(3,2,"weapons/widow_maker_pump_action_forward.wav")
+    }    
+    else
+    {
+        holoPos(0,owner():attachmentPos("chest"))
+        holoAng(0,owner():attachmentAng("chest"))
+        holoParentAttachment(0,owner(),"chest")
+        holoPos(1,Pivot:toWorld(vec(-8,-11,-15)))
+        holoAng(1,Pivot:toWorld(ang(-50,90,90)))
+        Anim = 0  
+        Base:soundPlay(3,2,"weapons/draw_secondary.wav") 
+    }
+}        
+
+if(Proj:count() > 0)
+{
+    for (I=1,Proj:count())
+    {       
+        Proj[I,entity]:applyForce((owner():aimPos() - Proj[I,entity]:pos()):normalized()* 2500 * Proj[I,entity]:mass() - Proj[I,entity]:vel()*0.2)
+        Proj[I,entity]:setAng(Proj[I,entity]:vel():toAngle()+ang(90,0,0))
+        if(Proj[I,entity]:vel():length()<1500 | Proj[I,entity]:pos():distance(owner():aimPos())<50 & owner():aimEntity() != Proj[I,entity])
+            {   
+                
+                #ifdef propSpawn(string,angle,number)
+                    B = propSpawn("models/props_phx/ww2bomb.mdl",Proj[I,entity]:pos(),ang(),1)
+                #endif
+                
+                if(B){
+                    B:setPos(Proj[I,entity]:pos())
+                    Proj[I,entity]:propBreak()
+                    Proj:remove(I) 
+                    B:propBreak()
+                }
+        }  
+    }
+}
+#OHHHHH, DILL-HOLE
+

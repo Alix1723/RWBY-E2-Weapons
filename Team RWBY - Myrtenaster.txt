@@ -1,0 +1,360 @@
+#[
+MYRTENASTER
+
+Multi-Version Two Rapier
+
+HOW TO USE:
+Take crowbar out, freeze stuff.
+E cycles through each chamber of dust, but only the third (light blue) has any effect.
+M1 while the blue chamber is loaded to cast a bunch of ice in front of you.
+Crouch in mid-air to stand on a glyph, then press space to launch from that glyph at high speed.
+
+REQUIRES:
+PropCore
+SetVelocity
+Particle
+
+http://rwby.wikia.com/wiki/Myrtenaster
+
+Written by Alix
+]#
+
+@name RWBY Myrtenaster
+@persist [Base Pivot]:entity 
+@persist [Hold Space T Float Chamber M2 Cooldown IcePathVal Index IceDestroyDelay I NumHolo] 
+@persist [Ran]:ranger 
+@persist [FwVec C1 C2]:vector
+@persist [MeleeA MeleeB]:string
+
+runOnTick(1)
+if(first())
+{
+    #include "lib/HoloStyleFunction"
+    
+    entity():setAlpha(0)
+    
+    #Weapons to use
+    MeleeA = "weapon_blank_knife"
+    MeleeB = "weapon_crowbar"
+    
+    #Colours
+    C1   = vec(180,180,180)
+    C2   = vec(180,180,255)
+    
+    Pivot = holoCreate(0,entity():toWorld(vec(0,0,0))) holoParent(0,entity()) holoAlpha(0,0)
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.4,0.4,0.4),entity():toWorld(ang(0,0,-90)),C1,"hq_dome") 
+    
+    NumHolo = 65 
+    I = 2
+}
+if(I <= NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I,entity():pos(),vec())
+    I++   
+}
+elseif(I>NumHolo & I>0)
+{
+    holoStyle(2,Pivot:toWorld(vec(0,-2,0)),vec(0.25,0.25,0.38),entity():toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(2,Base) #Axis
+    holoStyle(3,Pivot:toWorld(vec(0,-2,0)),vec(0.4,0.4,0.3),entity():toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(3,2) 
+    holoStyle(4,Pivot:toWorld(vec(0,-4.4,0)),vec(0.12,0.12,0.1),entity():toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(4,2)
+    holoStyle(5,Pivot:toWorld(vec(0,-6,0)),vec(0.07,0.25,0.07),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(5,Base)
+    holoStyle(6,Pivot:toWorld(vec(0,-8.5,0)),vec(0.07,0.21,0.12),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(6,Base)
+    holoStyle(7,Pivot:toWorld(vec(0,-8.5,0)),vec(0.07,0.21,0.12),entity():toWorld(ang(120,0,0)),C1,"cube") holoParent(7,Base)
+    holoStyle(8,Pivot:toWorld(vec(0,-8.5,0)),vec(0.07,0.21,0.12),entity():toWorld(ang(60,0,0)),C1,"cube") holoParent(8,Base)
+    holoStyle(9,Pivot:toWorld(vec(0,-30.7,0)),vec(0.1,0.1,3.5),entity():toWorld(ang(0,0,90)),C1,"pyramid") holoParent(9,Base)
+    holoStyle(10,Pivot:toWorld(vec(0,2,0)),vec(0.13,0.13,0.3),entity():toWorld(ang(0,0,-90)),C1,"cylinder") holoParent(10,Base)
+    holoStyle(11,Pivot:toWorld(vec(0,7,0)),vec(0.1,0.1,0.8),entity():toWorld(ang(0,0,-90)),C1,"cylinder") holoParent(11,Base)
+    holoStyle(12,Pivot:toWorld(vec(0,11,0)),vec(0.13,0.13,0.2),entity():toWorld(ang(0,0,-90)),C1,"cylinder") holoParent(12,Base)
+    
+    #4 Edges
+    #A
+    holoStyle(13,Pivot:toWorld(vec(0,-4.5,2)),vec(0.02,0.08,0.25),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(13,Base)
+    holoStyle(14,Pivot:toWorld(vec(0,-5.9,1.55)),vec(0.02,0.13,0.33),entity():toWorld(ang(0,0,-35)),C1,"cube") holoParent(14,Base)
+    holoStyle(15,Pivot:toWorld(vec(0,-1.7,3.8)),vec(0.02,0.65,0.05),entity():toWorld(ang(0,0,15)),C1,"cube") holoParent(15,Base)
+    holoStyle(16,Pivot:toWorld(vec(0,-1.85,3.65)),vec(0.02,0.587,0.05),entity():toWorld(ang(0,0,5)),C1,"cube") holoParent(16,Base)
+    holoStyle(17,Pivot:toWorld(vec(0,2.42,4.782)),vec(0.02,0.07,0.05),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(17,Base)
+    holoStyle(18,Pivot:toWorld(vec(0,1,3.34)),vec(0.02,0.1,0.2),entity():toWorld(ang(0,0,-20)),C1,"cube") holoParent(18,Base)
+    holoStyle(19,Pivot:toWorld(vec(0,3.4,2.5)),vec(0.44,0.44,0.02),entity():toWorld(ang(90,0,0)),C1,"hq_tube") holoParent(19,Base)
+    holoClipEnabled(19,1)
+    holoClip(19,vec(0,-0.5,0),vec(0,-1,0),0)
+    holoStyle(20,Pivot:toWorld(vec(0,3.4,4.93)),vec(0.058,0.02,0.1),entity():toWorld(ang(75,90,0)),C1,"prism") holoParent(20,Base)
+    holoStyle(21,Pivot:toWorld(vec(0,-5.5,1)),vec(0.02,0.15,0.15),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(21,Base)
+    
+    #B
+    holoStyle(22,Pivot:toWorld(vec(0,-4.5,-2)),vec(0.02,0.08,0.25),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(22,Base)
+    holoStyle(23,Pivot:toWorld(vec(0,-5.9,-1.55)),vec(0.02,0.13,0.33),entity():toWorld(ang(0,0,35)),C1,"cube") holoParent(23,Base)
+    holoStyle(24,Pivot:toWorld(vec(0,-1.7,-3.8)),vec(0.02,0.65,0.05),entity():toWorld(ang(0,0,-15)),C1,"cube") holoParent(24,Base)
+    holoStyle(25,Pivot:toWorld(vec(0,-1.85,-3.65)),vec(0.02,0.587,0.05),entity():toWorld(ang(0,0,-5)),C1,"cube") holoParent(25,Base)
+    holoStyle(26,Pivot:toWorld(vec(0,2.42,-4.782)),vec(0.02,0.07,0.05),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(26,Base)
+    holoStyle(27,Pivot:toWorld(vec(0,1,-3.34)),vec(0.02,0.1,0.2),entity():toWorld(ang(0,0,20)),C1,"cube") holoParent(27,Base)
+    holoStyle(28,Pivot:toWorld(vec(0,3.4,-2.5)),vec(0.44,0.44,0.02),entity():toWorld(ang(90,0,0)),C1,"hq_tube") holoParent(28,Base)
+    holoClipEnabled(28,1)
+    holoClip(28,vec(0,-0.5,0),vec(0,-1,0),0)
+    holoStyle(29,Pivot:toWorld(vec(0,3.4,-4.93)),vec(0.058,0.02,0.1),entity():toWorld(ang(105,90,0)),C1,"prism") holoParent(29,Base)
+    
+    holoStyle(30,Pivot:toWorld(vec(0,-5.5,-1)),vec(0.02,0.15,0.15),entity():toWorld(ang(0,0,0)),C1,"cube") holoParent(30,Base)
+    holoAng(0,entity():toWorld(ang(90,0,0)))
+    
+    #C
+    holoStyle(31,Pivot:toWorld(vec(0,-4.5,2)),vec(0.02,0.08,0.25),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(31,Base)
+    holoStyle(32,Pivot:toWorld(vec(0,-5.9,1.55)),vec(0.02,0.13,0.33),Pivot:toWorld(ang(0,0,-35)),C1,"cube") holoParent(32,Base)
+    holoStyle(33,Pivot:toWorld(vec(0,-1.7,3.8)),vec(0.02,0.65,0.05),Pivot:toWorld(ang(0,0,15)),C1,"cube") holoParent(33,Base)
+    holoStyle(34,Pivot:toWorld(vec(0,-1.85,3.65)),vec(0.02,0.587,0.05),Pivot:toWorld(ang(0,0,5)),C1,"cube") holoParent(34,Base)
+    holoStyle(35,Pivot:toWorld(vec(0,2.42,4.782)),vec(0.02,0.07,0.05),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(35,Base)
+    holoStyle(36,Pivot:toWorld(vec(0,1,3.34)),vec(0.02,0.1,0.2),Pivot:toWorld(ang(0,0,-20)),C1,"cube") holoParent(36,Base)
+    holoStyle(37,Pivot:toWorld(vec(0,3.4,2.5)),vec(0.44,0.44,0.02),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube") holoParent(37,Base)
+    holoClipEnabled(37,1)
+    holoClip(37,vec(0,-0.5,0),vec(0,-1,0),0)
+    holoStyle(38,Pivot:toWorld(vec(0,3.4,4.93)),vec(0.058,0.02,0.1),Pivot:toWorld(ang(75,90,0)),C1,"prism") holoParent(38,Base)
+    holoStyle(39,Pivot:toWorld(vec(0,-5.5,1)),vec(0.02,0.15,0.15),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(39,Base)
+
+    #D
+    holoStyle(40,Pivot:toWorld(vec(0,-4.5,-2)),vec(0.02,0.08,0.25),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(40,Base)
+    holoStyle(41,Pivot:toWorld(vec(0,-5.9,-1.55)),vec(0.02,0.13,0.33),Pivot:toWorld(ang(0,0,35)),C1,"cube") holoParent(41,Base)
+    holoStyle(42,Pivot:toWorld(vec(0,-1.7,-3.8)),vec(0.02,0.65,0.05),Pivot:toWorld(ang(0,0,-15)),C1,"cube") holoParent(42,Base)
+    holoStyle(43,Pivot:toWorld(vec(0,-1.85,-3.65)),vec(0.02,0.587,0.05),Pivot:toWorld(ang(0,0,-5)),C1,"cube") holoParent(43,Base)
+    holoStyle(44,Pivot:toWorld(vec(0,2.42,-4.782)),vec(0.02,0.07,0.05),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(44,Base)
+    holoStyle(45,Pivot:toWorld(vec(0,1,-3.34)),vec(0.02,0.1,0.2),Pivot:toWorld(ang(0,0,20)),C1,"cube") holoParent(45,Base)
+    holoStyle(46,Pivot:toWorld(vec(0,3.4,-2.5)),vec(0.44,0.44,0.02),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube") holoParent(46,Base)
+    holoClipEnabled(46,1)
+    holoClip(46,vec(0,-0.5,0),vec(0,-1,0),0)
+    holoStyle(47,Pivot:toWorld(vec(0,3.4,-4.93)),vec(0.058,0.02,0.1),Pivot:toWorld(ang(105,90,0)),C1,"prism") holoParent(47,Base)
+    holoStyle(48,Pivot:toWorld(vec(0,-5.5,-1)),vec(0.02,0.15,0.15),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(48,Base)
+    holoAng(0,entity():toWorld(ang(0,0,0)))
+
+        #Dust cartridges
+        holoStyle(49,Pivot:toWorld(vec(0,-2.1,1.95)),vec(0.08,0.08,0.3),Pivot:toWorld(ang(0,0,92)),vec(255,246,0),"cylinder") holoParent(49,2) #Yellow
+        holoStyle(52,Pivot:toWorld(vec(0,-2.1,-1.95)),vec(0.08,0.08,0.3),Pivot:toWorld(ang(0,0,88)),vec(150,150,255),"cylinder") holoParent(52,2) #Ice Blue
+        holoAng(2,Pivot:toWorld(ang(60,0,90)))
+        
+        holoStyle(50,Pivot:toWorld(vec(0,-2.1,1.95)),vec(0.08,0.08,0.3),Pivot:toWorld(ang(0,0,92)),vec(255,255,255),"cylinder") holoParent(50,2) #White
+        holoStyle(53,Pivot:toWorld(vec(0,-2.1,-1.95)),vec(0.08,0.08,0.3),Pivot:toWorld(ang(0,0,88)),vec(255,0,0),"cylinder") holoParent(53,2) #Red
+        holoAng(2,Pivot:toWorld(ang(120,0,90)))
+        
+        holoStyle(51,Pivot:toWorld(vec(0,-2.1,1.95)),vec(0.08,0.08,0.3),Pivot:toWorld(ang(0,0,92)),vec(76,0,111),"cylinder") holoParent(51,2) #Purple
+        holoStyle(54,Pivot:toWorld(vec(0,-2.1,-1.95)),vec(0.08,0.08,0.3),Pivot:toWorld(ang(0,0,88)),vec(0,0,255),"cylinder") holoParent(54,2) #Blue
+        ####
+    holoAng(0,Pivot:toWorld(ang(0,0,0))) holoParent(1,0)
+    
+    holoStyle(55,Pivot:toWorld(vec(0,-8.2,1)),vec(0.02,0.23,0.05),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(55,Base)
+    holoStyle(56,Pivot:toWorld(vec(0,3,-1)),vec(0.05,0.2,0.06),Pivot:toWorld(ang(0,0,-30)),C1,"cube") holoParent(56,Base)
+    
+    #Airstep
+    holoStyle(57,entity():toWorld(vec(0,0,0)),vec(3,3,0.1),entity():toWorld(ang(0,0,0)),vec(255,255,255),"hq_tube") 
+    holoStyle(58,entity():toWorld(vec(0,0,0)),vec(6,6,0.1),entity():toWorld(ang(0,0,0)),vec(255,255,255),"hq_tube_thin") holoParent(58,57)
+    
+    holoStyle(59,entity():toWorld(vec(0,-22,0)),vec(0.6,0.1,0.8),entity():toWorld(ang(0,0,90)),vec(255,255,255),"prism") holoParent(59,57)
+    holoAng(57,entity():toWorld(ang(0,60,0)))
+    holoStyle(60,entity():toWorld(vec(0,-22,0)),vec(0.6,0.1,0.8),entity():toWorld(ang(0,0,90)),vec(255,255,255),"prism") holoParent(60,57)
+    holoAng(57,entity():toWorld(ang(0,120,0)))
+    holoStyle(61,entity():toWorld(vec(0,-22,0)),vec(0.6,0.1,0.8),entity():toWorld(ang(0,0,90)),vec(255,255,255),"prism") holoParent(61,57)
+    holoAng(57,entity():toWorld(ang(0,180,0)))
+    holoStyle(62,entity():toWorld(vec(0,-22,0)),vec(0.6,0.1,0.8),entity():toWorld(ang(0,0,90)),vec(255,255,255),"prism") holoParent(62,57)
+    holoAng(57,entity():toWorld(ang(0,240,0)))
+    holoStyle(63,entity():toWorld(vec(0,-22,0)),vec(0.6,0.1,0.8),entity():toWorld(ang(0,0,90)),vec(255,255,255),"prism") holoParent(63,57)
+    holoAng(57,entity():toWorld(ang(0,300,0)))
+    holoStyle(64,entity():toWorld(vec(0,-22,0)),vec(0.6,0.1,0.8),entity():toWorld(ang(0,0,90)),vec(255,255,255),"prism") holoParent(64,57)
+    
+    for(J=57,64)
+    {
+        holoAlpha(J,200)
+    }
+    
+    #Outline/effect
+    holoStyle(65,Pivot:toWorld(vec(0,-32.4,0)),-vec(0.35,0.35,3.8),entity():toWorld(ang(0,0,-90)),vec(150,150,255),"cone") holoParent(65,Base)
+    holoMaterial(65,"models/props_combine/tpballglow")
+    holoAlpha(65,0)
+    Chamber = 1   
+     
+    I = 0
+    
+    print("Myrtenaster spawned!")    
+}
+elseif(I==0)
+{
+#These weapons can be changed if you have a more suitable SWEP to use, such as blank sweps
+if(owner():weapon():type() == MeleeA || owner():weapon():type() == MeleeB)
+{ 
+    Hold = 1
+    owner():weapon():setAlpha(0)
+}
+else
+{
+    Hold = 0   
+    owner():weapon():setAlpha(255)
+}
+
+if(Hold==1 & $Hold)
+{
+    Base:soundPlay(1,0,"weapons/357/357_spin1.wav")   
+    holoPos(0,owner():attachmentPos("anim_attachment_rh"))
+    holoAng(0,owner():attachmentAng("anim_attachment_rh"))
+    holoParentAttachment(0,owner(),"anim_attachment_rh")
+    holoPos(1,Pivot:toWorld(vec(0,0,5)))
+    holoAng(1,Pivot:toWorld(ang(180,-90,0)))
+    Chamber = 0
+}
+if(Hold==0 & $Hold)
+{
+    Base:soundPlay(1,0,"weapons/deagle/de_deploy.wav") 
+    holoPos(0,owner():attachmentPos("chest"))
+    holoAng(0,owner():attachmentAng("chest"))
+    holoParentAttachment(0,owner(),"chest")
+    holoPos(1,Pivot:toWorld(vec(5,-10,-9)))
+    holoAng(1,Pivot:toWorld(ang(60,0,0)))
+    Chamber = 0
+    M2 = 1
+}
+
+#Spinning Barrel
+if(M2 & $M2 & Hold){
+   
+Base:soundPlay(1,0,"weapons/default_reload.wav") 
+#Changing dust chambers
+Chamber = (Chamber+1)%6
+    #0 Yellow, Agility
+    #1 White, ?
+    #2 Purple, Damage
+    #3 Lightblue, Ice
+    #4 Red, Fire/Defense
+    #5 Blue, ? Runes?
+    if(Chamber==0)
+    {
+        holoColor(65,vec(255,256,0))
+    }
+    elseif(Chamber==1)
+    {
+        holoColor(65,vec(255,255,255))
+        holoAlpha(65,0)
+    }
+    elseif(Chamber==2)
+    {
+        holoColor(65,vec(76,0,131))
+        holoAlpha(65,255)
+    }
+    elseif(Chamber==3)
+    {
+        holoColor(65,vec(150,150,255))
+        holoAlpha(65,150)
+    }
+    elseif(Chamber==4)
+    {
+        holoColor(65,vec(255,5,5))
+        holoAlpha(65,255)
+    }
+    elseif(Chamber==5)
+    {
+        holoColor(65,vec(5,5,255))
+        holoAlpha(65,255)
+    }
+}
+
+holoAng(2,Base:toWorld(ang(0,Chamber*420,180)))
+#ifdef particle(number,number,number,string,vector,vector,vector)
+    if(Cooldown<=0 & Chamber == 4)
+    {
+        particle(0.8,3,0,"sprites/flamelet"+randint(1,4),vec(255,50,50),Base:toWorld(vec(0,0,-10 - randint(0,40))),2*vec(randint(-1,1),randint(-1,1),randint(-1,1)))
+        Cooldown=2
+    }
+    if(Cooldown>0)
+    {Cooldown--}
+#endif
+
+#Using Ice wall
+M1 = owner():keyAttack1()
+M2 = owner():keyUse()
+if(owner():isOnGround() && Hold == 1 && Chamber == 3 && IcePathVal <=0 & M1 & $M1)
+{
+    IceDestroyDelay = -1
+    IcePathVal = 150
+    Rang = rangerOffset(1000,owner():pos() + owner():eye() * 50 + vec(0,0,10),vec(0,0,-1))
+    FwVec = owner():eye() * vec(1,1,0)
+    holoCreate(66,Rang:position()) holoAlpha(66,0)
+    Index = 0
+    holoEntity(66):soundPlay(5,3,"physics/concrete/concrete_block_scrape_rough_loop1.wav")
+}
+
+if(IcePathVal>0){
+    #particleGravity(vec(0,0,-300))
+    if(IcePathVal%5 == 0)
+    {
+        Rang = rangerOffset(1000,holoEntity(66 + Index):pos() + FwVec * 40 + vec(0,0,10),vec(0,0,-1))
+        if(Rang:distance()>0 && Rang:distance() < 60){
+            Index++
+            holoCreate(66 + Index,Rang:position()-vec(0,0,20),vec(2,0.6,2.5),ang(randint(-5,5),randint(0,360),randint(-5,5)),vec(230,230,255))
+            holoMaterial(66 + Index,"models/shiny")
+            holoModel(66 + Index,"models/props_debris/barricade_short0"+randint(1,3)+"a.mdl")
+            holoAlpha(66 + Index,150)
+            #holoEntity(66 + Index - 1):soundPlay(5,1,"physics/concrete/boulder_impact_hard"+randint(1,3)+".wav")
+            
+            }
+        else
+            {
+            Index++
+            holoCreate(66 + Index,holoEntity(66+Index-1):pos()+vec(0,0,20),vec(2,3,2),FwVec:toAngle(),vec(230,230,255))
+            holoMaterial(66 + Index,"models/shiny")
+            holoModel(66 + Index,"models/props_debris/barricade_short02a.mdl")
+            holoAlpha(66 + Index,150)
+            soundPlay(5,1,"physics/concrete/boulder_impact_hard"+randint(1,4)+".wav")
+            #physics/concrete/boulder_impact_hard1.wav
+            #print("Hit! " + Index)
+            IcePathVal = 0 
+            IceDestroyDelay = 200   
+            }
+    }
+    holoPos(66+Index,holoEntity(66+Index):pos() + vec(0,0,10))
+    IcePathVal--}
+
+if(IceDestroyDelay>0)
+{IceDestroyDelay--}
+if(IceDestroyDelay==0 && Index>0)
+{
+    for(I=0,Index)
+    {
+        holoDelete(66+I)   
+    }   
+}
+
+#Using Airstep
+Space = owner():keyJump()
+#ifdef entity:applyPlayerForce(vector)
+    if(!owner():isOnGround() && owner():isCrouch() && T<=0 && Hold == 1)
+    {
+        owner():applyPlayerForce(vec(-owner():vel():x()/8,-owner():vel():y()/8,-owner():vel():z()) )  
+        Float = 1
+        if(Space) 
+        {
+            owner():applyPlayerForce(owner():eye()*1200)
+            T = 60   
+            Float = 0
+            Base:soundPlay(3,0,"weapons/pickaxe_swing"+randint(1,3)+".wav")
+        }
+    }
+    else
+    {
+        Float = 0   
+    }
+#endif
+
+if(T>0){T--}
+if(Float & $Float)
+{
+  Base:soundPlay(2,0,"weapons/physcannon/energy_bounce2.wav")   
+soundPitch(2,40)
+for(I=57,64)
+    {
+        holoAlpha(I,200)
+    }
+
+}
+holoPos(57,owner():pos())
+holoAng(57,ang(0,0,0))
+
+if(!Float)
+{
+for(I=57,64)
+    {
+        holoAlpha(I,0)
+    }  
+}
+}

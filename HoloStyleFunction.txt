@@ -1,0 +1,11 @@
+@name HoloStyleFunction
+
+function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+{
+    holoPos(Index,Position)
+    holoScale(Index,Scale)
+    holoAng(Index,Angle)
+    holoColor(Index,Colour)
+    holoModel(Index,Model) 
+    return holoEntity(Index)   
+}

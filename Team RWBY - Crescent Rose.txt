@@ -1,0 +1,468 @@
+#[
+CRESCENT ROSE
+
+Version 2, now with normal knees
+
+HOW TO USE:
+Take crowbar out, scythe some stuff.
+Take crossbow out, shoot stuff.
+
+REQUIRES:
+HoloModelAny
+PropCore
+SetVelocity
+TF2 (Sniper knife)
+CS:S (Sounds)
+A crowbar and a crossbow
+
+http://rwby.wikia.com/wiki/Crescent_Rose
+
+Written by Alix
+]#
+
+@name RWBY Crescent Rose
+@persist [Base Pivot Trailer PlayerTarget]:entity 
+@persist [Hold M1 M2 Anim SMAnim T Cd I NumHolo] 
+@persist [Light Dark Red Black]:vector
+@persist [Blades Scope]:array 
+@persist [MeleeWeapon RifleWeapon]:string 
+@persist [ScaleFix]
+runOnTick(1)
+
+if(first())
+{
+    #If things look messed up/broken, especially the blade part, change this variable from 1 to 0 or vice-versa
+    ScaleFix = 1
+    
+    PlayerTarget = owner()
+    entity():setAlpha(0)
+    
+    #Thank you "The Sandvich Maker" for this idea
+    #include "lib/HoloStyleFunction"
+    
+    #Which weapon to use for each 'mode'
+    MeleeWeapon = "weapon_crowbar"
+    RifleWeapon = "weapon_crossbow"
+    
+    #Colours for each part - if you change these, you suck
+    Red = vec(120,0,0)
+    Dark = vec(40,40,40)
+    Black = vec(1,1,1)
+    Light = vec(150,150,150)
+    
+    Pivot = holoCreate(0) 
+    holoAlpha(0,0)
+    holoParent(0,entity())
+        
+    #Centre
+    Base = holoCreate(1,entity():pos(),vec(2,0.2,0.3),ang(0,0,0),Red,"cube") holoParent(1,0) #holoAlpha(1,50) 
+
+    I = 2
+    NumHolo = 92
+}
+elseif(I <= NumHolo & holoCanCreate() & I > 0)
+{
+    holoCreate(I) holoScale(I,vec())
+    I++   
+}
+elseif(I > NumHolo & I > 0)
+{
+    #Trim underneath
+    holoStyle(2,Base:toWorld(vec(-6,0,-1.5)),vec(1,0.25,0.15),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(2,Base)
+    holoStyle(3,Base:toWorld(vec(-12,0,0)),vec(0.37,0.25,0.15),Base:toWorld(ang(70,0,0)),Dark,"cube") holoParent(3,Base)
+    holoStyle(4,Base:toWorld(vec(-22,0,0)),vec(1.6,0.25,0.1),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(4,Base)
+    holoStyle(5,Base:toWorld(vec(-31,0,0)),vec(0.3,0.25,0.05),Base:toWorld(ang(70,0,0)),Dark,"cube") holoParent(5,Base)
+    
+    #Centre 2
+    holoStyle(6,Base:toWorld(vec(-22,0,0)),vec(1.6,0.15,0.25),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(6,Base)
+    
+    #Tail
+    holoStyle(7,Base:toWorld(vec(15,0,-0.8)),vec(0.14,0.14,0.5),Base:toWorld(ang(90,0,0)),Dark,"cylinder") holoParent(7,Base)   
+    holoStyle(8,Base:toWorld(vec(24,0,-0.8)),vec(0.1,0.1,1.8),Base:toWorld(ang(90,0,0)),Dark,"cylinder") holoParent(8,Base)     
+    holoStyle(9,Base:toWorld(vec(35,0,-0.8)),vec(0.25,0.1,0.2),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(9,Base)          
+    holoStyle(10,Base:toWorld(vec(37.7,0,-0.8)),vec(0.2,0.05,0.2),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(10,Base)     
+    
+    #Taper 
+    holoStyle(11,Base:toWorld(vec(41.3,0,-0.8)),vec(0.2,0.05,0.4),Base:toWorld(ang(90,0,0)),Dark,"pyramid") holoParent(11,Base)
+    holoStyle(12,Base:toWorld(vec(38.5,0,-0.8)),vec(0.4,0.06,0.02),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(12,Base)
+    
+    #Scope
+    holoStyle(13,Base:toWorld(vec(6,0,2)),vec(0.2,0.06,0.2),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(13,Base)
+    holoStyle(14,Base:toWorld(vec(6,0,3.5)),vec(0.1,0.1,0.3),Base:toWorld(ang(90,0,0)),Red,"cylinder") holoParent(14,Base)
+    holoStyle(15,Base:toWorld(vec(7.5,0,3.5)),vec(0.11,0.11,0.04),Base:toWorld(ang(90,0,0)),Dark,"cylinder") holoParent(15,Base) 
+    holoStyle(16,Base:toWorld(vec(4.5,0,3.5)),vec(0.11,0.11,0.04),Base:toWorld(ang(90,0,0)),Dark,"cylinder") holoParent(16,Base)        
+
+    #Barrel
+    holoStyle(17,Base:toWorld(vec(-40,0,0)),vec(1.8,0.1,0.18),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(17,Base)
+    holoStyle(18,Base:toWorld(vec(-50,0,0)),vec(0.38,0.2,0.4),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(18,17)
+    
+    #Magazine
+    holoStyle(19,Base:toWorld(vec(-2,0,-4)),vec(0.7,0.12,0.4),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(19,Base)
+    holoStyle(20,Base:toWorld(vec(-2,0,-6.4)),vec(0.4,0.12,0.695),Base:toWorld(ang(90,0,0)),Red,"prism") holoParent(20,Base)
+    
+    #Bridge
+    holoStyle(21,Base:toWorld(vec(-47,0,-1)),vec(0.25,0.25,0.65),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(21,17)
+    holoStyle(22,Base:toWorld(vec(-47,0,2)),0*vec(0.1,0.9,0.1),Base:toWorld(ang(0,0,0)),vec(255,255,255),"cube") holoParent(22,17) #Hinge 
+    holoStyle(23,Base:toWorld(vec(-47,-1.6,7)),vec(0.2,0.08,0.8),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(23,22)
+    holoStyle(24,Base:toWorld(vec(-47,1.6,7)),vec(0.2,0.08,0.8),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(24,22)
+    
+    holoStyle(25,Base:toWorld(vec(-49.5,1.6,7)),vec(0.07,0.6,0.25),Base:toWorld(ang(0,-90,90)),Dark,"prism") holoParent(25,22)
+    holoStyle(26,Base:toWorld(vec(-44.3,-1.6,7)),vec(0.07,0.6,0.25),Base:toWorld(ang(0,90,90)),Dark,"prism") holoParent(26,22)
+    holoStyle(27,Base:toWorld(vec(-49.5,-1.6,7)),vec(0.07,0.6,0.25),Base:toWorld(ang(0,-90,90)),Dark,"prism") holoParent(27,22)  
+    holoStyle(28,Base:toWorld(vec(-44.3,1.6,7)),vec(0.07,0.6,0.25),Base:toWorld(ang(0,90,90)),Dark,"prism") holoParent(28,22)
+    
+    #Top
+    holoStyle(29,Base:toWorld(vec(-46,0,12)),0*vec(0.1,0.9,0.1),Base:toWorld(ang(0,0,0)),vec(255,255,255),"cube") holoParent(29,22) #Hinge
+    holoStyle(30,Base:toWorld(vec(-46,1.9,12)),vec(0.15,0.15,0.15),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(30,29)
+    holoStyle(31,Base:toWorld(vec(-46,-1.9,12)),vec(0.15,0.15,0.15),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(31,29)
+
+    holoStyle(32,Base:toWorld(vec(-47.5,-1.9,13.6)),vec(0.7,0.09,0.3),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(32,29)
+    holoStyle(33,Base:toWorld(vec(-51.7,-1.9,13.60)),vec(0.2,0.09,0.3),Base:toWorld(ang(0,0,0)),Red,"prism") holoParent(33,29)
+    holoStyle(34,Base:toWorld(vec(-43.24,-1.9,13.60)),vec(0.2,0.09,0.3),Base:toWorld(ang(0,0,0)),Red,"prism") holoParent(34,29)
+ 
+    holoStyle(35,Base:toWorld(vec(-47.5,1.9,13.6)),vec(0.7,0.09,0.3),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(35,29)
+    holoStyle(36,Base:toWorld(vec(-51.7,1.9,13.60)),vec(0.2,0.09,0.3),Base:toWorld(ang(0,0,0)),Red,"prism") holoParent(36,29)
+    holoStyle(37,Base:toWorld(vec(-43.24,1.9,13.60)),vec(0.2,0.09,0.3),Base:toWorld(ang(0,0,0)),Red,"prism") holoParent(37,29)
+    
+    #holoAng(29,ang(45,0,0))
+    
+    #Top Blade
+    holoStyle(38,Base:toWorld(vec(-46,0,12)),0*vec(0.1,0.1,0.1),Base:toWorld(ang(0,0,0)),vec(255,255,255),"cube") holoParent(38,29) #Hinge
+    
+    holoStyle(39,Base:toWorld(vec(-62,1.8,13)),vec(0.6,0.6,1.1),Base:toWorld(ang(0,0,0)),Dark,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(39,38)
+    holoMaterial(39,"models/debug/debugwhite")
+    holoClipEnabled(39,1)
+    holoClip(39,vec(17,0,0),vec(1,0,0),0)
+    
+    holoStyle(40,Base:toWorld(vec(-59.7,1.8,12.9)),vec(0.5,0.55,1),Base:toWorld(ang(0,0,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(40,38)
+    holoMaterial(40,"models/debug/debugwhite")
+    holoClipEnabled(40,1)
+    holoClip(40,vec(17,0,0),vec(1,0,0),0)
+    
+    holoStyle(41,Base:toWorld(vec(-62,-1.8,13)),vec(0.6,0.6,1.1),Base:toWorld(ang(0,0,0)),Dark,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(41,38)
+    holoMaterial(41,"models/debug/debugwhite")
+    holoClipEnabled(41,1)
+    holoClip(41,vec(17,0,0),vec(1,0,0),0)
+    
+    holoStyle(42,Base:toWorld(vec(-59.7,-1.8,12.9)),vec(0.5,0.55,1),Base:toWorld(ang(0,0,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(42,38)
+    holoMaterial(42,"models/debug/debugwhite")
+    holoClipEnabled(42,1)
+    holoClip(42,vec(17,0,0),vec(1,0,0),0)
+    
+    #Arm
+    holoStyle(43,Base:toWorld(vec(-47,0,-4)),0*vec(0.1,0.9,0.1),Base:toWorld(ang(0,0,0)),vec(255,255,255),"cube") holoParent(43,17)  #hinge
+    holoStyle(44,Base:toWorld(vec(-47,0,-4)),vec(0.3,0.3,0.5),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(44,43)
+    
+    holoStyle(45,Base:toWorld(vec(-47.5,2.3,-13)),vec(0.45,0.1,1.5),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(45,43)
+    holoStyle(46,Base:toWorld(vec(-46.5,2.3,-4)),vec(0.4,0.1,0.5),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(46,43)
+    holoStyle(47,Base:toWorld(vec(-48.9,2.3,-2.49)),vec(0.22,0.1,0.25),Base:toWorld(ang(0,0,0)),Red,"prism") holoParent(47,43)
+    holoStyle(48,Base:toWorld(vec(-48.9,2.3,-24.4)),vec(0.22,0.1,0.4),Base:toWorld(ang(180,0,0)),Red,"prism") holoParent(48,43)
+    holoStyle(49,Base:toWorld(vec(-47.15,2.3,-24.4)),vec(0.3,0.1,0.4),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(49,43)
+    holoStyle(50,Base:toWorld(vec(-45,2.3,-23)),vec(0.3,0.1,0.4),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(50,43)
+    holoStyle(51,Base:toWorld(vec(-47.5,2.43,-10)),vec(0.08,0.1,0.8),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(51,43)
+    holoStyle(52,Base:toWorld(vec(-48.89,2.43,-14.95)),vec(0.3,0.1,0.08),Base:toWorld(ang(-20,0,0)),Dark,"cube") holoParent(52,43)
+    
+    holoStyle(53,Base:toWorld(vec(-47.5,-2.3,-13)),vec(0.45,0.1,1.5),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(53,43)
+    holoStyle(54,Base:toWorld(vec(-46.5,-2.3,-4)),vec(0.4,0.1,0.5),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(54,43)
+
+    holoStyle(55,Base:toWorld(vec(-48.9,-2.3,-2.49)),vec(0.22,0.1,0.25),Base:toWorld(ang(0,0,0)),Red,"prism") holoParent(55,43)
+    holoStyle(56,Base:toWorld(vec(-48.9,-2.3,-24.4)),vec(0.22,0.1,0.4),Base:toWorld(ang(180,0,0)),Red,"prism") holoParent(56,43)
+    holoStyle(57,Base:toWorld(vec(-47.15,-2.3,-24.4)),vec(0.3,0.1,0.4),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(57,43)
+    holoStyle(58,Base:toWorld(vec(-45,-2.3,-23)),vec(0.3,0.1,0.4),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(58,43)
+    holoStyle(59,Base:toWorld(vec(-47.5,-2.43,-10)),vec(0.08,0.1,0.8),Base:toWorld(ang(0,0,0)),Dark,"cube") holoParent(59,43)
+    holoStyle(60,Base:toWorld(vec(-48.89,-2.43,-14.95)),vec(0.3,0.1,0.08),Base:toWorld(ang(-20,0,0)),Dark,"cube") holoParent(60,43)
+    
+    #holoAng(43,ang(45,0,0))
+    
+    #Outer edge
+    holoStyle(61,Base:toWorld(vec(-56,0,12)),vec(3,0.8,1.4),Base:toWorld(ang(106,180,0)),Dark,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(61,43)
+        holoMaterial(61,"models/debug/debugwhite")
+        holoClipEnabled(61,1)
+        holoClip(61,vec(17,0,0),vec(1,0,1),0)
+        
+    holoStyle(62,Base:toWorld(vec(-47,0,-25)),0*vec(0.1,0.9,0.1),ang(),vec(255,255,255),"cube") holoParent(62,43) #HINDGE
+
+    #Arms pt2
+    holoStyle(63,Base:toWorld(vec(-51,1.5,-16.85)),vec(1.8,0.8,1),Base:toWorld(ang(115,180,0)),Red,"models/weapons/c_models/c_machete/c_machete.mdl") holoParent(63,62)
+        holoMaterial(63,"models/debug/debugwhite")
+        holoClipEnabled(63,1)
+        holoClip(63,vec(10,0,0),vec(1,0,0),0)
+    holoStyle(64,Base:toWorld(vec(-51,-1.5,-16.85)),vec(1.8,0.8,1) ,Base:toWorld(ang(115,180,0)),Red,"models/weapons/c_models/c_machete/c_machete.mdl") holoParent(64,62)
+        holoMaterial(64,"models/debug/debugwhite")
+        holoClipEnabled(64,1)
+        holoClip(64,vec(10,0,0),vec(1,0,0),0)   
+    
+    holoStyle(65,Base:toWorld(vec(-44,0,-40)),0*vec(0.1,0.1,0.1),ang(),vec(255,255,255),"cube") holoParent(65,62) #hinge
+    holoStyle(66,Base:toWorld(vec(-42.5,0,-41.5)),vec(0.55,0.55,0.6),Base:toWorld(ang(0,0,90)),Light,"hq_torus") holoParent(66,65)
+    holoStyle(67,Base:toWorld(vec(-42.5,0,-41.5)),vec(0.5,0.5,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(67,65)
+    holoStyle(68,Base:toWorld(vec(-50,0,-12)),vec(1,0.8,1.7),Base:toWorld(ang(106,180,0)),Dark,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(68,65)
+        holoMaterial(68,"models/debug/debugwhite")
+        holoClipEnabled(68,1)
+        holoClip(68,vec(31,0,0),vec(1,0,0.3),0)
+    holoStyle(69,Base:toWorld(vec(-48,0,-12)),vec(0.8,0.8,1.65),Base:toWorld(ang(104,180,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(69,65)
+        holoMaterial(69,"models/debug/debugwhite")
+        holoClipEnabled(69,1)
+        holoClip(69,vec(31,0,0),vec(1,0,0.3),0)
+    
+    #Inner blades
+    holoStyle(70,Base:toWorld(vec(-50,2,60)),vec(0.3,1.5,3.9),Base:toWorld(ang(100,180,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(70,43)
+        holoMaterial(65,"models/debug/debugwhite")
+        holoClipEnabled(70,1,1)
+        holoClipEnabled(70,2,1)
+        holoClip(70,1,vec(70,0,0),vec(1,0,0.3),0)
+        holoClip(70,2,vec(89,0,0),vec(-1,0,0),0)
+    holoStyle(71,Base:toWorld(vec(-45,2,48)),vec(0.2,1.2,3.6),Base:toWorld(ang(90,0,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(71,43)
+        holoMaterial(71,"models/debug/debugwhite")
+        holoClipEnabled(71,1,1)
+        holoClipEnabled(71,2,1)
+        holoClip(71,1,vec(70,0,0),vec(1,0,0.3),0)
+        holoClip(71,2,vec(89,0,0),vec(-1,0,0),0)
+    holoStyle(72,Base:toWorld(vec(-50,-2,60)),vec(0.3,1.5,3.9),Base:toWorld(ang(100,180,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(72,43)
+        holoMaterial(72,"models/debug/debugwhite")
+        holoClipEnabled(72,1,1)
+        holoClipEnabled(72,2,1)
+        holoClip(72,1,vec(70,0,0),vec(1,0,0.3),0)
+        holoClip(72,2,vec(89,0,0),vec(-1,0,0),0)
+    holoStyle(73,Base:toWorld(vec(-45,-2,48)),vec(0.2,1.2,3.6),Base:toWorld(ang(90,0,0)),Light,"models/weapons/c_models/c_croc_knife/c_croc_knife.mdl") holoParent(73,43)
+        holoMaterial(73,"models/debug/debugwhite")
+        holoClipEnabled(73,1,1)
+        holoClipEnabled(73,2,1)
+        holoClip(73,1,vec(70,0,0),vec(1,0,0.3),0)
+        holoClip(73,2,vec(89,0,0),vec(-1,0,0),0)
+    
+    #Side 45 degree bits
+    holoStyle(74,Base:toWorld(vec(-37,0,0)),0*vec(0.1,1,0.1),Base:toWorld(ang(0,0,0)),vec(255,255,255),"cube") holoParent(74,17) #hinge
+    
+    holoStyle(75,Base:toWorld(vec(-42,1.5,-4)),vec(0.5,0.05,1.3),Base:toWorld(ang(50,0,0)),Red,"cube") holoParent(75,74)
+    holoStyle(76,Base:toWorld(vec(-42,-1.5,-4)),vec(0.5,0.05,1.3),Base:toWorld(ang(50,0,0)),Red,"cube") holoParent(76,74)
+    holoStyle(77,Base:toWorld(vec(12.9,0,1)),0.15*vec(1,1,1),Base:toWorld(ang(0,0,90)),Dark,"hqtorus") holoParent(77,Base)
+    holoStyle(78,Base:toWorld(vec(-7,0,0)),vec(1,0.2,0.3),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(78,Base)
+    holoStyle(79,Base:toWorld(vec(-9,5,0.9)),vec(0.15,0.15,0.7),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(79,Base)
+    
+    #Extra bits
+    holoStyle(80,Base:toWorld(vec(-42.3,2.3,-23)),vec(0.62,0.1,0.5),Base:toWorld(ang(90,0,0)),Red,"prism") holoParent(80,43) 
+        holoClipEnabled(80,1) holoClip(80,vec(0,0,-0.9),vec(0,0,-1),0)
+    
+    holoStyle(81,Base:toWorld(vec(-42.3,-2.3,-23)),vec(0.62,0.1,0.5),Base:toWorld(ang(90,0,0)),Red,"prism") holoParent(81,43) 
+        holoClipEnabled(81,1) holoClip(81,vec(0,0,-0.9),vec(0,0,-1),0)
+    
+    #3 Dots on each side
+    holoStyle(82,Base:toWorld(vec(-46,2.35,-23)),vec(0.08,0.08,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(82,43)
+    holoStyle(83,Base:toWorld(vec(-44.5,2.35,-21.8)),vec(0.08,0.08,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(83,43)
+    holoStyle(84,Base:toWorld(vec(-44.5,2.35,-24.2)),vec(0.08,0.08,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(84,43)
+    
+    holoStyle(85,Base:toWorld(vec(-46,-2.35,-23)),vec(0.08,0.08,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(85,43)
+    holoStyle(86,Base:toWorld(vec(-44.5,-2.35,-21.8)),vec(0.08,0.08,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(86,43)
+    holoStyle(87,Base:toWorld(vec(-44.5,-2.35,-24.2)),vec(0.08,0.08,0.1),Base:toWorld(ang(0,0,90)),Dark,"cylinder") holoParent(87,43)
+    
+    #Gun handle
+    holoStyle(88,Base:toWorld(vec(10,0,-3)),vec(0.15,0.15,0.5),Base:toWorld(ang(-40,0,0)),Red,"cube") holoParent(88,Base)
+    holoStyle(89,Base:toWorld(vec(15,0,-1)),vec(0.11,0.11,0.5),Base:toWorld(ang(90,0,0)),Dark,"cylinder") holoParent(89,Base)
+    holoStyle(90,Base:toWorld(vec(19,0,-3)),vec(0.15,0.15,0.5),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(90,Base)
+    
+    #Back bits for compact mode
+    holoStyle(91,Base:toWorld(vec(-11.5,0,0.2)),vec(2.2,0.2,0.4),Base:toWorld(ang(0,0,0)),Red,"cube") holoParent(91,Base) #holoAlpha(1,50) 
+    holoStyle(92,Base:toWorld(vec(2.8,0,1)),0.15*vec(1,1,1),Base:toWorld(ang(0,0,90)),Dark,"hqtorus") holoParent(92,Base)
+    
+    Blades = array(7,8,9,10,11,12,39,40,41,42,25,26,27,28,61,70,71,72,73)
+    Scope = array(1,13,14,15,16,77)
+    
+    I=0
+    
+    #Shout out to wire updates that FUCK EVERYTHIN' UP
+    if(ScaleFix)
+    {
+        for(I=1,92)
+        {
+            if(holoEntity(I):model():left(14) == "models/weapons")
+            {
+                Scl = holoScale(I)
+                holoScale(I,shiftR(Scl))
+            }    
+        }
+    }
+    print("Spawned Crescent Rose!")
+    
+    
+    
+    #holoParent(1,0)
+    }#Done spawning
+elseif(I==0)
+{
+
+#These weapons can be changed if you have a more suitable SWEP to use, such as blank sweps
+if(PlayerTarget:weapon():type() == MeleeWeapon)
+{Hold = 1 PlayerTarget:weapon():setAlpha(0)}
+elseif(PlayerTarget:weapon():type() == RifleWeapon)
+{Hold = 2 PlayerTarget:weapon():setAlpha(0)}
+ else
+{Hold = 0 PlayerTarget:weapon():setAlpha(255)}
+
+if($Hold){
+    #BLADE mode
+    if(Hold==1)
+    {   
+        soundPitch(1,70)
+        Base:soundPlay(1,1,"weapons/ump45/ump45_boltslap.wav")
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_RH"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_RH"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_RH")
+        holoAng(1,Pivot:toWorld(ang(90,180,0)))
+        holoPos(1,Pivot:toWorld(vec(0,0,20)))
+    
+        Anim = 0
+        
+        #Hide handle
+        for(I=88,90)
+        {
+            holoAlpha(I,0)
+        }
+        
+        
+        #Unhide blades and scope
+        for(I = 1,Blades:count())
+        {
+            holoAlpha(Blades[I,number],255)
+        }
+        
+        for(I = 1,Scope:count())
+        {
+            holoAlpha(Scope[I,number],255)
+        }
+        
+        holoAlpha(91,0)
+        holoAlpha(92,0)
+    }
+
+    #GUN mode
+    elseif(Hold==2)
+    {
+        soundPitch(1,70)
+        Base:soundPlay(1,0,"weapons/ump45/ump45_clipin.wav")
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_RH"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_RH"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_RH")
+        holoAng(1,Pivot:toWorld(ang(0,180,0)))
+        holoPos(1,Pivot:toWorld(vec(13,-0.8,4)))
+    
+        Anim = 100
+        
+        #Unhide handle
+        for(I=88,90)
+        {
+            holoAlpha(I,255)
+        }
+        
+        #Hide blades, Unhide scope
+        for(I = 1,Blades:count())
+        {
+            holoAlpha(Blades[I,number],0)
+        }
+        
+        for(I = 1,Scope:count())
+        {
+            holoAlpha(Scope[I,number],255)
+        }
+        
+        holoAlpha(91,0)
+        holoAlpha(92,0)
+    }
+    
+    #CARRY mode
+    elseif(!Hold)
+    {
+        soundPitch(1,70)
+        Base:soundPlay(1,0,"weapons/ump45/ump45_clipout.wav")
+        
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(0,PlayerTarget,"chest")
+        holoAng(1,Pivot:toWorld(ang(20,-90,0)))
+        holoPos(1,Pivot:toWorld(vec(-10,-15,-7)))
+
+
+        Anim = 100   
+        
+        #Hide handle
+        for(I=88,90)
+        {
+            holoAlpha(I,0)
+        }
+    
+        #Hide blades and scope
+        for(I = 1,Blades:count())
+        {
+            holoAlpha(Blades[I,number],0)
+        }
+        
+        for(I = 1,Scope:count())
+        {
+            holoAlpha(Scope[I,number],0)
+        }
+        
+        holoAlpha(91,255)
+        holoAlpha(92,255)
+    }
+}
+
+#Animation
+
+if(SMAnim<Anim){SMAnim+=5}
+if(SMAnim>Anim){SMAnim-=5} 
+
+holoAng(22,Base:toWorld(ang(15 + (0.75*SMAnim),0,0))) #Rear bridge hinge
+holoAng(29,Base:toWorld(ang(-10 + (1.9*SMAnim),0,0))) #Top segments hinge
+holoAng(38,Base:toWorld(ang(20 + (0.3*SMAnim),0,0))) #Blades hinge
+holoAng(43,Base:toWorld(ang(-10 - (0.8*SMAnim),0,0))) #Big arm hinge
+holoAng(62,Base:toWorld(ang(-20 - (2.4*SMAnim),0,0))) #Smaller arms hinge
+holoAng(65,Base:toWorld(ang(-50 - (3.9*SMAnim),0,0))) #End circle blade hinge
+holoAng(74,Base:toWorld(ang(0 - (1.4*SMAnim),0,0))) #Inner flaps hinge
+holoPos(17,Base:toWorld(vec(-40 + (0.2 * SMAnim),0,0)))
+
+
+#Firing in gun mode
+M1 = PlayerTarget:keyAttack1()
+
+if(Hold==2 & $M1 & M1 & Cd == 0) {
+    Cd=50    
+    Base:soundPlay(2,0,"weapons/sg552/sg552-1.wav")
+    soundPitch(2,80)
+    
+    S = propSpawn("models/props_junk/garbage_coffeemug001a.mdl",Base:toWorld(vec(-45,0,0)),Base:toWorld(ang(0,0,0)),0)
+    S:propGravity(0)
+    S:setMass(50000)
+    #S:propDrag(0)
+    S:setAlpha(0)
+    S:setTrails(10,0,1,"trails/laser",vec(255,215,215),150)
+    S:applyForce(owner():eye() * S:mass() * S:mass())
+    
+    #ifdef entity:applyPlayerForce(vector)
+        PlayerTarget:applyPlayerForce(-PlayerTarget:eye()*550)
+    #endif
+    #ifdef particle(number,number,number,string,vector,vector,vector)
+        particle(0.1,20,15,"effects/muzzleflash" + randint(1,4),vec(255,255,255),Base:toWorld(vec(-35,0,0)),vec(0,0,0))
+    #endif
+    }
+        
+    if(Cd>0)
+    {
+        Cd--   
+
+        if(Cd<20 && Cd>10){
+            holoPos(79,Base:toWorld(vec(-9 + 6,5,0.9)))
+                if(Cd==19)
+                {
+                    Base:soundPlay(3,0,"weapons/sg552/sg552_boltpull.wav")
+                    soundPitch(3,80)
+                }
+            }
+            else
+            {
+                holoPos(79,Base:toWorld(vec(-9,5,0.9)))
+            }
+    }
+    if(Cd==1)
+    {
+
+    }
+}

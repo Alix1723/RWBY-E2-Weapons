@@ -1,0 +1,242 @@
+#[
+Akouo
+
+"Listen to my advances goddamn it Jaune"
+
+HOW TO USE:
+Take out crowbar, knife or fists. 
+Press R to throw, keep holding R to let it fly, let go of R to have it return.
+
+REQUIRES:
+PHX (Included w/ GMod)
+
+http://rwby.wikia.com/wiki/Mil%C3%B3_and_Ako%C3%BAo%CC%B1
+
+Written by Alix
+]#
+
+@name JNPR Akouo
+@persist [PlayerTarget Base Pivot Prop E]:entity
+@persist [C1 C2]:vector
+@persist [Hold]
+@persist [SwordWeapon JavelinWeapon]:string
+
+runOnTick(1)
+if(first())
+{
+    PlayerTarget = owner()
+    
+    SwordWeapon = "weapon_fists"
+    JavelinWeapon = "weapon_crowbar"
+    
+    C1   = vec(230,187,114) #Light Gold
+    C2   = vec(110,1,1)   #Dark red
+    entity():setAlpha(0)
+    
+    Pivot = holoCreate(0,entity():toWorld(vec(0,0,0))) holoParent(0,entity()) holoAlpha(0,0)
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(3.2,3.2,0.1)*0,Pivot:toWorld(ang(0,0,0))) holoParent(1,0) #Centre
+
+    holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec(2.9,2.9,0.05),Pivot:toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(2,1)
+    
+    holoClipEnabled(2,1,1)
+    holoClipEnabled(2,2,1)
+    holoClip(2,1,vec(),vec(1,0.5,0),0)
+    holoClip(2,2,vec(),vec(1,-0.5,0),0)
+    
+    holoCreate(3,Pivot:toWorld(vec(0,0,0)),vec(2.9,2.9,0.05),Pivot:toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(3,1) 
+    
+    holoClipEnabled(3,1,1)
+    holoClipEnabled(3,2,1)
+    holoClip(3,1,vec(),vec(-1,0.5,0),0)
+    holoClip(3,2,vec(),vec(-1,-0.5,0),0)
+    
+    holoCreate(4,Pivot:toWorld(vec(0,22,0)),vec(2.2,2.2,0.05),Pivot:toWorld(ang(0,0,0)),C1,"hq_tube") holoParent(4,1)
+    holoClipEnabled(4,1,1)
+    holoClipEnabled(4,2,1)
+    holoClip(4,1,vec(0,-1.8,0),vec(-0.6,-1,0),0)
+    holoClip(4,2,vec(0,-1.8,0),vec(0.6,-1,0),0)
+    
+    holoCreate(5,Pivot:toWorld(vec(0,-22,0)),vec(2.2,2.2,0.05),Pivot:toWorld(ang(0,0,0)),C1,"hq_tube") holoParent(5,1)
+    holoClipEnabled(5,1,1)
+    holoClipEnabled(5,2,1)
+    holoClip(5,1,vec(0,1.8,0),vec(-0.6,1,0),0)
+    holoClip(5,2,vec(0,1.8,0),vec(0.6,1,0),0)
+    
+    #6 is at the bottom srry
+    
+    holoCreate(7,Pivot:toWorld(vec(0,0,-0.3)),vec(0.03,0.55,0.55),Pivot:toWorld(ang(90,0,0)),C1/10,"models/XQM/deg360single.mdl") holoParent(7,1)
+    holoClipEnabled(7,1,1) 
+    holoClipEnabled(7,2,1)
+    holoClipEnabled(7,3,1)
+    holoClip(7,1,vec(0,0,-16.6),vec(0,1.6,1),0)
+    holoClip(7,2,vec(0,0,-16.6),vec(0,-1.6,1),0)
+    holoClip(7,3,vec(),vec(0,0,1),0)
+    holoCreate(8,Pivot:toWorld(vec(0,0,-0.3)),vec(0.03,0.55,0.55),Pivot:toWorld(ang(90,0,0)),C1/10,"models/XQM/deg360single.mdl") holoParent(8,1)
+    holoClipEnabled(8,1,1) 
+    holoClipEnabled(8,2,1)
+    holoClipEnabled(8,3,1)
+    holoClip(8,1,vec(0,0,16.6),vec(0,1.6,-1),0)
+    holoClip(8,2,vec(0,0,16.6),vec(0,-1.6,-1),0)
+    holoClip(8,3,vec(),vec(0,0,-1),0)
+    
+    holoCreate(9,Pivot:toWorld(vec(0,0,0)),vec(0.125,0.125,0.03),Pivot:toWorld(ang(0,0,0)),C1*0.7,"models/hunter/tubes/tube4x4x025.mdl") holoParent(9,1)
+    
+    holoCreate(10,Pivot:toWorld(vec(0,0,0)),vec(1.95,1.95,0.3),Pivot:toWorld(ang(0,0,0)),C1+vec(15,15,0),"hq_dome") holoParent(10,1)
+    
+    holoCreate(11,Pivot:toWorld(vec(0,0,-0.3)),vec(2.96,2.96,0.5),Pivot:toWorld(ang(0,0,0)),C1,"hq_dome") holoParent(11,1)
+    holoClipEnabled(11,1,1)
+    holoClipEnabled(11,2,1)
+    holoClipEnabled(11,3,1)
+    holoClip(11,1,vec(0,0,0.6),vec(0,0,-1),0)
+    holoClip(11,2,vec(0,0,0),vec(2.07,1,0),0)
+    holoClip(11,3,vec(0,0,0),vec(2.07,-1,0),0)
+    
+    holoCreate(12,Pivot:toWorld(vec(0,0,-0.3)),vec(2.96,2.96,0.5),Pivot:toWorld(ang(0,0,0)),C1,"hq_dome") holoParent(12,1)
+    holoClipEnabled(12,1,1)
+    holoClipEnabled(12,2,1)
+    holoClipEnabled(12,3,1)
+    holoClip(12,1,vec(0,0,0.6),vec(0,0,-1),0)
+    holoClip(12,2,vec(0,0,0),vec(-2.07,1,0),0)
+    holoClip(12,3,vec(0,0,0),vec(-2.07,-1,0),0)
+
+    for(I=13,19,2)
+    {
+        S = ((I-13)/2)*90
+        holoCreate(I,Pivot:toWorld(vec(0,0,1)),vec(0.055,0.05,0.02),Pivot:toWorld(ang(0,10,0)),C1*0.7,"models/hunter/tubes/tube2x2x025c.mdl") holoParent(I,1)
+        holoCreate(I+1,Pivot:toWorld(vec(0.2,1.5,1)),vec(0.04,0.02,0.02),Pivot:toWorld(ang(0,45,0)),C1*0.7,"models/hunter/tubes/tube2x2x025c.mdl") holoParent(I+1,I)
+        
+        holoPos(I,Pivot:toWorld(vec(sin(S)*11,cos(S)*11,0.5)))
+        holoAng(I,Pivot:toWorld(ang(22,105-S,8)))
+    }
+    
+    for(I=21,24)
+    {
+        S = (I-21)*90
+        holoCreate(I,Pivot:toWorld(vec(15,0,0.1)),vec(0.3,0.3,0.05),Pivot:toWorld(ang(0,0,0)),C1*0.1,"hq_tube_thick") holoParent(I,1)  
+        holoClipEnabled(I,1)
+        holoClip(I,vec(0,0,0),vec(1,1,0),0)
+        holoPos(I,Pivot:toWorld(vec(sin(S+45)*17.3,cos(S+45)*10.8,0.1)))
+        holoAng(I,Pivot:toWorld(ang(0,23-S,0)))
+    } 
+
+    holoCreate(6,Pivot:toWorld(vec(0,0,-0.25)),vec(1.8,1.8,0.02),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(6,1)
+
+    holoCreate(25,Pivot:toWorld(vec(0,22,-0.25)),vec(2.3,2.3,0.02),Pivot:toWorld(ang(0,0,0)),C2,"hq_tube") holoParent(25,1)
+    holoClipEnabled(25,1,1)
+    holoClipEnabled(25,2,1)
+    holoClip(25,1,vec(0,-1.8,0),vec(-0.6,-1,0),0)
+    holoClip(25,2,vec(0,-1.8,0),vec(0.6,-1,0),0)
+    
+    holoCreate(26,Pivot:toWorld(vec(0,-22,-0.25)),vec(2.3,2.3,0.02),Pivot:toWorld(ang(0,0,0)),C2,"hq_tube") holoParent(26,1)
+    holoClipEnabled(26,1,1)
+    holoClipEnabled(26,2,1)
+    holoClip(26,1,vec(0,1.8,0),vec(-0.6,1,0),0)
+    holoClip(26,2,vec(0,1.8,0),vec(0.6,1,0),0)
+    
+    holoCreate(27,Pivot:toWorld(vec(0,0,-0.25)),vec(2.9,2.9,0.02),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(27,1)
+    holoClipEnabled(27,1,1)
+    holoClipEnabled(27,2,1)
+    holoClip(27,1,vec(),vec(1,-0.6,0),0)
+    holoClip(27,2,vec(),vec(1,0.6,0),0)
+    
+    holoCreate(28,Pivot:toWorld(vec(0,0,-0.25)),vec(2.9,2.9,0.02),Pivot:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(28,1)
+    holoClipEnabled(28,1,1)
+    holoClipEnabled(28,2,1)
+    holoClip(28,1,vec(),vec(-1,-0.6,0),0)
+    holoClip(28,2,vec(),vec(-1,0.6,0),0)
+    
+    for(I=1,28)
+    {
+        holoMaterial(I,"models/debug/debugwhite")
+    }
+    Hold = 3
+    #YISS UNDER 30 HOLOGRAMS 
+    print("Spawned Akouo!")    
+}
+else
+{
+if(!Prop)
+{
+    if(PlayerTarget:weapon():type() == SwordWeapon | PlayerTarget:weapon():type() == JavelinWeapon)
+    {
+        Hold = 1
+    }
+    else
+    {
+        Hold = 0
+    }
+}
+     
+if($Hold)
+{
+    if(Hold==1)
+    {
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_lh"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_lh"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_lh")
+        holoAng(1,Pivot:toWorld(ang(180,0,-50)))
+        holoPos(1,Pivot:toWorld(vec(-8,3,0))) 
+    }
+    else
+    {
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(0,PlayerTarget,"chest")
+        holoAng(1,Pivot:toWorld(ang(-90,0,0)))
+        holoPos(1,Pivot:toWorld(vec(-7,0,-5))) 
+    }   
+} 
+
+#Throwing
+M1 = PlayerTarget:keyReload()
+
+if(M1 & $M1 & !Prop & Hold==1)
+    {   
+        Prop = propSpawn("models/props_junk/sawblade001a.mdl",PlayerTarget:pos() + vec(0,0,60) + PlayerTarget:eye()*50,PlayerTarget:eye():toAngle()+ang(0,0,0),0)   
+        Prop:setMass(100)
+        Prop:propFreeze(0)
+        Prop:applyForce(PlayerTarget:eye() * Prop:mass() * 2500 + PlayerTarget:vel()*50)
+        Prop:setAlpha(0)
+        Prop:soundPlay(1,2,"weapons/boxing_gloves_swing"+randint(1,4)+".wav")
+        Prop:soundPlay(2,0,"weapons/tripwire/ropeshoot.wav")
+        Prop:propGravity(0)
+        
+        holoPos(0,Prop:pos())
+        holoAng(0,Prop:angles())
+        holoParent(0,Prop)
+        holoAng(1,Pivot:toWorld(ang(0,0,0)))
+        holoPos(1,Pivot:toWorld(vec(0,0,0))) 
+        holoEntity(1):setTrails(7,0,0.5,"trails/smoke",vec(),200)
+        
+        if(E)
+        {
+            E:propDelete()
+        }
+    }
+    
+if(Prop)
+{
+    Prop:applyAngForce(ang(0,Prop:mass()*100,0))   
+    soundPitch(2,Prop:velL():length()/60)  
+}
+
+if(!M1)
+{
+    Prop:applyForce((owner():pos() - Prop:pos()) * Prop:mass()*0.1) 
+    
+    if(Prop:pos():distance(PlayerTarget:pos())<=100 & !$M1)
+    {
+        #Pickup
+        holoUnparent(0)
+        Hold = -1
+        Pivot:soundPlay(2,3,"weapons/draw_melee.wav")
+        holoEntity(1):removeTrails()
+        E = Prop
+        Prop = noentity()
+        E:propNotSolid(1)
+        E:propFreeze(1)           
+    }         
+}
+##endif   
+}#//
+

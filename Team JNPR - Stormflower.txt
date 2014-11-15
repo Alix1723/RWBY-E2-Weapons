@@ -1,0 +1,173 @@
+#[
+Stormflower
+
+Not "Stormflowers"? I unno man
+
+HOW TO USE:
+Take out pistol or crowbar. Shoot or what stuff.
+
+REQUIRES:
+HoloModelAny
+TF2 (Sounds)
+CS:S (Gun grip model)
+
+http://rwby.wikia.com/wiki/StormFlower
+
+Written by Alix
+]#
+
+@name JNPR Stormflower
+@persist [Pivot Base Pivot2 Base2 PlayerTarget]:entity 
+@persist [Hold I NumHolo Delayer]
+@persist [C1 C2]:vector
+
+runOnTick(1)
+
+if(first())
+{      
+    PlayerTarget = owner()
+    C1   = vec(75,157,80)
+    C2   = vec(55,55,55)
+    entity():setAlpha(0)
+
+    Pivot = holoCreate(0,entity():toWorld(vec(0,0,0)),vec()) holoParent(0,entity()) holoAlpha(0,0)
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,2)),vec(1,0.8,1),Pivot:toWorld(ang(0,0,0)),C1) holoParent(1,0)
+    holoMaterial(1,"models/debug/debugwhite")
+    holoClipEnabled(1,1,1)
+    holoClipEnabled(1,2,1)
+    holoClip(1,1,vec(0,0,5),vec(0,0,-1),0)
+    holoClip(1,2,vec(1.5,0,0),vec(-1,0,0),0)
+    holoModel(1,"models/weapons/w_pist_elite_single.mdl")
+    
+    Pivot2 = holoCreate(30,entity():toWorld(vec(20,0,0)),vec()) holoParent(30,entity()) holoAlpha(30,0)
+    Base2 = holoCreate(31,Pivot:toWorld(vec(0,0,2)),vec(1,0.8,1),Pivot:toWorld(ang(0,0,0)),C1) holoParent(31,30)
+    holoMaterial(31,"models/debug/debugwhite")
+    holoClipEnabled(31,1,1)
+    holoClipEnabled(31,2,1)
+    holoClip(31,1,vec(0,0,5),vec(0,0,-1),0)
+    holoClip(31,2,vec(1.5,0,0),vec(-1,0,0),0)
+    holoModel(31,"models/weapons/w_pist_elite_single.mdl")
+    
+    #include "lib/HoloStyleFunction"
+    I = 1
+    Delayer = 0
+    NumHolo = 60
+}
+if(I <= NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I,entity():pos(),vec())
+    I++   
+}
+elseif(I>NumHolo & I>0)
+{
+    holoStyle(2,Pivot:toWorld(vec(0,0,7.5)),vec(0.65,0.11,0.1),Pivot:toWorld(ang(0,0,0)),C1,"hq_rcube_thin") holoParent(2,1)
+    holoStyle(3,Pivot:toWorld(vec(2.25,0,7.3)),vec(0.5,0.17,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(3,1)
+    holoStyle(4,Pivot:toWorld(vec(2.25,0,7.9)),vec(0.14,0.17,0.5),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(4,1)
+    holoStyle(5,Pivot:toWorld(vec(3.75,0,6.5)),vec(0.1,0.1,0.25),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(5,1)
+    holoStyle(6,Pivot:toWorld(vec(3.75,0,6.188)),vec(0.17,0.25,0.085),Pivot:toWorld(ang(0,90,180)),C1,"prism") holoParent(6,1)
+    holoClipEnabled(6,1) holoClip(6,vec(0,0,0),vec(0,0,-1),0)
+    holoStyle(7,Pivot:toWorld(vec(3,0,5.4)),vec(0.25,0.08,0.02),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(7,1)
+    holoStyle(8,Pivot:toWorld(vec(-2,0,1)),vec(0.15,0.07,0.6),Pivot:toWorld(ang(10,0,0)),C2,"cube") holoParent(8,1)
+    holoStyle(9,Pivot:toWorld(vec(4.5,0,7.8)),vec(0.12,0.12,0.2),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube_thick") holoParent(9,1)
+    holoStyle(10,Pivot:toWorld(vec(4.5,0,6.5)),vec(0.06,0.06,0.15),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube_thick") holoParent(10,1)
+    holoStyle(11,Pivot:toWorld(vec(4.2,0,9)),vec(0.05,0.02,0.05),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(11,1)
+    holoStyle(12,Pivot:toWorld(vec(4.5,0,8.74)),vec(0.05,0.02,0.08),Pivot:toWorld(ang(-30,0,0)),C2,"cube") holoParent(12,1)
+    holoStyle(13,Pivot:toWorld(vec(-3.25,0,8.2)),vec(0.14,0.04,0.03),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(13,1)
+    holoStyle(14,Pivot:toWorld(vec(-4,0,8.2)),vec(0.02,0.07,0.03),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(14,1)
+    holoStyle(15,Pivot:toWorld(vec(-3.85,0,5)),vec(0.3,0.25,0.08),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(15,1)
+    holoClipEnabled(15,1,1) holoClipEnabled(15,2,1)
+    holoClip(15,1,vec(0,-0.2,0),vec(0,1,0),0) holoClip(15,2,vec(0,1,0),vec(1,-1,0),0)
+    holoStyle(16,Pivot:toWorld(vec(-3.85,0,7.5)),vec(0.3,0.25,0.08),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(16,1)
+    holoClipEnabled(16,1,1) holoClipEnabled(16,2,1)
+    holoClip(16,1,vec(0,0.2,0),vec(0,-1,0),0) holoClip(16,2,vec(0,-1,0),vec(1,1,0),0)
+    holoStyle(17,Pivot:toWorld(vec(-3.7,0,6.25)),vec(0.023,0.023,0.08),Pivot:toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(17,1)
+    holoStyle(18,Pivot:toWorld(vec(-2.3,0,6.3)),vec(0.1,0.08,0.1),Pivot:toWorld(ang(40,0,0)),C1,"cube") holoParent(18,1)
+    holoStyle(19,Pivot:toWorld(vec(-1.4,0,4.5)),vec(0.13,0.12,0.3),Pivot:toWorld(ang(13,0,0)),vec(45,127,50),"hq_rcube") holoParent(19,1)
+    holoStyle(20,Pivot:toWorld(vec(4.15,0,4.95)),vec(0.08,0.08,0.22),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(20,1)
+    holoStyle(21,Pivot:toWorld(vec(5.7,0,5.8)),vec(0.08,0.15,0.07),Pivot:toWorld(ang(0,90,40)),C1,"prism") holoParent(21,1)
+    holoClipEnabled(21,1,1) holoClipEnabled(21,2,1)
+    holoClip(21,1,vec(0,-0.42,0),vec(0,1,1.2),0) holoClip(21,2,vec(0,0.42,0),vec(0,-1,-1.2),0)
+    holoStyle(22,Pivot:toWorld(vec(5.82,0,4.58)),vec(0.08,0.18,0.11),Pivot:toWorld(ang(0,90,100)),C1,"prism") holoParent(22,1)
+    holoClipEnabled(22,1,1) holoClipEnabled(22,2,1)
+    holoClip(22,1,vec(0,1,0),vec(0,-1,0.2),0) holoClip(22,2,vec(0,-0.85,0),vec(0,1,0.39),0) 
+    holoStyle(23,Pivot:toWorld(vec(4.9,0,3.08)),vec(0.08,0.21,0.11),Pivot:toWorld(ang(0,90,140)),C1,"prism") holoParent(23,1)
+    holoClipEnabled(23,1,1)
+    holoClip(23,1,vec(0,1.07,0),vec(0,-1,0.34),0)
+    holoStyle(24,Pivot:toWorld(vec(4,0,0.4)),vec(0.08,0.4,0.11),Pivot:toWorld(ang(0,90,95)),C1,"prism") holoParent(24,1)
+    holoStyle(25,Pivot:toWorld(vec(3.8,0,-5.5)),vec(0.1,0.02,0.6),Pivot:toWorld(ang(180,0,0)),C1,"pyramid") holoParent(25,1)
+    holoStyle(26,Pivot:toWorld(vec(3.15,0,0.5)),vec(0.07,0.08,0.4),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(26,1)
+    holoStyle(27,Pivot:toWorld(vec(3.92,0,3.48)),vec(0.055,0.08,0.215),Pivot:toWorld(ang(50,0,0)),C1,"cube") holoParent(27,1)
+    holoStyle(28,Pivot:toWorld(vec(4.9,0,4.85)),vec(0.059,0.08,0.13),Pivot:toWorld(ang(10,0,0)),C1,"cube") holoParent(28,1)
+    holoStyle(29,Pivot:toWorld(vec(4.55,0,5.8)),vec(0.059,0.08,0.13),Pivot:toWorld(ang(-50,0,0)),C1,"cube") holoParent(29,1)
+    
+    holoStyle(32,Pivot:toWorld(vec(0,0,7.5)),vec(0.65,0.11,0.1),Pivot:toWorld(ang(0,0,0)),C1,"hq_rcube_thin") holoParent(32,31)
+    holoStyle(33,Pivot:toWorld(vec(2.25,0,7.3)),vec(0.5,0.17,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(33,31)
+    holoStyle(34,Pivot:toWorld(vec(2.25,0,7.9)),vec(0.14,0.17,0.5),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(34,31)
+    holoStyle(35,Pivot:toWorld(vec(3.75,0,6.5)),vec(0.1,0.1,0.25),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(35,31)
+    holoStyle(36,Pivot:toWorld(vec(3.75,0,6.188)),vec(0.17,0.25,0.085),Pivot:toWorld(ang(0,90,180)),C1,"prism") holoParent(36,31)
+    holoClipEnabled(36,1) holoClip(36,vec(0,0,0),vec(0,0,-1),0)
+    holoStyle(37,Pivot:toWorld(vec(3,0,5.4)),vec(0.25,0.08,0.02),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(37,31)
+    holoStyle(38,Pivot:toWorld(vec(-2,0,1)),vec(0.15,0.07,0.6),Pivot:toWorld(ang(10,0,0)),C2,"cube") holoParent(38,31)
+    holoStyle(39,Pivot:toWorld(vec(4.5,0,7.8)),vec(0.12,0.12,0.2),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube_thick") holoParent(39,31)
+    holoStyle(40,Pivot:toWorld(vec(4.5,0,6.5)),vec(0.06,0.06,0.15),Pivot:toWorld(ang(90,0,0)),C1,"hq_tube_thick") holoParent(40,31)
+    holoStyle(41,Pivot:toWorld(vec(4.2,0,9)),vec(0.05,0.02,0.05),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(41,31)
+    holoStyle(42,Pivot:toWorld(vec(4.5,0,8.74)),vec(0.05,0.02,0.08),Pivot:toWorld(ang(-30,0,0)),C2,"cube") holoParent(42,31)
+    holoStyle(43,Pivot:toWorld(vec(-3.25,0,8.2)),vec(0.14,0.04,0.03),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(43,31)
+    holoStyle(44,Pivot:toWorld(vec(-4,0,8.2)),vec(0.02,0.07,0.03),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(44,31)
+    holoStyle(45,Pivot:toWorld(vec(-3.85,0,5)),vec(0.3,0.25,0.08),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(45,31)
+    holoClipEnabled(45,1,1) holoClipEnabled(45,2,1)
+    holoClip(45,1,vec(0,-0.2,0),vec(0,1,0),0) holoClip(45,2,vec(0,1,0),vec(1,-1,0),0)
+    holoStyle(46,Pivot:toWorld(vec(-3.85,0,7.5)),vec(0.3,0.25,0.08),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(46,31)
+    holoClipEnabled(46,1,1) holoClipEnabled(46,2,1)
+    holoClip(46,1,vec(0,0.2,0),vec(0,-1,0),0) holoClip(46,2,vec(0,-1,0),vec(1,1,0),0)
+    holoStyle(47,Pivot:toWorld(vec(-3.7,0,6.25)),vec(0.023,0.023,0.08),Pivot:toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(47,31)
+    holoStyle(48,Pivot:toWorld(vec(-2.3,0,6.3)),vec(0.1,0.08,0.1),Pivot:toWorld(ang(40,0,0)),C1,"cube") holoParent(48,31)
+    holoStyle(49,Pivot:toWorld(vec(-1.4,0,4.5)),vec(0.13,0.12,0.3),Pivot:toWorld(ang(13,0,0)),vec(45,127,50),"hq_rcube") holoParent(49,31)
+    holoStyle(50,Pivot:toWorld(vec(4.15,0,4.95)),vec(0.08,0.08,0.22),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(50,31)
+    holoStyle(51,Pivot:toWorld(vec(5.7,0,5.8)),vec(0.08,0.15,0.07),Pivot:toWorld(ang(0,90,40)),C1,"prism") holoParent(51,31)
+    holoClipEnabled(51,1,1) holoClipEnabled(51,2,1)
+    holoClip(51,1,vec(0,-0.42,0),vec(0,1,1.2),0) holoClip(51,2,vec(0,0.42,0),vec(0,-1,-1.2),0)
+    holoStyle(52,Pivot:toWorld(vec(5.82,0,4.58)),vec(0.08,0.18,0.11),Pivot:toWorld(ang(0,90,100)),C1,"prism") holoParent(52,31)
+    holoClipEnabled(52,1,1) holoClipEnabled(52,2,1)
+    holoClip(53,1,vec(0,1,0),vec(0,-1,0.2),0) holoClip(53,2,vec(0,-0.85,0),vec(0,1,0.39),0) 
+    holoStyle(54,Pivot:toWorld(vec(4.9,0,3.08)),vec(0.08,0.21,0.11),Pivot:toWorld(ang(0,90,140)),C1,"prism") holoParent(54,31)
+    holoClipEnabled(54,1,1)
+    holoClip(54,1,vec(0,1.07,0),vec(0,-1,0.34),0)
+    holoStyle(55,Pivot:toWorld(vec(4,0,0.4)),vec(0.08,0.4,0.11),Pivot:toWorld(ang(0,90,95)),C1,"prism") holoParent(55,31)
+    holoStyle(56,Pivot:toWorld(vec(3.8,0,-5.5)),vec(0.1,0.02,0.6),Pivot:toWorld(ang(180,0,0)),C1,"pyramid") holoParent(56,31)
+    holoStyle(57,Pivot:toWorld(vec(3.15,0,0.5)),vec(0.07,0.08,0.4),Pivot:toWorld(ang(180,0,0)),C1,"prism") holoParent(57,31)
+    holoStyle(58,Pivot:toWorld(vec(3.92,0,3.48)),vec(0.055,0.08,0.215),Pivot:toWorld(ang(50,0,0)),C1,"cube") holoParent(58,31)
+    holoStyle(59,Pivot:toWorld(vec(4.9,0,4.85)),vec(0.059,0.08,0.13),Pivot:toWorld(ang(10,0,0)),C1,"cube") holoParent(59,31)
+    holoStyle(60,Pivot:toWorld(vec(4.55,0,5.8)),vec(0.059,0.08,0.13),Pivot:toWorld(ang(-50,0,0)),C1,"cube") holoParent(60,31)
+    I = 0
+}
+#Works best with weapon_pistol or the CS:S berettas
+if(PlayerTarget:weapon():type()=="weapon_pistol"|PlayerTarget:weapon():type()=="weapon_crowbar")
+{PlayerTarget:weapon():setAlpha(0) Hold = 1} 
+else
+{Hold = 0 PlayerTarget:weapon():setAlpha(255)}
+
+if($Hold & Hold == 1)
+{
+    for(I=0,60){
+        holoAlpha(I,255)   
+    }
+    holoPos(0,PlayerTarget:attachmentPos("anim_attachment_lh"))
+    holoAng(0,PlayerTarget:attachmentAng("anim_attachment_lh"))
+    holoParentAttachment(0,PlayerTarget,"anim_attachment_lh")
+    
+    holoPos(30,PlayerTarget:attachmentPos("anim_attachment_rh"))
+    holoAng(30,PlayerTarget:attachmentAng("anim_attachment_rh"))
+    holoParentAttachment(30,PlayerTarget,"anim_attachment_rh")
+
+    holoPos(1,Pivot:toWorld(vec(2.2,0.5,-2.2)))
+    holoPos(31,Pivot2:toWorld(vec(2.2,-0.5,-2.9)))
+
+} 
+elseif($Hold & Hold == 0)
+{
+    for(I=0,60){
+        holoAlpha(I,0)   
+    }   
+}
+

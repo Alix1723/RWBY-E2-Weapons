@@ -1,0 +1,406 @@
+#[
+Penny's Swords
+
+Literally nobody saw that "Penny is a robot" twist coming ever
+
+HOW TO USE: 
+Take out Crowbar and/or Laser Pointer:
+    M1 to throw and stick swords into props - hold down E once stuck into something to pull yourself towards it
+    M2 to bring them back
+    E to throw spinning circle of swords
+    R to charge up and fire laser
+
+REQUIRES:
+HoloModelAny
+TF2 (Sounds)
+A decent holo max limit (default 250 = 8 swords)
+
+http://rwby.wikia.com/wiki/Penny%27s_Swords
+
+Written by Alix
+]#
+
+@name Penny's Swords
+@persist [PlayerTarget Prop E Base Pivot]:entity
+@persist [C1 C2 C3 C4 C5]:vector
+@persist [Anim SmAnim Hold NumBlades I J Time Deploy Fire M1 M2 Reload Use Spinner]
+@persist [Stab Dist]:array
+
+#Thanks to The Sandvich Maker for this
+#include "lib/HoloStyleFunction"
+
+runOnTick(1)
+
+if(first())
+{
+    NumBlades = 3  #How many swords to spawn. Any number >=1 will work, but you will hit the default holograms limit at 9 or so
+    #If you're crazy you can use "wire_expression2_unlimited 1" in singleplayer and spawn up to 34, but it WILL lag the shit out of you!
+    
+    entity():setAlpha(0)
+    PlayerTarget = owner()
+    
+    #Hey, people who change these? Fuck you. 
+    C1 = vec(80,80,80) # Dark grey
+    C2 = vec(255,213,109) # Gold
+    C3 = vec(140,140,140) #Light grey
+    C4 = vec(40,40,40) #Darker grey
+    C5 = vec(160,255,170) #Green
+ 
+    for(I=1,NumBlades)
+    {
+        Stab[I,number] = 0    
+    }
+    
+    Pivot = holoCreate(5000) holoScale(5000,vec()) holoParent(5000,entity()) 
+    Base = holoCreate(5001,Pivot:toWorld(vec(0,0,0)),vec(0.1,0.1,0.1),Pivot:toWorld(ang(0,0,0)),C5,"models/hunter/tubes/tube1x1x8.mdl") holoParent(5001,entity()) 
+    holoAlpha(5001,0) holoMaterial(5001,"models/alyx/emptool_glow")
+    holoPos(5000,owner():pos()+vec(0,0,55))
+    holoAng(5000,owner():angles())
+    holoParent(5000,owner())
+    rangerDefaultZero(0)
+    print("Spawning " + NumBlades * 29 + " holograms, please wait...")
+    lightCreate(1,owner():pos())
+    lightParent(1,owner())
+    lightColor(1,C5)
+    lightBrightness(1,256)
+    lightDistance(1,256)
+    
+    lightToggle(1,0)
+}
+
+#Spawn a whole lot of holograms
+while(holoCanCreate()&J<=NumBlades*29)
+{
+    holoCreate(J) holoScale(J,vec())
+    J++
+}
+
+#Style the holos
+if(J>=NumBlades*29 & I <=NumBlades*29)
+{
+    #Blade base
+    holoStyle(I , Pivot:toWorld(vec(0,0,10)),vec(),Pivot:toWorld(ang()),vec(),"cube") holoAlpha(I,5000)
+    holoStyle(I+1 , Pivot:toWorld(vec(0,0,10)),vec(0.4,0.4,0.4),Pivot:toWorld(ang(0,0,90)),C2,"hq_torus_thick")  holoParent(I+1,I)
+    holoStyle(I+2 , Pivot:toWorld(vec(0,0,10)),vec(0.3,0.3,0.1),Pivot:toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(I+2,I) #Makeshift hinge
+    
+    #Standby symbols
+    if(holoModelAny()){
+        holoStyle(I+3 , Pivot:toWorld(vec(0,0,10)),vec(0.45,0.45,0.5),Pivot:toWorld(ang(0,0,90)),vec(255,255,255),"models/cheeze/buttons2/pwr_green.mdl") holoParent(I+3,I)
+        holoStyle(I+4 , Pivot:toWorld(vec(0,0,10)),vec(0.45,0.45,0.5),Pivot:toWorld(ang(0,0,-90)),vec(255,255,255),"models/cheeze/buttons2/pwr_green.mdl") holoParent(I+4,I)
+    }
+    else
+    {
+        holoAlpha(I+3,0) 
+        holoAlpha(I+4,0) 
+    }
+    
+    #Handle
+    holoStyle(I+5 , Pivot:toWorld(vec(2.8,0,10)),vec(0.11,0.07,0.15),Pivot:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(I+5,I+2)
+    holoStyle(I+6 , Pivot:toWorld(vec(5.2,0,10)),vec(0.10,0.06,0.3),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(I+6,I+2)
+    holoStyle(I+7 , Pivot:toWorld(vec(7.5,0,10)),vec(0.11,0.07,0.14),Pivot:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(I+7,I+2)
+    
+    #Bridge
+    holoStyle(I+8 , Pivot:toWorld(vec(-4,0,10)),vec(0.35,0.07,0.06),Pivot:toWorld(ang(0,0,0)),C4,"cube") holoParent(I+8,I)
+    holoStyle(I+9 , Pivot:toWorld(vec(-10.4,0,9.75)),vec(1.4,0.04,0.13),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(I+9,I)
+    holoStyle(I+10 , Pivot:toWorld(vec(-10,0,9)),vec(0.02,0.03,1.45),Pivot:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(I+10,I)
+    
+    #Blade parts
+    holoStyle(I+11 , Pivot:toWorld(vec(0,0,15.4)),vec(2,0.9,0.02),Pivot:toWorld(ang(0,0,90)),C3,"hq_tube_thin") holoParent(I+11,I)
+    holoClipEnabled(I+11,1,1) holoClipEnabled(I+11,2,1) holoClipEnabled(I+11,3,1)
+    holoClip(I+11,1,vec(),vec(-1,0,0),0) holoClip(I+11,2,vec(-10,0,0),vec(1,0,0),0) holoClip(I+11,3,vec(0,0,0),vec(0,-1,0),0)
+
+    holoStyle(I+12 , Pivot:toWorld(vec(-20,0,15.09)),vec(2,0.75,0.02),Pivot:toWorld(ang(0,0,90)),C3,"hq_tube_thin") holoParent(I+12,I)
+    holoClipEnabled(I+12,1,1) holoClipEnabled(I+12,2,1) holoClipEnabled(I+12,3,1)
+    holoClip(I+12,1,vec(1.35,0,0),vec(1,0,0),0) holoClip(I+12,2,vec(10,0,0),vec(-1,0,0),0) holoClip(I+12,3,vec(0,0,0),vec(0,-1,0),0)
+    
+    holoStyle(I+13 , Pivot:toWorld(vec(-1,0,13.5)),vec(2,0.7,0.04),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(I+13,I)
+    holoClipEnabled(I+13,1,1) holoClipEnabled(I+13,2,1) holoClipEnabled(I+13,3,1)
+    holoClip(I+13,1,vec(3,0,0),vec(-1,0,0),0) holoClip(I+13,2,vec(-8.92,0,0),vec(1,0,0),0) holoClip(I+13,3,vec(0,0,0),vec(0,-1,0),0)
+
+    holoStyle(I+14 , Pivot:toWorld(vec(-18.8,0,13.5)),vec(2,0.6,0.04),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(I+14,I)
+    holoClipEnabled(I+14,1,1) holoClipEnabled(I+14,2,1) holoClipEnabled(I+14,3,1)
+    holoClip(I+14,1,vec(0,0,0),vec(1,0,0),0) holoClip(I+14,2,vec(8.92,0,0),vec(-1,0,0),0) holoClip(I+14,3,vec(0,0,0),vec(0,-1,0),0)
+    
+    #Green strip
+    holoStyle(I+15 , Pivot:toWorld(vec(-12,0,10.1)),vec(1.13,0.05,0.03),Pivot:toWorld(ang(0,0,0)),C5,"cube") holoParent(I+15,I)
+    
+    #Patching a hole
+    holoStyle(I+16 , Pivot:toWorld(vec(-10.5,0,10.5)),vec(0.25,0.04,0.2),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(I+16,I)
+    
+    #End cap
+    holoStyle(I+17 , Pivot:toWorld(vec(-18.9,0,9.7)),vec(0.04,0.08,0.15),Pivot:toWorld(ang(0,0,0)),C4,"cube") holoParent(I+17,I)
+    holoStyle(I+18 , Pivot:toWorld(vec(-18.9,0,10.93)),vec(0.08,0.04,0.05),Pivot:toWorld(ang(0,90,0)),C4,"prism") holoParent(I+18,I)
+    
+    #Section B
+    holoStyle(I+19 , Pivot:toWorld(vec(-19.1,0,9.7)),vec(0.04,0.08,0.15),Pivot:toWorld(ang(0,0,0)),C4,"cube") holoParent(I+19,I) #Makeshift hinge again
+    holoStyle(I+20 , Pivot:toWorld(vec(-19.1,0,10.9)),vec(0.08,0.04,0.05),Pivot:toWorld(ang(0,90,0)),C4,"prism") holoParent(I+20,I+19)
+    
+    #Blade parts again
+    holoStyle(I+21 , Pivot:toWorld(vec(-15,0,15.4)),vec(2,0.9,0.02),Pivot:toWorld(ang(0,0,90)),C3,"hq_tube_thin") holoParent(I+21,I+19)
+    holoClipEnabled(I+21,1,1) holoClipEnabled(I+21,2,1) holoClipEnabled(I+21,3,1)
+    holoClip(I+21,1,vec(-4,0,0),vec(-1,0,0),0) holoClip(I+21,2,vec(-10,0,0),vec(1,0,0),0) holoClip(I+21,3,vec(0,0,0),vec(0,-1,0),0)
+    
+    holoStyle(I+22 , Pivot:toWorld(vec(-25.02,0,11.25)),vec(2,0.02,0.385),Pivot:toWorld(ang(0,0,0)),C3,"prism") holoParent(I+22,I+19)
+    holoClipEnabled(I+22,1,1)
+    holoClip(I+22,1,vec(),vec(-1,0,0),0)
+    
+    holoStyle(I+23 , Pivot:toWorld(vec(-15.5,0,12.92)),vec(2.15,0.54,0.04),Pivot:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(I+23,I+19)
+    holoClipEnabled(I+23,1,1) holoClipEnabled(I+23,2,1) holoClipEnabled(I+23,3,1)
+    holoClip(I+23,1,vec(-3.5,0,0),vec(-1,0,0),0) holoClip(I+23,2,vec(-9.5,0,0),vec(1,0,0),0) holoClip(I+23,3,vec(0,0,0),vec(0,-1,0),0)
+    
+    holoStyle(I+24 , Pivot:toWorld(vec(-24,0,-10)),vec(2.8,3.75,0.04),Pivot:toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(I+24,I+19)
+    holoClipEnabled(I+24,1,1) holoClipEnabled(I+24,2,1)
+    holoClip(I+24,1,vec(-1,0,0),vec(-1,0,0),0) holoClip(I+24,2,vec(0,18.9,0),vec(0,1,0),0)
+    
+    holoStyle(I+25 , Pivot:toWorld(vec(-26,0,9.8)),vec(1.2,0.04,0.16),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(I+25,I+19)
+    holoClipEnabled(I+25,1)
+    holoClip(I+25,vec(-5.4,0,0),vec(1,0,-2),0)
+    
+    #Green strip
+    holoStyle(I+26 , Pivot:toWorld(vec(-24.5,0,10.1)),vec(0.9,0.05,0.03),Pivot:toWorld(ang(0,0,0)),C5,"cube") holoParent(I+26,I+19)
+    holoStyle(I+27 , Pivot:toWorld(vec(-20.5,0,10.2)),vec(0.2,0.06,0.08),Pivot:toWorld(ang(0,0,0)),C4,"cube") holoParent(I+27,I+19)
+    holoStyle(I+28 , Pivot:toWorld(vec(-20.5,0,10.2)),vec(0.16,0.065,0.04),Pivot:toWorld(ang(0,0,0)),C2,"cube") holoParent(I+28,I+19)
+    
+    holoPos(I,entity():pos() + vec(0,I/10,0))
+    rangerFilter(owner())
+    rangerPersist(1)
+    
+    I+=29   
+    #Thank you based sandvich
+}
+
+#If all holos have finished spawning/styling
+if(I >= NumBlades*29)
+{
+    #WARNING: Spaghetti code ahead
+    if(Deploy>=100){
+    #Inputs
+        if(owner():weapon():type() == "weapon_crowbar"|owner():weapon():type() == "laserpointer")
+        {
+            M1 = owner():keyAttack1()
+            M2 = owner():keyAttack2()
+            Reload = owner():keyReload()
+            Use = owner():keyUse()
+        }
+        else
+        {
+            M1 = M2 = Reload = Use = 0
+        }
+        
+        if(M1 & !Reload & !Fire){
+            Fire = 1
+            Spinner = 0 
+            owner():soundPlay(4,2,"weapons/ar2/ar2_reload_push.wav") 
+            for(I=0,NumBlades-1)
+            {
+                holoEntity(I*29):setTrails(15,0,0.5,"trails/laser",C5,150)                
+            }
+            if(Prop)
+            {
+                Prop:propDelete() 
+                Prop = noentity()
+            }
+        }
+        if(M2 & Fire)
+        {
+            Fire=0 
+            owner():soundPlay(4,1,"weapons/stunstick/stunstick_swing"+randint(1,2)+".wav")
+            for(I=0,NumBlades-1)
+            {
+                holoEntity(I*29):removeTrails()                
+            }
+        }
+        
+        #Giant death laser of death
+        Anim = Reload*100
+            if(SmAnim<Anim){SmAnim++}
+            if(SmAnim>Anim){SmAnim--}
+        Time = (Time+1)%360
+        if(SmAnim>=99)
+        {
+            LaserRanger = rangerOffset(1000000,Pivot:toWorld(vec(60,0,0)),holoEntity(5001):up()) 
+            if(!LaserRanger:hitWorld() & LaserRanger:entity():owner() == owner())
+            {
+                LaserRanger:entity():propBreak()
+            }  
+        }
+        
+        #Spinning saw mode
+        if(Use & $Use & !Fire & !Anim & !Spinner){
+            Spinner = 1
+            Prop = propSpawn("models/hunter/tubes/circle2x2.mdl",owner():toWorld(vec(100,0,50)),owner():eyeAngles(),0)
+            Prop:setMass(750)
+            Prop:propGravity(0)
+            Prop:setAlpha(0)
+            Prop:applyForce(owner():eye() * Prop:mass() * 3000)
+            Prop:soundPlay(5,1,"weapons/cbar_miss1.wav")
+            Prop:soundPlay(6,1,"ambient/sawblade_impact1.wav")
+            Prop:applyAngForce(ang(0,100*Prop:mass()*Prop:mass(),0))
+        }
+        elseif(Use & $Use & Spinner & Prop | Prop:velL():length()<1000 & !Use & Prop)
+        {
+            holoEntity(0):soundPlay(1,2,"weapons/demo_sword_swing"+randint(1,3)+".wav")
+            Prop:propDelete()
+            Prop = noentity()
+            Spinner = 0
+        }
+    }
+    else
+    {
+        #Sounds and also decrementing Deploy 
+        if(Deploy==1)   {Pivot:soundPlay(1,1,"weapons/draw_machete_sniper.wav")}  
+        if(Deploy==50)  {Pivot:soundPlay(2,1,"weapons/knife/knife_deploy1.wav")} # 
+        if(Deploy==80)  {Pivot:soundPlay(3,1,"weapons/samurai/tf_katana_draw_01.wav")}
+        if(Deploy==99)  {Pivot:soundPlay(4,1,"buttons/button9.wav")}
+        
+        Deploy+=0.5 
+    }    
+    
+    #Loop through each blade
+    for(I=0,NumBlades-1)
+    {
+        #Check deploy (again)
+        if(Deploy>=100)
+        {
+            #Deparenting 
+            if(!Fire & Stab[I,number] == 1)
+            {
+                holoEntity(I*29):soundPlay(1,2,"weapons/draw_shovel_soldier.wav")
+                holoUnparent(I*29)    
+                Stab[I,number] = 0
+            }
+            
+            if(Fire)
+            {   #Stabby mode
+                R = rangerOffset(500,holoEntity(I*29):pos(),-holoEntity(I*29):forward())
+                if(R:distance()>25)
+                {
+                    TargetPos = holoEntity(I*29):pos() - holoEntity(I*29):forward()*100
+                }
+                else
+                {
+                    if(R:entity() & !Stab[I,number] & R:entity()!=owner())
+                    {
+                        TargetPos = holoEntity(I*29):pos()
+                        holoParent(I*29,R:entity())        
+                        holoEntity(I*29):soundPlay(2,2,"weapons/cleaver_hit_world_01.wav") soundPitch(2,150)
+                        R:entity():applyOffsetForce(-holoEntity(I*29):forward()*R:entity():mass()*5,holoEntity(I*29):pos())
+                        Stab[I,number] = 1
+                        Dist[I,number] = holoEntity(I*29):pos():distance(owner():pos())
+                    }
+                    else
+                    {   #Hit something
+                        Dir = (owner():pos() - holoEntity(I*29):pos())
+                        Dist2 = holoEntity(I*29):pos():distance(owner():pos())
+                        if(R:entity())      #Hit an entity
+                        {                   #Apply force to the entity
+                            R:entity():applyOffsetForce((Dir)*clamp(Dist2-Dist[I,number],0,99999)-R:entity():vel()*2,holoEntity(I*29):pos())    
+                        }
+                        else    #Hit the world
+                        {       #Apply force to the user
+                            #ifdef entity:setVelocity(vector)
+                            if(Use)
+                                {
+                                    owner():setVelocity(Dir*-0.05)    
+                                }    
+                            #endif
+                        }
+                        TargetPos = holoEntity(I*29):pos()
+                    }
+                }      
+            }  
+            elseif(Anim&!Fire)
+            {
+                if(Prop&Spinner){Spinner = 0 Prop:propDelete() Prop = noentity()}
+                #Spinning laser mode
+                Spd = SmAnim < 100 ? (SmAnim*SmAnim) / 8 : 0
+                TargetPos = Pivot:toWorld(vec(40,25 * cos((Spd)+(I*(360/NumBlades))), 25 * sin((Spd)+(I*(360/NumBlades)))))
+                holoAng(I*29,owner():eyeAngles()+ang(180,0,-Spd-(I*(360/NumBlades))-90))
+                
+                #Sounds
+                if(SmAnim==1){Pivot:soundPlay(1,0,"ambient/energy/force_field_loop1.wav")} soundPitch(1,50+SmAnim*1.5)
+                if(SmAnim==99){Pivot:soundPlay(2,2,"weapons/cow_mangler_explosion_charge_0"+randint(1,6)+".wav")
+                                Pivot:soundPlay(3,0,"ambient/machines/machine_whine1.wav") 
+                                lightToggle(1,1)}
+                
+                #Firing the laser
+                if(SmAnim >=100){
+                    Offsets = 1 * vec(random(-1,1),random(-1,1),random(-1,1))
+                    holoAlpha(5001, 255)
+                    holoPos(5001, Pivot:toWorld(vec(60,0,0)))
+                    holoAng(5001, (owner():aimPos() - Pivot:toWorld(vec(60,0,0))):toAngle() + ang(90,0,0))
+                    holoScale(5001,vec(0.8,0.8,owner():aimPos():distance(Pivot:pos())/11.5))
+                }
+                else
+                {Offsets = vec()}
+            }
+            elseif(Spinner)
+            {
+                #Circular saw mode
+                TargetPos = Prop:toWorld(vec(cos((I*(360/NumBlades)))*10,sin((I*(360/NumBlades)))*10,0))
+                holoAng(I*29,Prop:toWorld(ang(0,180+I*(360/NumBlades),90)))
+                
+            }
+            else
+            {   
+                #Normal/floating
+                if(SmAnim>0)
+                {
+                    SmAnim = 0 soundStop(1) soundStop(2) soundStop(3)
+                    Pivot:soundPlay(4,5,"ambient/energy/power_off1.wav")
+                }
+                    
+                Offsets = 4 * vec(0,sin(Time + (I*(360/NumBlades))),sin(Time + (I*(360/NumBlades))))
+                TargetPos = Pivot:toWorld(vec(0,40*cos(I*(180/NumBlades) + 90/NumBlades),40*sin(I*(180/NumBlades) + 90/NumBlades)))
+                if(!Stab[I,number])
+                {
+                    holoAng(I*29,owner():eyeAngles()+ang(180,0,0))
+                }
+                holoAlpha(5001,0) 
+                lightToggle(1,0)
+            }            
+        }
+        else
+        {   #Deployment animation
+            if(Deploy<80)
+            {
+            TargetPos = entity():toWorld(vec(Deploy < 25 ? sin(Deploy*3)*25 : 25,0, Deploy < 25 ? sin(Deploy*3)*25 : 25 ))
+            holoAng(I*29,entity():toWorld(ang(Deploy < 32 ? 60 + sin(Deploy*2.5)*-360 : 165-Deploy*3,180,0)))
+            }
+            else
+            {
+                TargetPos = entity():toWorld(vec(25,(I - (NumBlades/2))*4,25))
+                holoAng(I*29,entity():toWorld(ang(-60,180 + (I - (NumBlades/2))*5,0)))
+            }
+            
+            if(Deploy<50)
+            {
+                holoAng((I*29)+2,holoEntity(I*29):toWorld(ang(100*-0.45,0,90)))
+                holoPos((I*29)+19,holoEntity(I*29):toWorld(vec(-18.9 + 100*0.10,0,-0.26-0.015*100)))
+                holoAng((I*29)+19,holoEntity(I*29):toWorld(ang(1.80 * 100,0,0)))    
+            }
+            else
+            {
+                holoAng((I*29)+2,holoEntity(I*29):toWorld(ang(0*-0.45,0,90)))
+                holoPos((I*29)+19,holoEntity(I*29):toWorld(vec(-18.9 + 0*0.10,0,-0.26-0.015*0)))
+                holoAng((I*29)+19,holoEntity(I*29):toWorld(ang(1.80 * 0,0,0)))    
+            }            
+        }
+    
+        SmPos = ((TargetPos+Offsets) - holoEntity(I*29):pos()) * (0.3 + SmAnim/200)
+        if(!Stab[I,number])
+        {
+            #Smoothing out movement
+            holoPos(I*29,holoEntity(I*29):pos()+SmPos) 
+        
+            #Gun/Sword animation
+            if(!Fire & Deploy>=100)
+            {
+                holoAng((I*29)+2,holoEntity(I*29):toWorld(ang(Anim*-0.45,0,90)))
+                holoPos((I*29)+19,holoEntity(I*29):toWorld(vec(-18.9 + Anim*0.10,0,-0.26-0.015*Anim)))
+                holoAng((I*29)+19,holoEntity(I*29):toWorld(ang(1.80 * Anim,0,0)))
+            }
+        }
+    }
+    
+}

@@ -1,0 +1,281 @@
+#[
+Ruyi Bang and Jingu Bang
+
+HASHTAG SEAMONKEY
+
+USES:
+Crowbar for the Staff, HL2 pistol/Laserpointer for Gunchucks
+
+REQUIRES:
+TF2 (Sounds)
+holoModelAny
+
+http://rwby.wikia.com/wiki/Ruyi_Bang_and_Jingu_Bang
+
+Written by Alix
+]#
+
+@name SSSN - Ruyi Bang and Jingu Bang
+@persist [Pivot1 Pivot2 Base1 Base2 Base3 Base4 PlayerTarget Prop E]:entity
+@persist [C1 C2 BPos2 BPos4]:vector
+@persist [Anim SmAnim Hold M1 M2 RightAnim LeftAnim Offset Spwn I NumHolo]
+
+runOnTick(1)
+
+if(first())
+{
+    PlayerTarget = owner()
+    C1 = vec(100,0,0) # Red
+    C2 = vec(255,213,109) # Gold
+    #Pivts
+    Pivot1 = holoCreate(0) holoScale(0,vec()) holoParent(0,entity()) #R
+    Pivot2 = holoCreate(1) holoScale(1,vec()) holoParent(1,entity()) #L
+    
+    Base1 = holoCreate(2,Pivot1:toWorld(vec(6,0,-1)),vec(0.1,0.9,0.1)*0,Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(2,0)
+    Base2 = holoCreate(3,Pivot1:toWorld(vec(6,0,-1)),vec(0.1,0.9,0.1)*0,Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(3,0)
+    Base3 = holoCreate(4,Pivot1:toWorld(vec(6,0,-1)),vec(0.1,0.9,0.1)*0,Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(4,1)
+    Base4 = holoCreate(5,Pivot1:toWorld(vec(6,0,-1)),vec(0.1,0.9,0.1)*0,Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(5,1)
+    BPos1 = Base1:pos()
+    BPos2 = Base2:pos()
+    BPos3 = Base3:pos()
+    BPos4 = Base4:pos()
+    
+    #Chains 201 and 202
+        holoCreate(201) holoColor(201,C2) holoParent(201,Pivot1)
+        holoCreate(202) holoColor(202,C2) holoParent(202,Pivot2)
+        
+        #include "lib/HoloStyleFunction"
+        I = 6
+        NumHolo = 121
+} 
+if(I<=NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I,entity():pos(),vec())
+    I++
+}
+#This better work
+if(I>NumHolo)
+{
+    for(I=1,4)
+    {
+    #Centre
+    holoStyle(Offset+6,Pivot1:toWorld(vec(16.2,0,0)),vec(0.2,0.15,0.3),Pivot1:toWorld(ang(0,0,0)),C1,"cube") holoParent(Offset+6,Spwn+2)
+    holoStyle(Offset+7,Pivot1:toWorld(vec(17.42,0,0)),vec(0.6,0.15,0.3),Pivot1:toWorld(ang(180,0,0)),C1,"prism") holoParent(Offset+7,Spwn+2)
+    holoStyle(Offset+8,Pivot1:toWorld(vec(17.7,0,0)),vec(0.6,0.14,0.29),Pivot1:toWorld(ang(180,0,0)),C2,"prism") holoParent(Offset+8,Spwn+2)
+    
+    #Barrels
+    holoStyle(Offset+9,Pivot1:toWorld(vec(25,0,0.8)),vec(0.13,0.13,1.25),Pivot1:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(Offset+9,Spwn+2)
+    holoStyle(Offset+10,Pivot1:toWorld(vec(25,0,-0.8)),vec(0.13,0.13,1.2),Pivot1:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(Offset+10,Spwn+2)
+    
+    #Cap
+    holoStyle(Offset+11,Pivot1:toWorld(vec(32,0,0.8)),vec(0.16,0.15,0.15),Pivot1:toWorld(ang(90,0,0)),C2,"hq_tube") holoParent(Offset+11,Spwn+2)
+    holoStyle(Offset+12,Pivot1:toWorld(vec(32.7,0,1.9)),vec(0.04,0.03,0.05),Pivot1:toWorld(ang(15,0,0)),C2,"cube") holoParent(Offset+12,Spwn+2)
+    
+    #Slider thing
+    holoStyle(Offset+13,Pivot1:toWorld(vec(25,0,0.8)),vec(1.1,0.133,0.01),Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(Offset+13,Spwn+2)
+    holoStyle(Offset+14,Pivot1:toWorld(vec(21.22,0,0)),vec(0.05,0.15 ,0.14),Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(Offset+14,Spwn+2)   #HINGE sorta
+    holoStyle(Offset+15,Pivot1:toWorld(vec(21.2,0,0.8)),vec(0.15,0.15 ,0.05),Pivot1:toWorld(ang(90,0,0)),C2,"hq_cylinder") holoParent(Offset+15,Offset+14)
+    holoStyle(Offset+16,Pivot1:toWorld(vec(21.2,0,-0.8)),vec(0.15,0.15 ,0.05),Pivot1:toWorld(ang(90,0,0)),C2,"hq_cylinder") holoParent(Offset+16,Offset+14)
+    
+    #Handle
+    holoStyle(Offset+17,Pivot1:toWorld(vec(13,0,0.8)),vec(0.45,0.15,0.17),Pivot1:toWorld(ang(0,0,0)),C1,"cube") holoParent(Offset+17,Spwn+2)
+    holoStyle(Offset+18,Pivot1:toWorld(vec(10.3,0,1.215)),vec(0.102,0.102,0.15),Pivot1:toWorld(ang(0,0,90)),C1,"hq_cylinder") holoParent(Offset+18,Spwn+2)
+    holoStyle(Offset+19,Pivot1:toWorld(vec(8.47,0,-0.65)),vec(0.445,0.15,0.095),Pivot1:toWorld(ang(-46,0,0)),C1,"cube") holoParent(Offset+19,Spwn+2)
+    holoStyle(Offset+20,Pivot1:toWorld(vec(11.7,0,-3.95)),vec(0.9,0.8,0.15),Pivot1:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(Offset+20,Spwn+2)
+    holoClipEnabled(Offset+20,1,1)
+    holoClip(Offset+20,1,vec(0,0,0),vec(-0.65,1,0),0)
+    holoClipEnabled(Offset+20,2,1)
+    holoClip(Offset+20,2,vec(0,-3.5,0),vec(1,1,0),0)
+    holoStyle(Offset+21,Pivot1:toWorld(vec(7.2,0,-3.05)),vec(0.11,0.15,0.01),Pivot1:toWorld(ang(45,0,0)),C1,"cube") holoParent(Offset+21,Spwn+2)
+        
+    #Gold trim bit
+    holoStyle(Offset+22,Pivot1:toWorld(vec(11.7,0,-3.95)),vec(0.043,0.046,0.078),Pivot1:toWorld(ang(0,0,90)),C2,"models/hunter/tubes/tube4x4x05.mdl") holoParent(Offset+22,Spwn+2) 
+    holoMaterial(Offset+22,"models/debug/debugwhite")
+    holoClipEnabled(Offset+22,1)
+    holoClip(Offset+22,vec(0,1.8,0),vec(-0.2,1,0),0)
+    holoStyle(Offset+23,Pivot1:toWorld(vec(7.1,0,-2.55)),vec(0.11,0.152,0.02),Pivot1:toWorld(ang(45,0,0)),C2,"cube") holoParent(Offset+23,Spwn+2)
+    holoStyle(Offset+24,Pivot1:toWorld(vec(8.4,0,-0.35)),vec(0.42,0.152,0.01),Pivot1:toWorld(ang(-45,0,0)),C2,"cube") holoParent(Offset+24,Spwn+2)
+    holoStyle(Offset+25,Pivot1:toWorld(vec(15.2,0,1.42)),vec(0.84,0.152,0.01),Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(Offset+25,Spwn+2)
+    holoStyle(Offset+26,Pivot1:toWorld(vec(16.2,0,-1.44)),vec(0.2,0.152,0.01),Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(Offset+26,Spwn+2)
+    holoStyle(Offset+27,Pivot1:toWorld(vec(18.8,0,0)),vec(0.34,0.152,0.01),Pivot1:toWorld(ang(-45,0,0)),C2,"cube") holoParent(Offset+27,Spwn+2)
+    
+    #Trigger/lever
+    holoStyle(Offset+28,Pivot1:toWorld(vec(14,0,-0.8)),vec(0.2,4,0.2)*0,ang(),vec(),"cube") holoParent(Offset+28,Spwn+2) #HINGE
+    holoStyle(Offset+29,Pivot1:toWorld(vec(12.6,0,-1)),vec(0.25,0.2,0.02),Pivot1:toWorld(ang(0,0,90)),C2,"hq_tube") holoParent(Offset+29,Offset+28) 
+    holoStyle(Offset+30,Pivot1:toWorld(vec(8.2,0,-2.8)),vec(0.2,0.15,0.02),Pivot1:toWorld(ang(30,0,90)),C2,"hq_tube_thick") holoParent(Offset+30,Offset+28)
+    holoClipEnabled(Offset+30,1)
+    holoClip(Offset+30,vec(),vec(0,-1,0),0)     
+    holoStyle(Offset+31,Pivot1:toWorld(vec(10.1,0,-2.2)),vec(0.05,0.02,0.285),Pivot1:toWorld(ang(45,0,0)),C2,"cube") holoParent(Offset+31,Offset+28)
+    holoStyle(Offset+32,Pivot1:toWorld(vec(6.9,0,-1.1)),vec(0.2,0.15,0.01),Pivot1:toWorld(ang(20,0,90)),C2,"hq_tube_thick") holoParent(Offset+32,Offset+28)
+    holoClipEnabled(Offset+32,1)
+    holoClip(Offset+32,vec(-0.3,0,0),vec(-1,0.3,0),0)
+    holoStyle(Offset+33,Pivot1:toWorld(vec(7.55,0,-0.6)),vec(0.1,0.037,0.01),Pivot1:toWorld(ang(20,0,90)),C2,"cube") holoParent(Offset+33,Offset+28)
+    holoStyle(Offset+34,Pivot1:toWorld(vec(6.65,0,-1.85)),vec(0.1,0.037,0.01),Pivot1:toWorld(ang(45,0,90)),C2,"cube") holoParent(Offset+34,Offset+28)
+    
+    holoPos(Spwn+2,Pivot1:toWorld(vec(0,Offset/4,-Offset/6)))
+    
+        Spwn++
+        Offset+=29
+    }
+    I = 0
+}
+elseif(I<=0)
+{
+
+#Staff
+if(PlayerTarget:weapon():type() == "weapon_crowbar" | PlayerTarget:weapon():type() == "weapon_blank_melee2")
+{
+    Hold = 2
+    PlayerTarget:weapon():setAlpha(0)
+    Anim = 1
+}
+#Split shotguns
+elseif(PlayerTarget:weapon():type() == "weapon_pistol" | PlayerTarget:weapon():type() == "laserpointer")
+{
+    Hold = 1
+    PlayerTarget:weapon():setAlpha(0)
+    Anim = 0
+}
+#Carry mode
+else
+{
+    Hold = 0   
+}
+
+#Sliding pieces
+holoPos(14,Base1:toWorld(vec(15.22 + Anim*5,0,1)))
+holoPos(43,Base2:toWorld(vec(15.22 + Anim*5,0,1)))
+holoPos(72,Base3:toWorld(vec(15.22 + Anim*5,0,1)))
+holoPos(101,Base4:toWorld(vec(15.22 + Anim*5,0,1)))
+
+if($Hold)
+{
+    #Gunchucks mode
+    if(Hold==1)
+    {
+        #Pivot 1
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_rh")) 
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_rh")   
+        #Pivot 2
+        holoPos(1,PlayerTarget:attachmentPos("anim_attachment_lh"))
+        holoAng(1,PlayerTarget:attachmentAng("anim_attachment_lh")) 
+        holoParentAttachment(1,PlayerTarget,"anim_attachment_lh") 
+        #Base 1
+        holoPos(2,holoEntity(0):toWorld(vec(-2,0,1)))
+        holoAng(2,holoEntity(0):toWorld(ang(0,0,0)))  
+        #Base 3
+        holoPos(4,holoEntity(1):toWorld(vec(-2,0,1)))
+        holoAng(4,holoEntity(1):toWorld(ang(0,0,0))) 
+        
+        Base1:soundPlay(1,1,"weapons/shotgun_cock_forward.wav")
+    }
+    #Staff mode
+    elseif(Hold==2)
+    {
+        #Pivot 1
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_rh")) 
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_rh")   
+        #Pivot 2
+        holoPos(1,Pivot1:toWorld(vec(0,0,10)))
+        holoAng(1,Pivot1:toWorld(ang(90,0,0)))
+        holoParent(1,Pivot1)
+        #Base 1
+        holoPos(2,Pivot2:toWorld(vec(34,0,-1)))
+        holoAng(2,Pivot2:toWorld(ang(0,0,0)))
+        #Base 2
+        holoPos(3,Pivot2:toWorld(vec(39,0,1)))
+        holoAng(3,Pivot2:toWorld(ang(180,0,0)))   
+        #Base 3
+        holoPos(4,Pivot2:toWorld(vec(-12,0,-1)))
+        holoAng(4,Pivot2:toWorld(ang(0,0,0))) 
+        #Base 4
+        holoPos(5,Pivot2:toWorld(vec(-7,0,1)))
+        holoAng(5,Pivot2:toWorld(ang(180,0,0))) 
+        
+        Base1:soundPlay(1,1,"weapons/smg_clip_in.wav")
+    }
+    #Carry mode
+    else
+    {
+        #Pivot 1
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest")) 
+        holoParentAttachment(0,PlayerTarget,"chest")   
+        #Pivot 2
+        holoPos(1,Pivot1:pos())#PlayerTarget:attachmentPos("anim_attachment_lh"))
+        holoAng(1,Pivot1:toWorld(ang(0,90,180)))#PlayerTarget:attachmentAng("anim_attachment_lh")) 
+        holoParent(1,Pivot1)#holoParentAttachment(1,PlayerTarget,"anim_attachment_lh") 
+        #Base 1
+        holoPos(2,Pivot2:toWorld(vec(-14,-8,-3)))
+        holoAng(2,Pivot2:toWorld(ang(0,0,0)))
+        #Base 2
+        holoPos(3,Pivot2:toWorld(vec(-14,-8,0)))
+        holoAng(3,Pivot2:toWorld(ang(0,0,0)))   
+        #Base 3
+        holoPos(4,Pivot2:toWorld(vec(-14,-8,3)))
+        holoAng(4,Pivot2:toWorld(ang(0,0,0))) 
+        #Base 4
+        holoPos(5,Pivot2:toWorld(vec(-14,-8,6)))
+        holoAng(5,Pivot2:toWorld(ang(0,0,0)))    
+    
+        Base1:soundPlay(1,1,"weapons/draw_default.wav")
+        }
+    }
+}
+
+#Firing
+M1 = PlayerTarget:keyAttack1()
+M2 = PlayerTarget:keyAttack2()
+
+if(Hold==1)
+{
+    #Chains
+        BPos1 = Base1:pos()
+        BPos2 = Base2:pos()
+        BPos3 = Base3:pos()
+        BPos4 = Base4:pos()
+        
+        #Only the best in cheap jigglebone effects! Buy now and get another one ABSOLUTELY FREE!
+        DirectionA = ((Base2:pos() - Base1:pos())/2):normalized()
+        DistanceA = Base2:pos():distance(Base1:pos())
+        TranslateA = (DirectionA) * (8-DistanceA) + vec(0,0,-1) #- $BPos1*0.8
+        holoPos(3,holoEntity(3):pos()+TranslateA - $BPos2*0.4)
+        holoPos(201,(Base1:pos() + Base2:pos()) / 2)
+        holoScale(201,vec(DistanceA/11.2,0.05,0.05))
+        holoAng(201,DirectionA:toAngle())
+        holoAng(3,holoEntity(201):angles())
+        
+        DirectionB = ((Base4:pos() - Base3:pos())/2):normalized()
+        DistanceB = Base4:pos():distance(Base3:pos())
+        TranslateB = (DirectionB) * (8-DistanceB) + vec(0,0,-1) #+ $BPos1*0.2
+        holoPos(5,holoEntity(5):pos()+TranslateB - $BPos4*0.4)
+        holoPos(202,(Base3:pos() + Base4:pos()) / 2)
+        holoScale(202,vec(DistanceB/11.2,0.05,0.05))
+        holoAng(202,DirectionB:toAngle())
+        holoAng(5,holoEntity(202):angles())
+    
+    if(M1 & $M1 & RightAnim<=0)
+    {
+        Base1:soundPlay(1,1,"weapons/shotgun_shoot.wav")
+        RightAnim = 100
+    }        
+}
+else
+{
+    holoScale(201,vec())
+    holoScale(202,vec())    
+}
+
+if(RightAnim>0)
+{
+    RightAnim-=5
+    holoAng(28,Pivot1:toWorld(ang((RightAnim>50&RightAnim<90 ? -25 : 0),0,0)))
+
+    if(RightAnim==70)
+    {
+        Base1:soundPlay(2,1,"weapons/scatter_gun_reload.wav")
+    }
+}
+

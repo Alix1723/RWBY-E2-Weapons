@@ -1,0 +1,165 @@
+#[
+Crocea Mors
+
+I'm calling it now guys, his aura is Yang's mom
+
+HOW TO USE:
+Take out crowbar. Whack stuff.
+
+REQUIRES:
+TF2 (Blade + Sounds)
+
+http://rwby.wikia.com/wiki/Crocea_Mors
+
+Written by Alix
+]#
+
+
+@name JNPR Crocea Mors 
+@persist [Base1 Pivot1 Base2 Pivot2 PlayerTarget]:entity
+@persist [Hold] [SwordWeapon]:string
+ 
+runOnTick(1)
+
+if(first())
+{
+    SwordWeapon = "weapon_crowbar"    
+    PlayerTarget = owner()
+    C1 = vec(54,95,175) #Dark blue
+    C2 = vec(175,139,70) #Gold
+    C3 = vec(240,240,240) #White
+    Pivot1 = holoCreate(0) holoAlpha(0,0) holoParent(0,entity())
+    
+    #Hilt
+    Base1 = holoCreate(1,Pivot1:toWorld(vec(0,0,0)),vec(0.08,0.08,0.55),Pivot1:toWorld(ang(0,0,0)),C1,"hq_cylinder") holoParent(1,0)
+    holoCreate(2,Pivot1:toWorld(vec(0,0,-3.5)),vec(0.11,0.11,0.03),Pivot1:toWorld(ang(0,0,0)),C2,"hq_cylinder") holoParent(2,1)
+    holoCreate(3,Pivot1:toWorld(vec(0,0,-3.9)),vec(0.10,0.09,0.07),Pivot1:toWorld(ang(0,0,0)),C2,"hq_rcylinder") holoParent(3,1)
+    holoCreate(4,Pivot1:toWorld(vec(0,0,3.12)),vec(0.08,0.13,0.063),Pivot1:toWorld(ang(0,0,0)),C2,"cube") holoParent(4,1)
+    holoCreate(5,Pivot1:toWorld(vec(0,0,3.565)),vec(0.13,0.08,0.015),Pivot1:toWorld(ang(0,90,0)),C2,"prism") holoParent(5,1)
+    holoCreate(6,Pivot1:toWorld(vec(0,0,2.65)),vec(0.13,0.08,0.015),Pivot1:toWorld(ang(180,90,0)),C2,"prism") holoParent(6,1)
+    holoCreate(7,Pivot1:toWorld(vec(0,4.6,3.46)),vec(0.06,0.06,0.7),Pivot1:toWorld(ang(85,90,0)),C2,"prism") holoParent(7,1)
+    holoClipEnabled(7,1)
+    holoClip(7,vec(0,0,-2),vec(0,0,-1),0)
+    holoCreate(8,Pivot1:toWorld(vec(0,2.5,3.27)),vec(0.12,0.06,0.06),Pivot1:toWorld(ang(130,90,0)),C2,"prism") holoParent(8,1)
+    holoCreate(9,Pivot1:toWorld(vec(0,-4.6,3.46)),vec(0.06,0.06,0.7),Pivot1:toWorld(ang(-85,90,0)),C2,"prism") holoParent(9,1)
+    holoClipEnabled(9,1)
+    holoClip(9,vec(0,0,-2),vec(0,0,-1),0)
+    holoCreate(10,Pivot1:toWorld(vec(0,-2.5,3.27)),vec(0.12,0.06,0.06),Pivot1:toWorld(ang(-130,90,0)),C2,"prism") holoParent(10,1)
+    
+    #Blade
+    holoCreate(11,Pivot1:toWorld(vec(0,0,4.5)),vec(0.06,0.06,0.15),Pivot1:toWorld(ang(0,45,0)),C2,"pyramid") holoParent(11,1)
+    holoCreate(12,Pivot1:toWorld(vec(0,0,-13.15)),vec(0.7,0.7,0.5),Pivot1:toWorld(ang(90,0,0)))  holoParent(12,1)
+    holoModel(12,"models/weapons/c_models/c_claidheamohmor/c_claidheamohmor.mdl")
+    holoMaterial(12,"phoenix_storms/mrref2") #
+    holoClipEnabled(12,1)
+    holoClip(12,vec(-16,0,0),vec(-1,0,0),0)
+    
+    #Shield
+    
+    Pivot2 = holoCreate(13) holoAlpha(13,0) holoParent(0,entity())
+    #Centre column
+    Base2 = holoCreate(14,Pivot2:toWorld(vec(0,0,16.25)),vec(0.1,0.2,2.01),Pivot2:toWorld(ang(0,0,0)),C3,"cube") holoParent(14,13)
+    holoCreate(15,Pivot2:toWorld(vec(0,0,29)),vec(0.2,0.1,0.12),Pivot2:toWorld(ang(0,90,0)),C3,"prism") holoParent(15,14)
+    holoCreate(16,Pivot2:toWorld(vec(0,0.6,4)),vec(0.15,0.12,0.08),Pivot2:toWorld(ang(0,0,-10)),C2,"cube") holoParent(16,14)
+    holoCreate(17,Pivot2:toWorld(vec(0,-0.6,4)),vec(0.15,0.12,0.08),Pivot2:toWorld(ang(0,0,10)),C2,"cube") holoParent(17,14)
+    #Sides
+    holoCreate(18,Pivot2:toWorld(vec(0,12,5.5)),vec(4.65,3.8,0.05),Pivot2:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(18,14)
+    holoClipEnabled(18,1,1)
+    holoClipEnabled(18,2,1)
+    holoClip(18,1,vec(0,-13,0),vec(0,-1,0),0)
+    holoClip(18,2,vec(2.5,0,0),vec(-1,0.1,0),0)
+    holoCreate(19,Pivot2:toWorld(vec(0,-12,5.5)),vec(4.65,3.8,0.05),Pivot2:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(19,14)
+    holoClipEnabled(19,1,1)
+    holoClipEnabled(19,2,1)
+    holoClip(19,1,vec(0,13,0),vec(0,1,0),0)
+    holoClip(19,2,vec(2.5,0,0),vec(-1,-0.1,0),0)
+    
+    holoCreate(20,Pivot2:toWorld(vec(0,6.08,4.5)),vec(0.055,0.82,0.1),Pivot2:toWorld(ang(0,0,6)),C2,"cube") holoParent(20,14)
+    holoCreate(21,Pivot2:toWorld(vec(0,-6.08,4.5)),vec(0.055,0.82,0.1),Pivot2:toWorld(ang(0,0,-6)),C2,"cube") holoParent(21,14)
+    #Logo
+    holoCreate(22,Pivot2:toWorld(vec(0,0.5,14)),vec(1.1,1.1,0.06),Pivot2:toWorld(ang(90,0,0)),C2,"hq_tube") holoParent(22,14)
+    holoClipEnabled(22,1,1)  holoClipEnabled(22,2,1)  
+    holoClip(22,1,vec(0,4,0.32),vec(0.2,-1,0),0) holoClip(22,2,vec(-4,0,0.32),vec(1,-0.2,0),0)
+    
+    holoCreate(23,Pivot2:toWorld(vec(0,1.3,14.7)),vec(0.8,0.8,0.065),Pivot2:toWorld(ang(90,0,0)),C2,"hq_tube") holoParent(23,14)
+    
+    holoClipEnabled(23,1,1)  holoClipEnabled(23,2,1)  
+    holoClip(23,1,vec(0,2.7,0.32),vec(0.2,-1,0),0) holoClip(23,2,vec(-2.7,0,0.32),vec(1,-0.2,0),0)
+    
+    holoCreate(24,Pivot2:toWorld(vec(0.3,0.5,14)),vec(1.1,1.1,0.06),Pivot2:toWorld(ang(90,0,0)),C2,"hq_tube") holoParent(24,14)
+    holoClipEnabled(24,1,1) holoClipEnabled(24,2,1) holoClipEnabled(24,3,1)
+    holoClip(24,1,vec(0,-1.8,0),vec(0,1,0),0)  holoClip(24,2,vec(0,0.85,0),vec(0,-1,0),0) holoClip(24,3,vec(0,0,0),vec(1,0,0),0)
+    
+    holoCreate(25,Pivot2:toWorld(vec(0.3,1.3,14.7)),vec(0.8,0.8,0.065),Pivot2:toWorld(ang(90,0,0)),C2,"hq_tube") holoParent(25,14)
+    holoClipEnabled(25,1,1) holoClipEnabled(25,2,1) holoClipEnabled(25,3,1)
+    holoClip(25,1,vec(0,-2.5,0),vec(0,1,0),0)  holoClip(25,2,vec(0,0.0,0),vec(0,-1,0),0) holoClip(25,3,vec(0,0,0),vec(1,0,0),0)
+    #=4
+    for(I=22,25){
+        holoClipEnabled(I,4,1)
+        holoClip(I,4,vec(),vec(0,0,1),0)
+    }
+}
+else
+{
+
+    if(PlayerTarget:weapon():type() == SwordWeapon|PlayerTarget:weapon():type() == "weapon_blank_melee2"|PlayerTarget:weapon():type() == "weapon_blank_melee")
+    {
+        Hold = 1 
+        PlayerTarget:weapon():setAlpha(0)
+    }
+    else
+    {
+        Hold = 0 
+        PlayerTarget:weapon():setAlpha(255)
+    }
+
+    if($Hold)
+    {
+        if(Hold==1)
+        {
+            holoPos(0,PlayerTarget:attachmentPos("anim_attachment_RH"))
+            holoAng(0,PlayerTarget:attachmentAng("anim_attachment_RH"))
+            holoParentAttachment(0,PlayerTarget,"anim_attachment_RH")
+            holoAng(1,Pivot1:toWorld(ang(0,90,0)))
+            holoPos(1,Pivot1:toWorld(vec(1,-1,0)))
+            
+            holoPos(13,PlayerTarget:attachmentPos("anim_attachment_LH"))
+            holoAng(13,PlayerTarget:attachmentAng("anim_attachment_LH"))
+            holoParentAttachment(13,PlayerTarget,"anim_attachment_LH")
+            holoAng(14,Pivot2:toWorld(ang(20,60,150)))
+            holoPos(14,Pivot2:toWorld(vec(1,3,0)))
+            Pivot1:soundPlay(1,1,"weapons/draw_sword.wav")
+            for(I=18,23){
+            holoAlpha(I,255)
+            }
+        }
+        
+        else
+        {
+            
+            holoPos(13,PlayerTarget:attachmentPos("chest"))
+            holoAng(13,PlayerTarget:attachmentAng("chest"))
+            holoParentAttachment(13,PlayerTarget,"chest")
+            holoAng(14,Pivot2:toWorld(ang(0,90,210)))
+            holoPos(14,Pivot2:toWorld(vec(-3,7,-23)))
+            
+            holoPos(0,PlayerTarget:attachmentPos("chest"))
+            holoAng(0,PlayerTarget:attachmentAng("chest"))
+            holoParentAttachment(0,PlayerTarget,"chest")
+            holoPos(1,Base2:toWorld(vec(0,0,-16)))
+            holoAng(1,Base2:toWorld(ang()))#0,90,210)))
+                    
+            Pivot1:soundPlay(1,1,"weapons/draw_secondary.wav")
+            
+            for(I=18,23){
+            holoAlpha(I,0)
+            }
+        }   
+    }
+    
+    if(owner():keyAttack1() && owner():lastSaid() == ":st")
+        {
+            PlayerTarget = owner():aimEntity()
+            print("Target set!")                    #In case you wanna stick it on someone else
+        }
+}

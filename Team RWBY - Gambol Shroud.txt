@@ -1,0 +1,365 @@
+#[
+GAMBOL SHROUD
+
+Variant Ballistic Chain Scythe 2, electric boogaloo
+
+HOW TO USE:
+Take crowbar out, M1 to throw. Once it's stuck into something, you should be able to swing from it.
+Take pistol out, shoot stuff.
+Take knife out, shank stuff.
+
+REQUIRES:
+PropCore
+HoloModelAny
+setVelocity / applyPlayerForce
+Particle
+TF2 (Sounds)
+CS:S (Knife model)
+
+Optional GBS Ribbon E2 (Sold seperately!)
+
+http://rwby.wikia.com/wiki/Gambol_Shroud
+
+Written by Alix
+]#
+
+
+@name RWBY Gambol Shroud
+@inputs [A B]:entity
+@persist [C1 C2 C3]:vector
+@persist [Base Base2 Pivot Pivot2 PlayerTarget]:entity ThrownProp:entity 
+@persist [Cooldown BladeAngle BASmooth M1 M2 IsThrown NumHolo I Hold GrappleLength GrappleForce]:number 
+@persist [SingleWeapon SplitWeapon ThrowWeapon PistolWeapon]:string
+
+runOnTick(1)
+if(first())
+{
+    #include "lib/HoloStyleFunction"
+    
+    PlayerTarget = owner()
+    entity():setAlpha(0)
+    C1   = vec(33,33,33)
+    C2   = vec(150,150,150)
+    
+    SingleWeapon = "weapon_blank_melee2"
+    SplitWeapon = "weapon_fists"
+    ThrowWeapon = "weapon_crowbar"
+    PistolWeapon = "weapon_pistol"
+     
+    #Shroud    
+    Pivot = holoCreate(0,entity():toWorld(vec(0,0,0))) holoParent(0,entity()) holoAlpha(0,0)
+    Base = holoCreate(1,Pivot:toWorld(vec(-2.4,0,0)),vec(1.6,0.4,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(1,0)
+    
+    I = 2
+    NumHolo = 47
+}
+if(I <= NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I,entity():pos(),vec())
+    I++
+}
+elseif(I>NumHolo & I > 0)
+{    
+    holoStyle(2,Pivot:toWorld(vec(10.2,-1.51,0)),vec(0.5,0.15,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(2,1)
+    holoStyle(3,Pivot:toWorld(vec(10.2,1.58,0)),vec(0.5,0.14,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(3,1)
+    holoStyle(4,Pivot:toWorld(vec(14.3,-0.45,0)),vec(0.2,0.33,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(4,1)
+    holoStyle(5,Pivot:toWorld(vec(2.4,-3,0)),vec(0.1,2.39,0.1),Pivot:toWorld(ang(90,0,90)),C1,"prism") holoParent(5,1)
+    for(J=6,10){   
+        holoStyle(J,Pivot:toWorld(vec(1.8 + (J*1),1.6,0)),vec(0.07,0.16,0.12),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(J,1)
+    }
+    holoStyle(11,Pivot:toWorld(vec(14.09,2.4,0)),vec(0.2,0.2,0.1),Pivot:toWorld(ang(0,0,0)),C1,"hq_tube_thick") holoParent(11,1)
+    holoStyle(12,Pivot:toWorld(vec(15.09,2,0)),vec(0.05,0.1,0.1),Pivot:toWorld(ang(0,12,0)),C1,"cube") holoParent(12,1)
+    holoStyle(13,Pivot:toWorld(vec(16.12,-2.08,0)),vec(0.11,0.06,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(13,1)
+    holoStyle(14,Pivot:toWorld(vec(15.52,-1.3,0)),vec(0.2,0.1,0.1),Pivot:toWorld(ang(0,-45,90)),C1,"prism") holoParent(14,1)
+        
+        holoPos(1,Pivot:toWorld(vec(-13,15,0)))
+        holoPos(0,entity():toWorld(vec(-7.3,10,0)))
+        
+    #Pistol
+    Pivot2 = holoStyle(15,entity():toWorld(vec(0,0,0)),vec(),ang(0,0,0),vec(),"cube") holoParent(15,entity())
+    Base2 = holoStyle(16,Pivot2:toWorld(vec(0,0.1,0)),vec(0.12,0.6,0.1),Pivot2:toWorld(ang(0,0,0)),C1,"cube") holoParent(16,15)
+    
+    holoStyle(18,Pivot2:toWorld(vec(0.9,0.2,0)),vec(0.05,0.55,0.07),Pivot2:toWorld(ang(0,0,0)),C1,"cube") holoParent(18,16)
+    holoStyle(19,Pivot2:toWorld(vec(0,3.8,0)),vec(0.06,0.06,0.03),Pivot2:toWorld(ang(0,0,90)),C1,"hq_tube") holoParent(19,16)
+    
+    holoStyle(20,Pivot2:toWorld(vec(6.2,0.2,0)),vec(0.8,0.7,0.7),Pivot2:toWorld(ang(0,93,-90)),C1,"models/weapons/w_smg_mac10.mdl") holoParent(20,16) holoMaterial(20,"models/debug/debugwhite")
+    holoClipEnabled(20,1,1)
+    holoClipEnabled(20,2,1)
+    holoClipEnabled(20,3,1)
+    holoClip(20,1,vec(0,0,5.05),vec(-0.065,0,-1),0)
+    holoClip(20,2,vec(4,0,0),vec(-1,0,0),0)
+    holoClip(20,3,vec(-3,0,0),vec(1,0,0),0)
+    
+    #Top
+    holoStyle(21,Pivot2:toWorld(vec(-1.33,1.6,0)),vec(0.13,0.05,0.09),Pivot2:toWorld(ang(0,20,0)),C2,"cube") holoParent(21,16)
+    holoStyle(22,Pivot2:toWorld(vec(-1.45,0.65,0)),vec(0.12,0.16,0.09),Pivot2:toWorld(ang(0,0,0)),C2,"cube") holoParent(22,16)
+    holoStyle(23,Pivot2:toWorld(vec(-0.9,-0.9,0)),vec(0.04,0.25,0.09),Pivot2:toWorld(ang(0,0,0)),C2,"cube") holoParent(23,16)
+    holoStyle(24,Pivot2:toWorld(vec(-0.85,-1.1,0)),vec(0.06,0.25,0.09),Pivot2:toWorld(ang(0,45,0)),C2,"cube") holoParent(24,16)
+    holoStyle(25,Pivot2:toWorld(vec(-0.6,-2.68,0)),vec(0.06,0.08,0.09),Pivot2:toWorld(ang(0,25,0)),C2,"cube") holoParent(25,16)
+    holoStyle(26,Pivot2:toWorld(vec(-1.1,0.6,0)),vec(0.03,0.03,0.1),Pivot2:toWorld(ang(0,0,0)),C1,"cylinder") holoParent(26,16)
+    holoStyle(27,Pivot2:toWorld(vec(-1.7,1,0)),vec(0.03,0.03,0.1),Pivot2:toWorld(ang(0,0,0)),C1,"cylinder") holoParent(27,16)
+    holoStyle(28,Pivot2:toWorld(vec(-1.7,0.2,0)),vec(0.03,0.03,0.1),Pivot2:toWorld(ang(0,0,0)),C1,"cylinder") holoParent(28,16)
+    
+    #Front 
+    holoStyle(29,Pivot2:toWorld(vec(-0.1,3.2,0)),vec(),Pivot2:toWorld(ang()),vec(),"cube") holoParent(29,16) #hinge
+    
+    holoStyle(30,Pivot2:toWorld(vec(-1.8,3.4,0)),vec(0.2,0.17,0.18),Pivot2:toWorld(ang(0,0,0)),C1,"cube") holoParent(30,29)
+    holoStyle(31,Pivot2:toWorld(vec(-2.15,2.21,0)),vec(0.1,0.1,0.18),Pivot2:toWorld(ang(0,35,0)),C1,"cube") holoParent(31,29)
+    holoStyle(32,Pivot2:toWorld(vec(-1.2,2.21,0)),vec(0.1,0.08,0.18),Pivot2:toWorld(ang(0,0,0)),C1,"cube") holoParent(32,29)
+    holoStyle(33,Pivot2:toWorld(vec(-0.1,3.4,0)),vec(0.1,0.06,0.18),Pivot2:toWorld(ang(0,0,0)),C1,"cube") holoParent(33,29)
+    
+    #Blade
+    holoStyle(34,Pivot2:toWorld(vec(-1.5,0.5,0)),vec(),Pivot2:toWorld(ang()),vec(),"cube") holoParent(34,16) #hinge
+    holoStyle(35,Pivot2:toWorld(vec(-5.5,0,0)),vec(0.05,0.6,0.1),Pivot2:toWorld(ang(90,0,90)),C1,"prism") holoParent(35,34) 
+    holoStyle(36,Pivot2:toWorld(vec(-5.3,0.95,0)),vec(0.05,0.55,0.06),Pivot2:toWorld(ang(90,0,-90)),C1,"prism") holoParent(36,34)
+    
+    holoStyle(37,Pivot2:toWorld(vec(-5.5,0,0)),vec(0.06,0.07,0.1),Pivot2:toWorld(ang(90,0,90)),C2,"prism") holoParent(37,34) 
+    holoStyle(38,Pivot2:toWorld(vec(-5.48,0.95,0)),vec(0.06,0.07,0.06),Pivot2:toWorld(ang(90,0,-90)),C2,"prism") holoParent(38,34) 
+    holoStyle(39,Pivot2:toWorld(vec(-6.5,0,0)),vec(0.06,0.04,0.1),Pivot2:toWorld(ang(90,0,90)),C2,"prism") holoParent(39,34) 
+    holoStyle(40,Pivot2:toWorld(vec(-6.48,0.95,0)),vec(0.06,0.04,0.06),Pivot2:toWorld(ang(90,0,-90)),C2,"prism") holoParent(40,34)  
+    
+    holoStyle(41,Pivot2:toWorld(vec(-9,-0.3,0)),vec(),Pivot2:toWorld(ang()),vec(),"cube") holoParent(41,34) #hinge2
+    holoStyle(42,Pivot2:toWorld(vec(-9,-0.3,0)),vec(0.03,0.03,0.05),Pivot2:toWorld(ang(0,0,0)),C2,"cylinder") holoParent(42,41)
+    holoStyle(43,Pivot2:toWorld(vec(-13.5,0,0)),vec(0.05,0.75,0.1),Pivot2:toWorld(ang(90,0,90)),C1,"prism") holoParent(43,41) 
+    holoStyle(44,Pivot2:toWorld(vec(-13.5,0.95,0)),vec(0.05,0.82,0.06),Pivot2:toWorld(ang(90,0,-90)),C1,"prism") holoParent(44,41) 
+   
+    holoStyle(45,Pivot2:toWorld(vec(-12,5.1,0)),vec(1.3,1.3,1.2),Pivot2:toWorld(ang(0,-120,90)),C1,"models/weapons/w_knife_ct.mdl") holoParent(45,41)
+    holoMaterial(45,"models/debug/debugwhite")
+    holoClipEnabled(45,1)
+    holoClip(45,vec(0,0,7),vec(0.8,0,1),0)    
+      
+    holoAlpha(47,0) holoModel(47,"models/hunter/blocks/cube025x8x025.mdl") holoColor(47,C1) holoMaterial(47,"models/debug/debugwhite")
+    #http://i.imgur.com/J5vYVEu.gif 
+    
+    I = 0
+
+    print("Gambol Shroud spawned!")
+}
+elseif(I==0)
+{
+#These weapons can be changed if you have a more suitable SWEP to use, such as blank sweps
+#GS in particular has 5 different modes, so switch these out as needed
+#SingleWeapon, SplitWeapon, ThrowWeapon, PistolWeapon
+
+if(PlayerTarget:weapon():type()==SingleWeapon)
+{Hold = 4 PlayerTarget:weapon():setAlpha(0)} #Sheath+hiltsword
+elseif(PlayerTarget:weapon():type()==ThrowWeapon)
+{Hold = 3 PlayerTarget:weapon():setAlpha(0)} #Flail/throw mode
+elseif(PlayerTarget:weapon():type()==SplitWeapon)
+{Hold = 2 PlayerTarget:weapon():setAlpha(0)} #Dual weild/split mode
+elseif(PlayerTarget:weapon():type()==PistolWeapon)
+{PlayerTarget:weapon():setAlpha(0) Hold = 1} #Pistol mode
+else
+{Hold = 0 PlayerTarget:weapon():setAlpha(255) #Carried on back 
+APos = Base2:toWorld(vec(6.8,-0.5,0))
+AParent = Base2
+}
+
+#COMBINED
+if($Hold)
+{
+    if(Hold == 4)
+    {
+        Base2:soundPlay(1,0,"weapons/draw_sword.wav")
+        holoUnparent(0)
+        holoUnparent(15)    
+        holoPos(15,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(15,PlayerTarget:attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(15,PlayerTarget,"anim_attachment_rh")
+        holoPos(16,Pivot2:toWorld(vec(1,-1,3)))
+        holoAng(16,Pivot2:toWorld(ang(90,120,0)))
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_rh")
+        holoPos(1,Pivot:toWorld(vec(1,-1,23.3)))
+        holoAng(1,Pivot:toWorld(ang(90,120,0)))
+        holoAlpha(46,0)
+        BladeAngle=0
+        #COMBINED
+    }
+    
+    #THROW
+    if(Hold == 3)
+    {
+        Base2:soundPlay(1,0,"weapons/draw_shotgun_pyro.wav")
+        holoUnparent(0)
+        holoUnparent(15)  
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(0,PlayerTarget,"chest")
+        holoPos(1,Pivot:toWorld(vec(-6,0,-5)))
+        holoAng(1,Pivot:toWorld(ang(-50,-90,-90)))
+        holoPos(15,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(15,PlayerTarget:attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(15,PlayerTarget,"anim_attachment_rh")
+        holoPos(16,Pivot2:toWorld(vec(1,-1,3)))
+        holoAng(16,Pivot2:toWorld(ang(90,120,0)))
+        holoAlpha(46,255)
+        BladeAngle=90
+        #THROW
+    }
+    
+    #DUAL
+    elseif(Hold == 2)
+    {
+        Base2:soundPlay(1,0,"weapons/draw_sword.wav")
+        holoUnparent(0)
+        holoUnparent(15)  
+        holoPos(0,PlayerTarget:attachmentPos("anim_attachment_lh"))
+        holoAng(0,PlayerTarget:attachmentAng("anim_attachment_lh"))
+        holoParentAttachment(0,PlayerTarget,"anim_attachment_lh")
+        holoPos(1,Pivot:toWorld(vec(-3,0,-12)))
+        holoAng(1,Pivot:toWorld(ang(-70,0,90)))
+        holoPos(15,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(15,PlayerTarget:attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(15,PlayerTarget,"anim_attachment_rh")
+        holoPos(16,Pivot2:toWorld(vec(0,0,-3)))
+        holoAng(16,Pivot2:toWorld(ang(-90,90,0)))
+        holoAlpha(46,0)
+        BladeAngle=0
+        #DUAL
+    }
+    
+    #PISTOL
+    elseif(Hold == 1)
+    {
+        Base2:soundPlay(1,0,"weapons/stickybomblauncher_worldreload.wav")
+        holoUnparent(0)
+        holoUnparent(15)  
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(0,PlayerTarget,"chest")
+        holoPos(1,Pivot:toWorld(vec(-6,0,-5)))
+        holoAng(1,Pivot:toWorld(ang(-50,-90,-90)))
+        holoPos(15,PlayerTarget:attachmentPos("anim_attachment_rh"))
+        holoAng(15,PlayerTarget:attachmentAng("anim_attachment_rh"))
+        holoParentAttachment(15,PlayerTarget,"anim_attachment_rh")
+        holoPos(16,Pivot2:toWorld(vec(2,0,3)))
+        holoAng(16,Pivot2:toWorld(ang(90,-90,0)))
+        holoAlpha(46,255)
+        BladeAngle=90
+        #PISTOL
+    }
+    
+    #CARRY
+    elseif(Hold == 0)
+    {
+        Base2:soundPlay(1,0,"weapons/default_reload.wav")
+        holoUnparent(0)
+        holoUnparent(15)   
+        holoPos(0,PlayerTarget:attachmentPos("chest"))
+        holoAng(0,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(0,PlayerTarget,"chest")
+        holoPos(1,Pivot:toWorld(vec(-6,0,-5)))
+        holoAng(1,Pivot:toWorld(ang(-50,-90,-90)))
+        holoPos(15,PlayerTarget:attachmentPos("chest"))
+        holoAng(15,PlayerTarget:attachmentAng("chest"))
+        holoParentAttachment(15,PlayerTarget,"chest")
+        holoPos(16,Base:toWorld(vec(20.2,0,0)))
+        holoAng(16,Base:toWorld(ang(0,0,0)))
+        holoAlpha(46,0)
+        BladeAngle=0
+        BASmooth=0
+        
+        #Ribbon stuff that's secret and shouldn't be included really
+        #[if(A&B)
+        {
+            APos = Pivot:pos()
+            AParent = Pivot
+        }]#
+    #CARRY
+    }
+}
+
+#Animating
+if(BASmooth<BladeAngle){BASmooth+=10}
+if(BASmooth>BladeAngle){BASmooth-=10}
+
+holoAng(29,Base2:toWorld(ang(0,-BASmooth,0)))
+holoAng(34,Base2:toWorld(ang(0,-BASmooth,0)))
+holoAng(41,Base2:toWorld(ang(0,BASmooth,0)))
+holoPos(34,Base2:toWorld(vec(-1.5,0.5 + (-4 * (BASmooth/90)),0)))
+
+#Firing
+M1 = PlayerTarget:keyAttack1()
+M2 = PlayerTarget:keyAttack2()
+Reload = PlayerTarget:keyReload()
+
+if(M1&$M1&Hold==1)
+{
+    Base2:soundPlay(3,0,"weapons/sniper_shoot.wav")
+    soundPitch(3,140)
+    #ifdef particle(number,number,number,string,vector,vector,vector)
+        particle(0.2,10,5,"effects/muzzleflash" + randint(1,4),vec(255,255,255),Base2:toWorld(vec(0,10,0)),vec(0,0,0))
+    #endif
+}
+
+#Throwing
+    if(M1&$M1&Hold==3&!IsThrown){
+        if(ThrownProp){ThrownProp:propDelete() holoUnparent(15)}
+        IsThrown = 1
+        ThrownProp = propSpawn("models/props_junk/PopCan01a.mdl",PlayerTarget:toWorld(vec(20,0,50)),ang(),0)
+        ThrownProp:setMass(10)
+        ThrownProp:setAlpha(0)
+        ThrownProp:setTrails(3,0,1,"trails/smoke",vec(33,33,33),200)
+        ThrownProp:applyForce(PlayerTarget:eye()*ThrownProp:mass()*2500)
+        ThrownProp:propGravity(0)
+        ThrownProp:soundPlay(3,0,"weapons/sniper_shoot.wav")
+        soundPitch(3,90)
+        ThrownProp:applyAngForce(ang(0,ThrownProp:mass()*20,0))
+        holoParent(16,ThrownProp)
+        holoPos(16,ThrownProp:toWorld(vec(0,0,0)))
+        holoAng(16,ThrownProp:toWorld(ang(0,90,0)))}
+    
+    
+    
+    if(IsThrown)
+    {
+        if(M2 && $M2 | Hold !=3 | owner():pos():distance(ThrownProp:pos()) > 1700)
+        {
+            holoPos(16,Pivot2:toWorld(vec(1,-1,3)))
+            holoAng(16,Pivot2:toWorld(ang(90,120,0)))
+            holoParent(16,15)
+            IsThrown = 0
+            Cooldown = 5
+            
+            Pivot2:soundPlay(3,2,"weapons/draw_machete_sniper.wav")
+        }
+        
+        holoAlpha(47,255)
+        holoPos(47,(PlayerTarget:attachmentPos("anim_attachment_rh") + ThrownProp:pos())/2)
+        Angles = (PlayerTarget:attachmentPos("anim_attachment_rh") - ThrownProp:pos()):toAngle()
+        holoAng(47,ang(0,Angles:yaw() + 90,Angles:pitch()))
+        holoScale(47,vec(0.1,PlayerTarget:attachmentPos("anim_attachment_rh"):distance(ThrownProp:pos())/425,0.1))
+        
+        if(ThrownProp:vel():length() < 2000 & !ThrownProp:isFrozen())
+        {   #Stick into something
+            ThrownProp:propFreeze(1)
+            ThrownProp:setAng(-holoEntity(47):angles())  
+            ThrownProp:soundPlay(4,3,"weapons/knife/knife_hitwall1.wav")
+            GrappleLength = owner():pos():distance(ThrownProp:pos())
+        }
+        elseif(ThrownProp:isFrozen())
+        {
+            #Grappling
+            GrappleForce = owner():pos():distance(ThrownProp:pos()) - GrappleLength
+            if(Reload){GrappleLength = 0 }
+            #ifdef entity:applyPlayerForce(vector)
+                if(GrappleForce > -1)
+                {
+                    PlayerTarget:applyPlayerForce((ThrownProp:pos() - owner():pos()) * (GrappleForce*0.1 + $GrappleForce*0.01))
+                }
+            #endif
+        }
+    }
+    
+    if(Cooldown>0)
+    {
+        Cooldown--   
+    }
+    elseif(ThrownProp&Cooldown==0&!IsThrown)
+    {
+        ThrownProp:propDelete()
+        holoAlpha(47,0)   
+    }
+}
