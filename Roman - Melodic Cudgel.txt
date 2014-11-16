@@ -1,10 +1,11 @@
 #[
 Melodic Cudgel
 
-Ladies... Ice Queen.
+Ladies... Ice Queen... Always a pleasure.
 
-USES:
+HOW TO USE:
 Take out pistol or Laserpointer, M2 to fire a 'firework'
+Press R to flip cane around, M2 then fires a grapple - stick it into props to drag them towards you.
 
 REQUIRES:
 TF2 (Sounds)
@@ -16,7 +17,7 @@ Written by Alix
 ]#
 
 @name Melodic Cudgel
-@persist [Pivot Base PlayerTarget Prop E G Hook HookedObject]:entity
+@persist [Pivot Base PlayerTarget Prop G Hook HookedObject]:entity
 @persist [C1 C2 C3]:vector
 @persist [Anim SmAnim Hold M1 M2 Cd HookMode HookFire HookLand R]
 @persist [Proj]:array
@@ -65,6 +66,7 @@ if(first())
 else
 {
     M1 = owner():keyAttack2()
+    M2 = owner():keyAttack1()
     R = owner():keyReload()
     
     if(SmAnim<Anim){SmAnim+=10}
@@ -95,11 +97,14 @@ else
                 G:applyForce(owner():eye() * G:mass() * 10000)
                 G:setTrails(20,0,0.25,"trails/smoke",vec(255,0,0),200)
                 G:setMass(250)
-                G:soundPlay(2,2,"weapons/flare_detonator_launch.wav")
-                lightCreate(Proj:count())
-                lightColor(Proj:count(),C1)
-                lightParent(Proj:count(),G)
-                Proj:pushEntity(G)
+                G:soundPlay(2,2,"weapons/flare_detonator_launch.wav")       
+            #endif
+            
+            #ifdef lightCreate(number)
+                    lightCreate(Proj:count())
+                    lightColor(Proj:count(),C1)
+                    lightParent(Proj:count(),G)
+                    Proj:pushEntity(G)
             #endif
         }
         
@@ -213,6 +218,8 @@ else
             #if(HookLand)
             holoPos(12,Pivot:toWorld(vec(20,0,0))) #holoParent(12,1)   
             
+            HookedObject = noentity()
+            holoUnparent(12) 
             holoAlpha(1,255) holoAlpha(2,255) holoAlpha(3,255)
             holoAlpha(13,0) holoAlpha(14,0) holoAlpha(15,0) holoAlpha(16,0)
             HookFire = 0
@@ -220,7 +227,7 @@ else
         elseif(HookFire & !HookLand)
         {
             #In flight
-            holoPos(12,Hook:pos() + Hook:forward() * 20)
+            holoPos(12,Hook:pos() + Hook:forward() * 25)
             rangerFilter(owner())
             Rng = rangerOffset(100,Hook:toWorld(vec(-5,0,0)),Hook:forward())
             
@@ -279,4 +286,5 @@ else
 }
 #http://i.imgur.com/IF0Tilg.jpg
 #What kind of idiot reads all the way to the end, hah
+
 

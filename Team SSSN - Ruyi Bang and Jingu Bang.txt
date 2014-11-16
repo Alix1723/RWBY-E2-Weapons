@@ -3,8 +3,9 @@ Ruyi Bang and Jingu Bang
 
 HASHTAG SEAMONKEY
 
-USES:
-Crowbar for the Staff, HL2 pistol/Laserpointer for Gunchucks
+HOW TO USE:
+Take crowbar out and staff things.
+Take Pistols out to split into gunchucks.
 
 REQUIRES:
 TF2 (Sounds)

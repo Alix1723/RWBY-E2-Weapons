@@ -33,7 +33,7 @@ runOnTick(1)
 
 if(first())
 {
-    NumBlades = 3  #How many swords to spawn. Any number >=1 will work, but you will hit the default holograms limit at 9 or so
+    NumBlades = 8  #How many swords to spawn. Any number >=1 will work, but you will hit the default holograms limit at 9 or so
     #If you're crazy you can use "wire_expression2_unlimited 1" in singleplayer and spawn up to 34, but it WILL lag the shit out of you!
     
     entity():setAlpha(0)

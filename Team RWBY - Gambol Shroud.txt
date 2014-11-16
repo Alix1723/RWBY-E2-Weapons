@@ -72,7 +72,7 @@ elseif(I>NumHolo & I > 0)
     holoStyle(13,Pivot:toWorld(vec(16.12,-2.08,0)),vec(0.11,0.06,0.1),Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(13,1)
     holoStyle(14,Pivot:toWorld(vec(15.52,-1.3,0)),vec(0.2,0.1,0.1),Pivot:toWorld(ang(0,-45,90)),C1,"prism") holoParent(14,1)
         
-        holoPos(1,Pivot:toWorld(vec(-13,15,0)))
+        holoPos(1,Pivot:toWorld(vec(-13,0,0)))
         holoPos(0,entity():toWorld(vec(-7.3,10,0)))
         
     #Pistol
