@@ -17,7 +17,7 @@ Written by Alix
 @name CVFY Coco's Handbag
 @persist [Pivot Base]:entity
 @persist [C1 C2]:vector
-@persist [NumHolo I Anim SmAnim]
+@persist [NumHolo I Anim SmAnim E R Hold]
 
 runOnTick(1)
 
@@ -29,8 +29,8 @@ if(first())
     Base = holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec(),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(2,1)
     
     #include "lib/HoloStyleFunction"
-    I = 3
-    NumHolo = 80
+    I = 3 #3
+    NumHolo = 60#130
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {
@@ -164,7 +164,7 @@ if(I > NumHolo & I)
         
         #Hinge [Handle]
             holoStyle(68,Base:toWorld(vec(8,0,-4)),vec(0.2,0.2,0.2)*A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(68,65)
-                holoStyle(69,Base:toWorld(vec(5,0,-2)),vec(0.5,0.1,0.25),Base:toWorld(ang(0,0,0)),C3,"hq_rcube_thin") holoParent(69,68)
+                holoStyle(69,Base:toWorld(vec(5,0,-2)),vec(0.5,0.1,0.25),Base:toWorld(ang(0,0,0)),C4,"hq_rcube_thin") holoParent(69,68)
                 holoStyle(70,Base:toWorld(vec(5,0,-2)),vec(0.4,0.11,0.17),Base:toWorld(ang(-5,0,0)),C1,"cube") holoParent(70,68)
                 
     holoStyle(71,Base:toWorld(vec(12,0,-9)),vec(0.22,0.22,1),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(71,Base)
@@ -175,51 +175,177 @@ if(I > NumHolo & I)
     holoStyle(75,Base:toWorld(vec(-3.5,0,-14)),vec(0.22,0.1,0.6),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(75,Base)
     holoStyle(76,Base:toWorld(vec(-3,0,-19)),vec(0.4,0.4,0.3),Base:toWorld(ang(90,0,0)),C4,"cylinder") holoParent(76,Base)
     
-    #Gun barrel
-    
-    
+    #Hinge [Gun barrel]
+    holoStyle(77,Base:toWorld(vec(-5,0,-9)),vec(0.2,0.2,0.2) ,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(77,Base)
+        holoStyle(78,Base:toWorld(vec(-6,0,-9)),vec(0.85,0.85,0.2),Base:toWorld(ang(90,0,0)),C4,"cylinder") holoParent(78,77)
+        for(I=79,84)
+        {
+            K = (I - 79) * 60
+            holoStyle(I,Base:toWorld(vec(-15,cos(K) * 2.7,-9 + sin(K)*2.7)),vec(0.16,0.16,1.4),Base:toWorld(ang(90,0,0)),C1*4,"hq_cylinder") holoParent(I,77)
+        }
+        
+        #Hinge [Gun barrel 2]
+        holoStyle(85,Base:toWorld(vec(-23,0,-9)),vec(0.2,0.2,0.2) * A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(85,77)
+            holoStyle(86,Base:toWorld(vec(-23,0,-9)),vec(0.7,0.7,0.14),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(86,85)
+            for(I=87,92)
+            {
+                K = (I - 87) * 60
+                holoStyle(I,Base:toWorld(vec(-33,cos(K) * 2.7,-9 + sin(K)*2.7)),vec(0.13,0.13,1.5),Base:toWorld(ang(90,0,0)),C1*4,"hq_tube") holoParent(I,85)
+            }
+            
+            holoStyle(93,Base:toWorld(vec(-39,0,-9)),vec(0.7,0.7,0.25),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(93,85)
+            
+            holoStyle(94,Base:toWorld(vec(-35,0,-9)),vec(0.65,0.65,0.05),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(94,85)
+            holoStyle(95,Base:toWorld(vec(-33.5,0,-9)),vec(0.65,0.65,0.05),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(95,85)
+            
+    #Ammo reserve
+    #Hinge [Res 1]
+    holoStyle(96,Base:toWorld(vec(0,0,-21)),vec(0.2,0.2,0.3) * A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(96,Base)
+        holoStyle(97,Base:toWorld(vec(4,0,-21)),vec(2.4,2.4,0.3),Base:toWorld(ang(0,90,90)),C4,"hq_cylinder") holoParent(97,96)
+        holoStyle(98,Base:toWorld(vec(17.8,0,-21)),vec(2.4,2.4,2),Base:toWorld(ang(0,90,90)),C4,"hq_cone") holoParent(98,96)
+        holoClipEnabled(98,1)
+        holoClip(98,vec(0,0,-9),vec(0,0,-1),0)
+        holoStyle(99,Base:toWorld(vec(8.3,0,-21)),vec(2.1,2.1,0.1),Base:toWorld(ang(0,90,90)),C4,"hq_cylinder") holoParent(99,96)
+        
+        holoStyle(100,Base:toWorld(vec(-9.8,0,-21)),vec(2.4,2.4,2),Base:toWorld(ang(0,-90,90)),C4,"hq_cone") holoParent(100,96)
+        holoClipEnabled(100,1)
+        holoClip(100,vec(0,0,-9),vec(0,0,-1),0)
+        
+        holoStyle(101,Base:toWorld(vec(-0.2,0,-21)),vec(2.1,2.1,0.1),Base:toWorld(ang(0,90,90)),C4,"hq_cylinder") holoParent(101,96)  
+        holoStyle(102,Base:toWorld(vec(-1.5,0,-21)),vec(1,1,0.15),Base:toWorld(ang(0,90,90)),C4*0.9,"hq_cylinder") holoParent(102,96)     
+        holoStyle(103,Base:toWorld(vec(-0.5,0,-21)),vec(0.26,0.26,0.05),Base:toWorld(ang(0,90,90)),C1,"models/hunter/tubes/tube2x2x025.mdl") holoParent(103,96)#
+        for(I=104,112)
+        {
+            K = (I-104) * 20
+            holoStyle(I,Base:toWorld(vec(-0.5,0,-21)),vec(1.9,0.15,0.05),Base:toWorld(ang(K,90,90)),C1,"hq_cylinder") holoParent(I,96)
+        }
+        holoStyle(113,Base:toWorld(vec(8.7,0,-21)),vec(0.26,0.26,0.05),Base:toWorld(ang(0,90,90)),C1,"models/hunter/tubes/tube2x2x025.mdl") holoParent(113,96)#
+        
+        holoPos(96,Base:toWorld(vec(-3,0,-20)))
+        
+    #Hinge [Front panel]
+    holoStyle(113,Base:toWorld(vec(-7.5,0,-1.5)),vec(0.2,0.2,0.2)*A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(113,Base)
+        holoStyle(114,Base:toWorld(vec(-9,0,-3)),vec(0.05,1.5,0.35),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(114,113)
+        
+        holoStyle(115,Base:toWorld(vec(-6.5,0,-0.9)),vec(0.45,1.5,0.06),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(115,113)   
+                 
+        holoStyle(116,Base:toWorld(vec(-7.5,6.5,-3.1)),vec(0.3,0.05,0.4),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(116,113)
+        holoStyle(117,Base:toWorld(vec(-7.5,4.7,-3.1)),vec(0.3,0.05,0.4),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(117,113)
+        holoStyle(118,Base:toWorld(vec(-7.5,-6.5,-3.1)),vec(0.3,0.05,0.4),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(118,113)
+        holoStyle(119,Base:toWorld(vec(-7.5,-4.7,-3.1)),vec(0.3,0.05,0.4),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(119,113)
+        
+        #Hinge [Spindle thing]
+        holoStyle(120,Base:toWorld(vec(-7.5,5.6,-4.6)),vec(0.2,0.2,0.2) *A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(120,113)
+            holoStyle(121,Base:toWorld(vec(-3.9,5.6,-4.6)),vec(0.09,0.09,0.55),Base:toWorld(ang(90,0,0)),C1,"cylinder") holoParent(121,121)
+            holoStyle(122,Base:toWorld(vec(0,5.6,-4.6)),vec(0.2,0.2,0.25),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(122,121)
+            holoStyle(123,Base:toWorld(vec(1.5,5.6,-4.6)),vec(0.25,0.25,0.09),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(123,121)
     I = 0
+    SmAnim = 10
 }
 elseif(I<=0)
 {
-    #[Anim = owner():keyUse() * 100
+    #Inputs
+    R = owner():keyReload()
+    E = owner():keyUse()
     
-    if(SmAnim<Anim){SmAnim++}
-    if(SmAnim>Anim){SmAnim--}#]#
+    #Wepen
     
-    SmAnim = 100
+    #In left hand
+    ##else
+    if(owner():weapon():type() == "laserpointer" | owner():weapon():type() == "none" | owner():weapon():type() == "gmod_tool")
+    {
+        Hold = 2
+    }
+    else
+    {
+        Hold = 0    
+    }
     
-    holoAng(3,Base:toWorld(ang(0,-0.9 * SmAnim,0))) #Handle
-    holoAng(8,holoEntity(3):toWorld(ang(0,0,SmAnim > 2 ? 90 : 0))) #Flap
-    ##15
-    holoPos(15,Base:toWorld(vec(0,0,(-13.5) - (0.08 * SmAnim)))) #Bottom
-    holoAng(36,holoEntity(15):toWorld(ang(SmAnim < 100 ? -0.90 * SmAnim : -90 ,0,0))) #Front
-    holoAng(31,holoEntity(15):toWorld(ang(SmAnim < 100 ? 0.90 * SmAnim : 90 ,0,0)))  #Back
+    #Positioning
+    if($Hold)
+    {
+        if(Hold == 1)
+        {
+            ##
+        }
+        elseif(Hold == 2)
+        {
+            #Left Hand
+            holoPos(1,owner():attachmentPos("anim_attachment_lh"))
+            holoAng(1,owner():attachmentAng("anim_attachment_lh"))
+                holoParentAttachment(1,owner(),"anim_attachment_lh")
+                
+            holoPos(2,Pivot:toWorld(vec(2,1,0)))
+            holoAng(2,Pivot:toWorld(ang(-80,0,0)))
+        }
+        else
+        {
+            #Right Hip
+            holoPos(1,owner():attachmentPos("chest"))
+            holoAng(1,owner():attachmentAng("chest"))
+                holoParentAttachment(1,owner(),"chest")
+                
+            holoPos(2,Pivot:toWorld(vec(-3,-6,-8)))
+            holoAng(2,Pivot:toWorld(ang(15,-210,20)))
+        }
+    }
     
+
+    #Animation
+    #Anim = (owner():keyUse() * 100)
+    if(E & $E){
+        #Anim = !Anim * 100  
+    }
     
-    holoAng(41,holoEntity(15):toWorld(ang(0,-0.90 * SmAnim,0))) #Left
-    holoPos(41,Base:toWorld(vec(-8.35,(-2.88) - 0.015 * SmAnim,(-13.5) - 0.08 * SmAnim)))
-    holoAng(43,holoEntity(15):toWorld(ang(0,0.90 * SmAnim,0))) #Left break
+    if(SmAnim != Anim)
+    {
+        if(SmAnim<Anim){SmAnim+= min(5, Anim - SmAnim)}
+        if(SmAnim>Anim){SmAnim-= min(5, SmAnim - Anim)}
+
+        holoAng(3,Base:toWorld(ang(0,-0.9 * SmAnim,0))) #Handle
+        holoAng(8,holoEntity(3):toWorld(ang(0,0,SmAnim > 2 ? 90 : 0))) #Flap
+        holoPos(15,Base:toWorld(vec(0,0,-13.5 - ((SmAnim > 5) ? 8 : 0)))) #Bottom 
+        holoAng(36,holoEntity(15):toWorld(ang(SmAnim < 100 ? -0.90 * SmAnim : -45 ,0,0))) #Front
+        holoAng(31,holoEntity(15):toWorld(ang(SmAnim < 100 ? 0.90 * SmAnim : 45 ,0,0)))  #Back  
+        holoAng(41,holoEntity(15):toWorld(ang(0,-0.90 * SmAnim,0))) #Left
+        holoPos(41,Base:toWorld(vec(-8.35,(-2.88) - 0.015 * SmAnim,(-13.5) - 0.06 * SmAnim)))
+        holoAng(43,holoEntity(15):toWorld(ang(0,0.90 * SmAnim,0))) #Left break
+        holoAng(45,holoEntity(15):toWorld(ang(0,0.90 * SmAnim,0))) #Right
+        holoPos(45,Base:toWorld(vec(-8.35,(2.88) + 0.015 * SmAnim,(-13.5) - 0.06 * SmAnim)))
+        holoAng(47,holoEntity(15):toWorld(ang(0,-0.90 * SmAnim,0))) #Right break
+        holoAng(51,Base:toWorld(ang(0,0,-0.45 * SmAnim))) #Top angled bits
+        holoAng(53,Base:toWorld(ang(0,0,0.45 * SmAnim)))
+        holoPos(59,Base:toWorld(vec(-7.4,-0.047 * SmAnim,-8 - (0.04 * SmAnim))))
+        holoScale(59,vec(0.15,0.15,0.012 * SmAnim))
+        holoPos(60,Base:toWorld(vec(-7.4,0.047 * SmAnim,-8 - (0.04 * SmAnim)))) #Side bits
+        holoScale(60,vec(0.15,0.15,0.012 * SmAnim))
+        holoAng(55,Base:toWorld(ang(0,0,0.45 * SmAnim))) #Bottom angled bits
+        holoPos(55,Base:toWorld(vec(-8,-0.8,-15 - (0.08*SmAnim)))) #-23
+        holoAng(57,Base:toWorld(ang(0,0,-0.45 * SmAnim)))
+        holoPos(57,Base:toWorld(vec(-8,0.8,-15 - (0.08*SmAnim)))) #-23
+        holoPos(65,Base:toWorld(vec(SmAnim > 50 ? 0.9 + SmAnim*0.16 : 0,0,-4)))
+        holoPos(68,Base:toWorld(vec(SmAnim > 50 ? 8 + SmAnim*0.13 : 0,0,-4)))
+        holoAng(68,Base:toWorld(ang(SmAnim > 50 ? SmAnim*0.8 : 0,0,0)))
+        
+        
+        holoPos(77,Base:toWorld(vec(5 -(0.1 * SmAnim),0,-9)))
+        holoPos(85,Base:toWorld(vec(23 -(0.46 * SmAnim),0,-9)))    
+            
+        for(I=96,123)
+        {
+            holoAlpha(I,SmAnim > 85 ? 255 : 0)
+        }
+        
+        for(I=71,95)
+        {
+            holoAlpha(I,SmAnim > 60 ? 255 : 0)
+        }
+        
+        for(I=61,64)
+        {
+            holoAlpha(I,SmAnim > 45 ? 255 : 0)   
+        }
+    }
     
-    holoAng(45,holoEntity(15):toWorld(ang(0,0.90 * SmAnim,0))) #Right
-    holoPos(45,Base:toWorld(vec(-8.35,(2.88) + 0.015 * SmAnim,(-13.5) - 0.08 * SmAnim)))
-    holoAng(47,holoEntity(15):toWorld(ang(0,-0.90 * SmAnim,0))) #Right break
-    
-    holoAng(51,Base:toWorld(ang(0,0,-0.45 * SmAnim))) #Top angled bits
-    holoAng(53,Base:toWorld(ang(0,0,0.45 * SmAnim)))
-    
-    holoPos(59,Base:toWorld(vec(-7.4,-0.047 * SmAnim,-8 - (0.04 * SmAnim))))
-    holoScale(59,vec(0.15,0.15,0.012 * SmAnim))
-    holoPos(60,Base:toWorld(vec(-7.4,0.047 * SmAnim,-8 - (0.04 * SmAnim)))) #Side bits
-    holoScale(60,vec(0.15,0.15,0.012 * SmAnim))
-    
-    holoAng(55,Base:toWorld(ang(0,0,0.45 * SmAnim))) #Bottom angled bits
-    holoPos(55,Base:toWorld(vec(-8,-0.8,-15 - (0.08*SmAnim)))) #-23
-    holoAng(57,Base:toWorld(ang(0,0,-0.45 * SmAnim)))
-    holoPos(57,Base:toWorld(vec(-8,0.8,-15 - (0.08*SmAnim)))) #-23
-    
-    #Handle
-    holoPos(65,Base:toWorld(vec(SmAnim > 50 ? 0.9 + SmAnim*0.16 : 0,0,-4)))
-    holoPos(68,Base:toWorld(vec(SmAnim > 50 ? 8 + SmAnim*0.13 : 0,0,-4)))
-    holoAng(68,Base:toWorld(ang(SmAnim > 50 ? SmAnim*0.8 : 0,0,0)))
+    #holoAng(77,Base:toWorld(ang(0,0,curtime() * -1050)))
 }
