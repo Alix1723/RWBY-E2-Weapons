@@ -47,11 +47,15 @@ if(first())
     holoClip(31,1,vec(0,0,5),vec(0,0,-1),0)
     holoClip(31,2,vec(1.5,0,0),vec(-1,0,0),0)
     holoModel(31,"models/weapons/w_pist_elite_single.mdl")
-    
-    #include "lib/HoloStyleFunction"
+       
     I = 1
-    Delayer = 0
     NumHolo = 60
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {
@@ -142,7 +146,7 @@ elseif(I>NumHolo & I>0)
     I = 0
 }
 #Works best with weapon_pistol or the CS:S berettas
-#[if(PlayerTarget:weapon():type()=="weapon_pistol"|PlayerTarget:weapon():type()=="weapon_crowbar")
+if(PlayerTarget:weapon():type()=="weapon_pistol"|PlayerTarget:weapon():type()=="weapon_crowbar")
 {PlayerTarget:weapon():setAlpha(0) Hold = 1} 
 else
 {Hold = 0 PlayerTarget:weapon():setAlpha(255)}

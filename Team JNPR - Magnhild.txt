@@ -42,9 +42,14 @@ if(first())
     Pivot = holoCreate(0,entity():toWorld(vec(0,0,0))) holoParent(0,entity()) holoAlpha(0,0)
     Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.75,0.75,0.08),Pivot:toWorld(ang(90,0,0)),C3,"hq_cylinder") holoParent(1,0) #Back cylinder
     
-    #include "lib/HoloStyleFunction"
     NumHolo = 89 
     I = 2
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {

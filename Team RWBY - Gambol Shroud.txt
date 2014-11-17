@@ -34,8 +34,6 @@ Written by Alix
 runOnTick(1)
 if(first())
 {
-    #include "lib/HoloStyleFunction"
-    
     PlayerTarget = owner()
     entity():setAlpha(0)
     C1   = vec(33,33,33)
@@ -52,6 +50,12 @@ if(first())
     
     I = 2
     NumHolo = 47
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {

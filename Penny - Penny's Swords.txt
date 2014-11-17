@@ -26,9 +26,6 @@ Written by Alix
 @persist [Anim SmAnim Hold NumBlades I J Time Deploy Fire M1 M2 Reload Use Spinner]
 @persist [Stab Dist]:array
 
-#Thanks to The Sandvich Maker for this
-#include "lib/HoloStyleFunction"
-
 runOnTick(1)
 
 if(first())
@@ -59,13 +56,21 @@ if(first())
     holoParent(5000,owner())
     rangerDefaultZero(0)
     print("Spawning " + NumBlades * 29 + " holograms, please wait...")
-    lightCreate(1,owner():pos())
-    lightParent(1,owner())
-    lightColor(1,C5)
-    lightBrightness(1,256)
-    lightDistance(1,256)
+    #ifdef lightCreate(number,vector)
+        lightCreate(1,owner():pos())
+        lightParent(1,owner())
+        lightColor(1,C5)
+        lightBrightness(1,256)
+        lightDistance(1,256)
+        
+        lightToggle(1,0)
+    #endif
     
-    lightToggle(1,0)
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 
 #Spawn a whole lot of holograms
@@ -321,7 +326,10 @@ if(I >= NumBlades*29)
                 if(SmAnim==1){Pivot:soundPlay(1,0,"ambient/energy/force_field_loop1.wav")} soundPitch(1,50+SmAnim*1.5)
                 if(SmAnim==99){Pivot:soundPlay(2,2,"weapons/cow_mangler_explosion_charge_0"+randint(1,6)+".wav")
                                 Pivot:soundPlay(3,0,"ambient/machines/machine_whine1.wav") 
-                                lightToggle(1,1)}
+                                #ifdef lightToggle(number,number) 
+                                    lightToggle(1,1) 
+                                #endif 
+                                }
                 
                 #Firing the laser
                 if(SmAnim >=100){
@@ -357,7 +365,9 @@ if(I >= NumBlades*29)
                     holoAng(I*29,owner():eyeAngles()+ang(180,0,0))
                 }
                 holoAlpha(5001,0) 
-                lightToggle(1,0)
+                #ifdef lightToggle(number,number)
+                    lightToggle(1,0)
+                #endif
             }            
         }
         else

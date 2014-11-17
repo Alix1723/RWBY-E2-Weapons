@@ -43,10 +43,15 @@ if(first())
     #Why rotate base 90 degrees for no reason? Fuck you, that's why
     #holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.08),Pivot:toWorld(ang(90,0,0)),C1,"hq_cylinder") holoParent(2,1) #Emblem
     
-    #include "lib/HoloStyleFunction"
     I = 2
     NumHolo = 71
     print("Spawned Milo!")
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
     
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())

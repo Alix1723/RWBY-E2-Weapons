@@ -39,10 +39,15 @@ if(first())
     Pivot = holoCreate(1,entity():toWorld(vec(0,0,0)),vec(),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,entity())
     Base = holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec(),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(2,1)
     
-    #include "lib/HoloStyleFunction"
     TRM = (tickInterval() > 0.03 ? 2 : 1)
     I = 3
     NumHolo = 124
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {
@@ -183,7 +188,7 @@ if(I > NumHolo & I)
     holoStyle(72,Base:toWorld(vec(16,0,-9)),vec(0.12,0.12,1),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(72,Base)
     
     holoStyle(73,Base:toWorld(vec(5,0,-17)),vec(0.75,0.75,1.2),Base:toWorld(ang(90,0,0)),C4,"cylinder") holoParent(73,Base)
-    holoStyle(74,Base:toWorld(vec(13,0,-14)),vec(0.17,0.2,0.6),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(73,Base)
+    holoStyle(74,Base:toWorld(vec(13,0,-14)),vec(0.17,0.2,0.6),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(74,Base)
     holoStyle(75,Base:toWorld(vec(-3.5,0,-14)),vec(0.22,0.1,0.6),Base:toWorld(ang(0,0,0)),C4,"cube") holoParent(75,Base)
     holoStyle(76,Base:toWorld(vec(-3,0,-19)),vec(0.4,0.4,0.3),Base:toWorld(ang(90,0,0)),C4,"cylinder") holoParent(76,Base)
     
@@ -248,9 +253,9 @@ if(I > NumHolo & I)
         
         #Hinge [Spindle thing]
         holoStyle(120,Base:toWorld(vec(-7.5,5.6,-4.6)),vec(0.2,0.2,0.2) *A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(120,113)
-            holoStyle(121,Base:toWorld(vec(-3.9,5.6,-4.6)),vec(0.09,0.09,0.55),Base:toWorld(ang(90,0,0)),C1,"cylinder") holoParent(121,121)
-            holoStyle(122,Base:toWorld(vec(0,5.6,-4.6)),vec(0.2,0.2,0.25),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(122,121)
-            holoStyle(123,Base:toWorld(vec(1.5,5.6,-4.6)),vec(0.25,0.25,0.09),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(123,121)
+            holoStyle(121,Base:toWorld(vec(-3.9,5.6,-4.6)),vec(0.09,0.09,0.55),Base:toWorld(ang(90,0,0)),C1,"cylinder") holoParent(121,120)
+            holoStyle(122,Base:toWorld(vec(0,5.6,-4.6)),vec(0.2,0.2,0.25),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(122,120)
+            holoStyle(123,Base:toWorld(vec(1.5,5.6,-4.6)),vec(0.25,0.25,0.09),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(123,120)
             
         #Muzzle flare
         holoStyle(124,Base:toWorld(vec(-45,0,-7)),vec(1,1,1),Base:toWorld(ang(0,180,0)),vec(255,255,255),"models/effects/muzzleflash/minigunmuzzle.mdl") holoParent(124,Base)
@@ -283,7 +288,7 @@ elseif(I<=0)
     E = owner():keyUse()
     
     #Wepon mode
-    if(owner():weapon():type() == "weapon_shotgun")
+    if(owner():weapon():type() == MinigunWeapon)
     {
         Hold = 1
     }

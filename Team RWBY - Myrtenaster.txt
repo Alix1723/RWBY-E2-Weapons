@@ -29,8 +29,6 @@ Written by Alix
 runOnTick(1)
 if(first())
 {
-    #include "lib/HoloStyleFunction"
-    
     entity():setAlpha(0)
     
     #Weapons to use
@@ -46,6 +44,12 @@ if(first())
     
     NumHolo = 65 
     I = 2
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {

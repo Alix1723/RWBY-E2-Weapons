@@ -45,9 +45,14 @@ if(first())
         holoCreate(201) holoColor(201,C2) holoParent(201,Pivot1)
         holoCreate(202) holoColor(202,C2) holoParent(202,Pivot2)
         
-        #include "lib/HoloStyleFunction"
         I = 6
         NumHolo = 121
+        
+        function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 } 
 if(I<=NumHolo & I > 0 & holoCanCreate())
 {

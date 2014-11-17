@@ -28,9 +28,7 @@ Written by Alix
 runOnTick(1)
 
 if(first())
-{
-    #include "lib/HoloStyleFunction"
-    
+{    
     PlayerTarget = owner()
     
     #Hold=1
@@ -44,8 +42,13 @@ if(first())
     Base = holoCreate(1,entity():toWorld(vec(0,0,0)),0*vec(1,1,1),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0)
     
     I = 2
-
     NumHolo = 81
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
     
     entity():setAlpha(0)
 }

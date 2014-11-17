@@ -36,10 +36,7 @@ if(first())
     
     PlayerTarget = owner()
     entity():setAlpha(0)
-    
-    #Thank you "The Sandvich Maker" for this idea
-    #include "lib/HoloStyleFunction"
-    
+        
     #Which weapon to use for each 'mode'
     MeleeWeapon = "weapon_crowbar"
     RifleWeapon = "weapon_crossbow"
@@ -56,9 +53,15 @@ if(first())
         
     #Centre
     Base = holoCreate(1,entity():pos(),vec(2,0.2,0.3),ang(0,0,0),Red,"cube") holoParent(1,0) #holoAlpha(1,50) 
-
+    
     I = 2
     NumHolo = 92
+    
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
 }
 elseif(I <= NumHolo & holoCanCreate() & I > 0)
 {
