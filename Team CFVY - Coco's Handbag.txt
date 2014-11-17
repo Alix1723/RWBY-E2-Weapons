@@ -4,10 +4,11 @@ Coco's Handbag
 oh my GAWD, is that Gucci?
 
 HOW TO USE:
-
+Take shotgun out, hold down R to fire
 
 REQUIRES:
-
+TF2 (Effect, sounds)
+CSS (Sounds)
 
 http://rwby.wikia.com/wiki/Coco%27s_Handbag
 
@@ -17,20 +18,31 @@ Written by Alix
 @name CVFY Coco's Handbag
 @persist [Pivot Base]:entity
 @persist [C1 C2]:vector
-@persist [NumHolo I Anim SmAnim E R Hold]
+@persist [NumHolo I Anim SmAnim E R Hold] 
+@persist [ScaleFix SpinUp BarrelSpin Firing FireInterval FirePropSpawnInterval UnlimitedSpawnRate TRM]
+@persist [MinigunWeapon]:string
 
 runOnTick(1)
 
 if(first())
 {
+    MinigunWeapon = "weapon_shotgun"
+    
+    #If you have access to sbox_E2_maxPropsPerSecond, increase it (>20) and set this to 1 to enable full speed prop firing mode
+    UnlimitedSpawnRate = isSinglePlayer()
+    
+    #If things look weird/out of proporition, try changing this
+    ScaleFix = 0
+    
     entity():setAlpha(0)
     
     Pivot = holoCreate(1,entity():toWorld(vec(0,0,0)),vec(),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,entity())
     Base = holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec(),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(2,1)
     
     #include "lib/HoloStyleFunction"
-    I = 3 #3
-    NumHolo = 60#130
+    TRM = (tickInterval() > 0.03 ? 2 : 1)
+    I = 3
+    NumHolo = 124
 }
 if(I <= NumHolo & I > 0 & holoCanCreate())
 {
@@ -44,8 +56,8 @@ if(I > NumHolo & I)
     C2 = vec()
     C3 = vec(136,107,13)
     C4 = vec(255,191,0)
-    A = 0
-    
+    A = 0 #Set this to 1 to see hinges in red
+
     #Hinge [Handle/Top]
     holoStyle(3,Base:toWorld(vec(0,0,-4)),vec(0.2,0.2,0.2) * A,Base:toWorld(ang(0,0,0)),vec(255,0,0),"cube") holoParent(3,Base)
         holoStyle(4,Base:toWorld(vec(0,0.15,-0.61)),vec(0.1,0.52,1.4),Base:toWorld(ang(90,0,0)),C1,"hq_tube") holoParent(4,3) 
@@ -213,11 +225,11 @@ if(I > NumHolo & I)
         
         holoStyle(101,Base:toWorld(vec(-0.2,0,-21)),vec(2.1,2.1,0.1),Base:toWorld(ang(0,90,90)),C4,"hq_cylinder") holoParent(101,96)  
         holoStyle(102,Base:toWorld(vec(-1.5,0,-21)),vec(1,1,0.15),Base:toWorld(ang(0,90,90)),C4*0.9,"hq_cylinder") holoParent(102,96)     
-        holoStyle(103,Base:toWorld(vec(-0.5,0,-21)),vec(0.26,0.26,0.05),Base:toWorld(ang(0,90,90)),C1,"models/hunter/tubes/tube2x2x025.mdl") holoParent(103,96)#
+        holoStyle(103,Base:toWorld(vec(-0.6,0,-21)),vec(0.26,0.26,0.05),Base:toWorld(ang(0,90,90)),C1,"models/hunter/tubes/tube2x2x025.mdl") holoParent(103,96)#
         for(I=104,112)
         {
             K = (I-104) * 20
-            holoStyle(I,Base:toWorld(vec(-0.5,0,-21)),vec(1.9,0.15,0.05),Base:toWorld(ang(K,90,90)),C1,"hq_cylinder") holoParent(I,96)
+            holoStyle(I,Base:toWorld(vec(-0.6,0,-21)),vec(1.9,0.15,0.05),Base:toWorld(ang(K,90,90)),C1,"hq_cylinder") holoParent(I,96)
         }
         holoStyle(113,Base:toWorld(vec(8.7,0,-21)),vec(0.26,0.26,0.05),Base:toWorld(ang(0,90,90)),C1,"models/hunter/tubes/tube2x2x025.mdl") holoParent(113,96)#
         
@@ -239,20 +251,43 @@ if(I > NumHolo & I)
             holoStyle(121,Base:toWorld(vec(-3.9,5.6,-4.6)),vec(0.09,0.09,0.55),Base:toWorld(ang(90,0,0)),C1,"cylinder") holoParent(121,121)
             holoStyle(122,Base:toWorld(vec(0,5.6,-4.6)),vec(0.2,0.2,0.25),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(122,121)
             holoStyle(123,Base:toWorld(vec(1.5,5.6,-4.6)),vec(0.25,0.25,0.09),Base:toWorld(ang(90,0,0)),C4,"hq_cylinder") holoParent(123,121)
+            
+        #Muzzle flare
+        holoStyle(124,Base:toWorld(vec(-45,0,-7)),vec(1,1,1),Base:toWorld(ang(0,180,0)),vec(255,255,255),"models/effects/muzzleflash/minigunmuzzle.mdl") holoParent(124,Base)
+        holoMaterial(124,"")
+        holoAlpha(124,0)
+        
+            if(ScaleFix)
+            {
+                for(I=17,40)
+                {
+                    if(holoEntity(I):model() == "models/props_phx/mechanics/slider1.mdl")
+                    {
+                        Scl = holoScale(I)
+                        holoScale(I,shiftL(Scl))
+                    }
+                }
+            }
+            
     I = 0
     SmAnim = 10
 }
 elseif(I<=0)
 {
     #Inputs
-    R = owner():keyReload()
+    if(Hold==1)
+    {
+        R = owner():keyReload()
+    }
+
     E = owner():keyUse()
     
-    #Wepen
-    
-    #In left hand
-    ##else
-    if(owner():weapon():type() == "laserpointer" | owner():weapon():type() == "none" | owner():weapon():type() == "gmod_tool")
+    #Wepon mode
+    if(owner():weapon():type() == "weapon_shotgun")
+    {
+        Hold = 1
+    }
+    elseif(owner():weapon():type() == "laserpointer" | owner():weapon():type() == "none" | owner():weapon():type() == "gmod_tool")
     {
         Hold = 2
     }
@@ -266,41 +301,130 @@ elseif(I<=0)
     {
         if(Hold == 1)
         {
-            ##
+            #Both hands
+            holoPos(1,owner():attachmentPos("anim_attachment_rh"))
+            holoAng(1,owner():attachmentAng("anim_attachment_rh"))
+                holoParentAttachment(1,owner(),"anim_attachment_rh")  
+            holoPos(2,Pivot:toWorld(vec(23.5,-1,5)))
+            holoAng(2,Pivot:toWorld(ang(10,180,0)))
+            #holoPos(2,Pivot:toWorld(vec(12,0,2)))
+            #holoAng(2,Pivot:toWorld(ang(10,180,0)))
+            Anim = 100
+            owner():weapon():setAlpha(0)
+            Base:soundPlay(1,2,"weapons/ump45/ump45_boltslap.wav") soundPitch(1,60)
+            Base:soundPlay(2,2,"weapons/draw_minigun_heavy.wav") soundPitch(2,90)#ui/item_heavy_gun_drop.wav
+            Base:soundPlay(3,2,"ui/item_heavy_gun_drop.wav") #soundPitch(3,90)
         }
         elseif(Hold == 2)
         {
             #Left Hand
             holoPos(1,owner():attachmentPos("anim_attachment_lh"))
             holoAng(1,owner():attachmentAng("anim_attachment_lh"))
-                holoParentAttachment(1,owner(),"anim_attachment_lh")
-                
+                holoParentAttachment(1,owner(),"anim_attachment_lh")  
             holoPos(2,Pivot:toWorld(vec(2,1,0)))
             holoAng(2,Pivot:toWorld(ang(-80,0,0)))
+            if(Anim>0)
+            {
+                Base:soundPlay(1,2,"weapons/draw_melee.wav") soundPitch(1,100)
+                Base:soundPlay(2,2,"weapons/scatter_gun_double_tube_close.wav") soundPitch(2,80)
+                Anim = 0
+            }   
         }
         else
         {
             #Right Hip
             holoPos(1,owner():attachmentPos("chest"))
             holoAng(1,owner():attachmentAng("chest"))
-                holoParentAttachment(1,owner(),"chest")
-                
+                holoParentAttachment(1,owner(),"chest")    
             holoPos(2,Pivot:toWorld(vec(-3,-6,-8)))
             holoAng(2,Pivot:toWorld(ang(15,-210,20)))
+            if(Anim>0)
+            {
+                Base:soundPlay(1,2,"weapons/draw_melee.wav") soundPitch(1,100)
+                Base:soundPlay(2,2,"weapons/scatter_gun_double_tube_close.wav") soundPitch(2,80)
+                Anim = 0
+            } 
         }
     }
     
 
-    #Animation
-    #Anim = (owner():keyUse() * 100)
-    if(E & $E){
-        #Anim = !Anim * 100  
+    #Firing
+    if(R)
+    {   #Spinning barrel up
+        
+        if(SpinUp<100)
+        {
+            SpinUp+=2*TRM     
+        }
+        
+        #Spinup sound
+        if($R)
+        {
+            Base:soundPlay(4,2,"weapons/minifun_wind_up.wav")   soundPitch(4,95) 
+        }
+        
+        #Spun up
+        if(SpinUp>=100)
+        {
+            Firing = 1
+            #Start firing
+            if(Firing & $Firing)
+            {
+                Base:soundPlay(4,0,"weapons/minifun_shoot.wav")  soundPitch(4,80)     
+            }
+            #Firing interval
+            if(FireInterval<=0)
+            {
+                if(FirePropSpawnInterval>0)
+                {
+                    FirePropSpawnInterval--
+                }
+                
+                #Props
+                if(FirePropSpawnInterval <= 0)
+                {
+                    P = propSpawn("models/props_junk/garbage_glassbottle003a.mdl",Base:toWorld(vec(-45,0,-7)),owner():eyeAngles() + ang(90,0,0),0)
+                    P:setMass(1000)
+                    P:setTrails(2,1,0.3,"trails/smoke",vec(255,255,255),150)
+                    #P:setAlpha(0)
+                    P:applyForce(P:mass() * P:mass() * 10000 * owner():eye())
+                    FirePropSpawnInterval = (UnlimitedSpawnRate) ? 0 : 2
+                }
+                
+                holoAlpha(124,255)
+                holoAng(124,Base:toWorld(ang(0,180,randint(0,360))))
+                FireInterval=8    
+            }
+            #Dimming muzzle flash
+            else
+            {
+                holoAlpha(124,FireInterval>7 ? 255 : 0)
+                FireInterval--    
+            }
+        }
+    }
+    #Slowing down
+    elseif(!R & SpinUp>0)
+    {
+        Firing = 0
+        holoAlpha(124,0)
+        SpinUp-=1*TRM  
+        
+        if($R)
+        {
+               Base:soundPlay(4,2,"weapons/minifun_wind_down.wav")   soundPitch(4,95) 
+        }
     }
     
+    #Barrel rotation
+    BarrelSpin = (BarrelSpin + (SpinUp * 0.5)) % 360
+    holoAng(77,Base:toWorld(ang(0,0, BarrelSpin)))
+    
+    #Animation
     if(SmAnim != Anim)
     {
-        if(SmAnim<Anim){SmAnim+= min(5, Anim - SmAnim)}
-        if(SmAnim>Anim){SmAnim-= min(5, SmAnim - Anim)}
+        if(SmAnim<Anim){SmAnim+= min(5*TRM, Anim - SmAnim)}
+        if(SmAnim>Anim){SmAnim-= min(5*TRM, SmAnim - Anim)}
 
         holoAng(3,Base:toWorld(ang(0,-0.9 * SmAnim,0))) #Handle
         holoAng(8,holoEntity(3):toWorld(ang(0,0,SmAnim > 2 ? 90 : 0))) #Flap
@@ -346,6 +470,4 @@ elseif(I<=0)
             holoAlpha(I,SmAnim > 45 ? 255 : 0)   
         }
     }
-    
-    #holoAng(77,Base:toWorld(ang(0,0,curtime() * -1050)))
 }
