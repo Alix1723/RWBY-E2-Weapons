@@ -7,7 +7,8 @@ The weird and wonderful weapons of RWBY recreated in Garry's Mod using Expressio
 
 #INSTALLATION INSTRUCTIONS:
 
-Place any of the .txt files inside /Steam/steamapps/common/Garry's Mod/garrysmod/data/expression2/. 
-Ingame, take out the E2 tool, select the file you want, spawn a chip, and it should spawn the relevant weapon for you.
+Make sure you have Wiremod installed and up to date!
 
-If it doesn't work then... I unno, get better at the game?
+Place any of the .txt files inside /Steam/steamapps/common/Garry's Mod/garrysmod/data/expression2/. 
+
+Once in-game, take out the E2 tool, select the file you want, spawn a chip, and it should spawn the relevant weapon for you.
