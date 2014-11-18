@@ -20,13 +20,14 @@ Written by Alix
 @persist [C1 C2]:vector
 @persist [NumHolo I Anim SmAnim E R Hold] 
 @persist [ScaleFix SpinUp BarrelSpin Firing FireInterval FirePropSpawnInterval UnlimitedSpawnRate TRM]
-@persist [MinigunWeapon]:string
+@persist [MinigunWeapon MeleeWeapon]:string
 
 runOnTick(1)
 
 if(first())
 {
     MinigunWeapon = "weapon_shotgun"
+    MeleeWeapon = "weapon_crowbar"
     
     #If you have access to sbox_E2_maxPropsPerSecond, increase it (>20) and set this to 1 to enable full speed prop firing mode
     UnlimitedSpawnRate = isSinglePlayer()
@@ -280,9 +281,13 @@ if(I > NumHolo & I)
 elseif(I<=0)
 {
     #Inputs
-    if(Hold==1)
+    if(Hold==1 & owner():isAlive())
     {
         R = owner():keyReload()
+    }
+    else
+    {
+        R = 0    
     }
 
     E = owner():keyUse()
@@ -295,6 +300,10 @@ elseif(I<=0)
     elseif(owner():weapon():type() == "laserpointer" | owner():weapon():type() == "none" | owner():weapon():type() == "gmod_tool")
     {
         Hold = 2
+    }
+    elseif(owner():weapon():type() == MeleeWeapon)
+    {
+        Hold = 3
     }
     else
     {
@@ -334,6 +343,22 @@ elseif(I<=0)
                 Base:soundPlay(2,2,"weapons/scatter_gun_double_tube_close.wav") soundPitch(2,80)
                 Anim = 0
             }   
+        }
+        elseif(Hold == 3)
+        {
+            #Right Hand melee
+            holoPos(1,owner():attachmentPos("anim_attachment_rh"))
+            holoAng(1,owner():attachmentAng("anim_attachment_rh"))
+                holoParentAttachment(1,owner(),"anim_attachment_rh")  
+            holoPos(2,Pivot:toWorld(vec(2,1,0)))
+            holoAng(2,Pivot:toWorld(ang(-80,0,0)))
+            owner():weapon():setAlpha(0)
+            if(Anim>0)
+            {
+                Base:soundPlay(1,2,"weapons/draw_melee.wav") soundPitch(1,100)
+                Base:soundPlay(2,2,"weapons/scatter_gun_double_tube_close.wav") soundPitch(2,80)
+                Anim = 0
+            }
         }
         else
         {
@@ -398,7 +423,7 @@ elseif(I<=0)
                 
                 holoAlpha(124,255)
                 holoAng(124,Base:toWorld(ang(0,180,randint(0,360))))
-                FireInterval=8    
+                FireInterval=8/TRM     
             }
             #Dimming muzzle flash
             else
