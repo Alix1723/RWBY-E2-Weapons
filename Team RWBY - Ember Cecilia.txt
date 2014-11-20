@@ -5,6 +5,7 @@ EMBER CECILIA
 
 HOW TO USE:
 Take fists out, PUNCH SOME STUFF! M1 fires regular punch, M2 fires super double punch
+Hold down SHIFT while firing to launch projectiles
 R and E reloads each gauntlet
 
 REQUIRES:

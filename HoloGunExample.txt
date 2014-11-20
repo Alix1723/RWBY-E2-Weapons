@@ -1,0 +1,72 @@
+@name Simple Holo Gun Example
+@persist [Pivot Base]:entity Hold R M1
+
+#Execute the E2 every frame
+runOnTick(1)
+
+if(first()) #If it's the first tick, do this holo stuff
+{
+    #Pivot goes onto your attachment pos, and doesn't move
+    Pivot = holoCreate(1,entity():pos(),vec()) holoParent(1,entity()) #This is what the base is parented to
+    
+    #Think of base like a controller for the rest of the model - move this around relative to the pivot
+    Base = holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec()) holoParent(2,1) #This is what the rest of your models are parented to
+    
+    #This is the actual gun model, and whatever else you wanna add to it
+    holoCreate(3,Pivot:toWorld(vec(0,0,2)),vec(1,1,1),Pivot:toWorld(ang(0,0,0)),vec(255,255,255),"models/weapons/w_models/w_revolver.mdl") holoParent(3,2)    
+
+}
+
+#Input keys and buttons
+M1 = owner():keyAttack1()
+R = owner():keyReload()
+
+
+#Check what weapon you have out
+if(owner():weapon():type() == "weapon_357") 
+{
+    Hold = 1      #Hold is a variable in @persist that determines if your gun is out or not
+}
+else
+{
+    Hold = 0    #If you're not holding a weapon_357, hold is 0
+}
+
+#So if hold changes at all (from 0 to 1, and from 1 to 0, etc)
+if($Hold)
+{
+    #If hold has changed from 0 to 1 - we're holding the 357 now
+    if(Hold == 1){
+        #Place the Pivot hologram on top of your right hand attachment
+        holoPos(1,owner():attachmentPos("anim_attachment_rh"))
+        #Rotate the pivot so it matches the hand angles
+        holoAng(1,owner():attachmentAng("anim_attachment_rh"))
+        #Parent this pivot to the hand - notice that it's a different command than "holoParent"
+        holoParentAttachment(1,owner(),"anim_attachment_rh")
+        
+        #Now move and rotate the Base relative to the Pivot, in order to line up the model with your hands
+        holoPos(2,Pivot:toWorld(vec(0,0,0)))
+        holoAng(2,Pivot:toWorld(ang(0,0,0)))
+        
+        #Make the gun visible
+        holoAlpha(3,255)   
+        
+        #Make the original 357 invisible
+        owner():weapon():setAlpha(0)
+    }
+    else #Otherwise Hold has changed from 1 to 0, put it away
+    {
+        holoAlpha(3,0) #Make the gun invisible but otherwise do nothing
+    }
+}
+
+#Anything you want to happen every tick goes after here
+if(Hold == 1)
+{
+    #Any special firing effects, prop bullets, etc go here
+    if(R & $R)
+    {
+        Base:soundPlay(1,2,"vo/heavy_cloakedspy0"+randint(1,4)+".wav") 
+    }      
+}
+

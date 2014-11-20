@@ -33,7 +33,7 @@ if(first())
     UnlimitedSpawnRate = isSinglePlayer()
     
     #If things look weird/out of proporition, try changing this
-    ScaleFix = 0
+    #ScaleFix = 0
     
     entity():setAlpha(0)
     
@@ -263,7 +263,7 @@ if(I > NumHolo & I)
         holoMaterial(124,"")
         holoAlpha(124,0)
         
-            if(ScaleFix)
+            #[if(ScaleFix)
             {
                 for(I=17,40)
                 {
@@ -273,9 +273,9 @@ if(I > NumHolo & I)
                         holoScale(I,shiftL(Scl))
                     }
                 }
-            }
-            
+            }   ]#      
     I = 0
+    Hold = 4
     SmAnim = 10
 }
 elseif(I<=0)
