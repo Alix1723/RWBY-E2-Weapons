@@ -7,14 +7,14 @@ HOW TO USE:
 
 REQUIRES:
 
-http://rwby.wikia.com/wiki/Melodic_Cudgel
+http://rwby.wikia.com/wiki/Neopolitan%27s_Umbrella
 
 Written by Alix
 ]#
 
 @name Neo's Parasol
 @persist [Pivot Base]:entity
-@persist [C1 C2 C3]:vector
+@persist [C1 C2 C3 C4]:vector
 @persist [Anim SmAnim I NumHolo]
 
 runOnTick(1)
@@ -22,7 +22,10 @@ if(first())
 {
     entity():setAlpha(0)
     
-    C1 = vec(61,61,61) #
+    C1 = vec(61,61,61) #Grey
+    C2 = vec(255,197,242) #Strawberry
+    C3 = vec(30,30,30) #Dark Grey
+    C4 = vec(123,93,79) #Chocolate
     
     Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
     Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0) 
@@ -30,7 +33,7 @@ if(first())
     #include "lib/HoloStyleFunction"
     
     I = 2
-    NumHolo = 5       
+    NumHolo = 61       
 }
 if(I<=NumHolo & I > 0 & holoCanCreate())
 {
@@ -41,17 +44,88 @@ if(I<=NumHolo & I > 0 & holoCanCreate())
 }
 elseif(I>NumHolo)
 {
-    holoStyle(2, Base:toWorld(vec(0,0,0)), vec(1,1,1) * 0.3, Base:toWorld(ang(90,0,0)), C1, "hq_torus_thick") holoParent(2, 1)
+    holoStyle(2, Base:toWorld(vec(0,0,0)), vec(1,1,1) * 0.403, Base:toWorld(ang(90,0,0)), C1, "hq_torus_thick") holoParent(2, 1)
     holoClipEnabled(2,1)
     holoClip(2,vec(),vec(1,0,0),0)
     
-    holoStyle(3, Base:toWorld(vec(0,1.35,0.3)), vec(0.075,0.075,0.05), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(3, 1)
-    holoStyle(4, Base:toWorld(vec(0,-1.35,9.62)), vec(0.075,0.075,1.6), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(4, 1)
-    #holoStyle(5, Base:toWorld(vec(0,-1.35,4)), vec(0.075,0.075,0.2), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(5, 1)
-           
+    holoStyle(3, Base:toWorld(vec(0,1.813,0.3)), vec(0.1,0.1,0.05), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(3, 1)
+    holoStyle(4, Base:toWorld(vec(0,-1.813,12)), vec(0.1,0.1,2), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(4, 1)
+    holoStyle(5, Base:toWorld(vec(0,-1.813,3)), vec(0.13,0.13,0.13), Base:toWorld(ang(0,0,0)), C2, "hq_cylinder") holoParent(5, 1)
+    
+    holoClipEnabled(5,1)
+    holoClip(5,vec(0,0,0.3),vec(0,-0.5,-1),0)  
+    
+    holoStyle(6, Base:toWorld(vec(0,-1.813,3.28)), vec(0.14,0.145,0.001), Base:toWorld(ang(0,0,-27.5)), C2, "hq_cylinder") holoParent(6, 1)
+    holoStyle(7, Base:toWorld(vec(0,-1.813,21.5)), vec(0.14,0.14,0.18), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(7, 1)
+    holoStyle(8, Base:toWorld(vec(0,-1.813,24)), vec(0.12,0.12,0.15), Base:toWorld(ang(0,0,0)), C2, "hq_tube_thick") holoParent(8, 1)
+    
+    #Spindles
+    J = 0
+    for(I=9,51,6)
+    {
+        #print(J + "degrees, holo: " + I)
+        holoStyle(I, Base:toWorld(vec(0.7 * cos(J),(-1.813) + 0.7*sin(J),22.8)), vec(0.1,0.1,0.1) / 10, Base:toWorld(ang(0,J,0)), vec(255,0,0), "cube") holoParent(I, 1)  
+        holoStyle(I+1, Base:toWorld(vec(3.5 * cos(J),(-1.813) + 3.5*sin(J),22.8)), vec(0.5,0.03,0.03), Base:toWorld(ang(0,J,0)), C3, "cube") holoParent(I+1, I)  
+        holoStyle(I+2, Base:toWorld(vec(9.4 * cos(J),(-1.813) + 9.4 *sin(J),22.55)), vec(0.5,0.025,0.025), Base:toWorld(ang(5,J,0)), C3, "cube") holoParent(I+2, I)  
+        holoStyle(I+3, Base:toWorld(vec(15.1 * cos(J),(-1.813) + 15.1 *sin(J),21.55)), vec(0.5,0.02,0.02), Base:toWorld(ang(15,J,0)), C3, "cube") holoParent(I+3, I) 
+        holoStyle(I+4, Base:toWorld(vec(6.5 * cos(J),(-1.813) + 6.5 *sin(J),22.5)), vec(0.05,0.05,0.05)*0, Base:toWorld(ang(0,J,0)), vec(255,0,0), "cube") holoParent(I+4, I)
+            holoStyle(I+5, Base:toWorld(vec(6.5 * cos(J),(-1.813) + 6.5 *sin(J),18.3)), vec(0.03,0.03,0.75), Base:toWorld(ang(0,J,0)), C3, "cube") holoParent(I+5, I+4)
+        J+=45
+    }  
+    
+    #57
+    holoStyle(57, Base:toWorld(vec(0,-1.813,16.5)), vec(0.12,0.12,0.15), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(57, 1)
+    holoStyle(58, Base:toWorld(vec(0,-1.813,20.8)), vec(2.7,2.7,0.35), Base:toWorld(ang(0,0,0)), C2*1.2, "hq_hdome_thin") holoParent(58, 1)
+    holoAlpha(58,240)
+    holoMaterial(58,"models/combine_scanner/scanner_eye")
+    
+    holoClipEnabled(58,1)
+    holoClip(58,vec(0,0,1.5),vec(0,0,1),0)
+    
+    holoStyle(59, Base:toWorld(vec(0,-1.813,20.8)), vec(2.7,2.7,0.35), Base:toWorld(ang(0,0,0)), C4*1.2, "hq_hdome_thin") holoParent(59, 1)
+    holoAlpha(59,240)
+    holoMaterial(59,"models/combine_scanner/scanner_eye")
+    holoClipEnabled(59,1)
+    holoClip(59,vec(0,0,1.5),vec(0,0,-1),0)
+    
+    holoStyle(60, Base:toWorld(vec(0,-1.813,15)), vec(0.2,0.2,1.4), Base:toWorld(ang(0,0,0)), C2, "hq_sphere") holoParent(60, 1)
+    
+        
     I = 0
 }
 elseif(I==0)
 {
+    Anim = owner():keyUse() * 100
     
+    SmAnim = Anim#'SmAnim + clamp(Anim - SmAnim,-1,1)
+    
+    #Top
+    holoAng(9,Base:toWorld(ang(SmAnim * 0.85,0,0)))
+    holoAng(15,Base:toWorld(ang(SmAnim * 0.85,45,0)))
+    holoAng(21,Base:toWorld(ang(SmAnim * 0.85,90,0)))
+    holoAng(27,Base:toWorld(ang(SmAnim * 0.85,135,0)))
+    
+    holoAng(33,Base:toWorld(ang(SmAnim * 0.85,180,0)))
+    holoAng(39,Base:toWorld(ang(SmAnim * 0.85,225,0)))
+    holoAng(45,Base:toWorld(ang(SmAnim * 0.85,270,0)))
+    holoAng(51,Base:toWorld(ang(SmAnim * 0.85,315,0))) 
+     
+    #Inner spindles
+    holoAng(13,Base:toWorld(ang(45 - SmAnim * 0.35,0,0)))
+    holoAng(19,Base:toWorld(ang(45 - SmAnim * 0.35,45,0)))
+    holoAng(25,Base:toWorld(ang(45 - SmAnim * 0.35,90,0)))
+    holoAng(31,Base:toWorld(ang(45 - SmAnim * 0.35,135,0)))
+    
+    holoAng(37,Base:toWorld(ang(45 - SmAnim * 0.35,180,0)))
+    holoAng(43,Base:toWorld(ang(45 - SmAnim * 0.35,225,0)))
+    holoAng(49,Base:toWorld(ang(45 - SmAnim * 0.35,270,0)))
+    holoAng(55,Base:toWorld(ang(45 - SmAnim * 0.35,315,0)))
+    
+    #Sliding bit
+    holoPos(57,Base:toWorld(vec(0,-1.813,16.5 - sin(SmAnim*0.9) * 5)))
+    
+    #Umbrella part
+    holoAlpha(58,SmAnim ? 0 : 240)
+    holoAlpha(59,SmAnim ? 0 : 240)
+    holoAlpha(60,SmAnim ? 255 : 0)
 }
