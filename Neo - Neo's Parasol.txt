@@ -1,0 +1,57 @@
+#[
+Neo's Parasol
+
+[SMUG INTENSIFIES]
+
+HOW TO USE:
+
+REQUIRES:
+
+http://rwby.wikia.com/wiki/Melodic_Cudgel
+
+Written by Alix
+]#
+
+@name Neo's Parasol
+@persist [Pivot Base]:entity
+@persist [C1 C2 C3]:vector
+@persist [Anim SmAnim I NumHolo]
+
+runOnTick(1)
+if(first())
+{
+    entity():setAlpha(0)
+    
+    C1 = vec(61,61,61) #
+    
+    Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0) 
+    
+    #include "lib/HoloStyleFunction"
+    
+    I = 2
+    NumHolo = 5       
+}
+if(I<=NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I)
+    holoScale(I,vec())
+    holoMaterial(I,"models/debug/debugwhite")
+    I++
+}
+elseif(I>NumHolo)
+{
+    holoStyle(2, Base:toWorld(vec(0,0,0)), vec(1,1,1) * 0.3, Base:toWorld(ang(90,0,0)), C1, "hq_torus_thick") holoParent(2, 1)
+    holoClipEnabled(2,1)
+    holoClip(2,vec(),vec(1,0,0),0)
+    
+    holoStyle(3, Base:toWorld(vec(0,1.35,0.3)), vec(0.075,0.075,0.05), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(3, 1)
+    holoStyle(4, Base:toWorld(vec(0,-1.35,9.62)), vec(0.075,0.075,1.6), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(4, 1)
+    #holoStyle(5, Base:toWorld(vec(0,-1.35,4)), vec(0.075,0.075,0.2), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(5, 1)
+           
+    I = 0
+}
+elseif(I==0)
+{
+    
+}
