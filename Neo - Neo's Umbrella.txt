@@ -1,0 +1,259 @@
+#[
+Neo's Parasol
+
+[SMUG INTENSIFIES]
+
+HOW TO USE:
+Take out a HL2 Pistol to block stuff. *(Don't walk backwards though)
+Take out the CSS Knife/Fists to shank stuff.
+
+REQUIRES:
+TF2 and CSS for sounds.
+
+http://rwby.wikia.com/wiki/Neopolitan%27s_Umbrella
+
+Written by Alix
+]#
+
+@name Neo's Umbrella
+@persist [Pivot Pivot2 Base BlockProp]:entity
+@persist [C1 C2 C3 C4]:vector
+@persist [Anim SmAnim I NumHolo Hold]
+@persist [BlockWeapon StabWeapon MeleeWeapon]:string
+
+runOnTick(1)
+runOnLast(1)
+
+if(first())
+{
+    BlockWeapon = "weapon_pistol"
+    MeleeWeapon = "weapon_crowbar"
+    StabWeapon = "weapon_knife"
+    
+    entity():setAlpha(0)
+    
+    C1 = vec(61,61,61) #Grey
+    C2 = vec(255,197,242) #Strawberry
+    C3 = vec(30,30,30) #Dark Grey
+    C4 = vec(123,93,79) #Chocolate
+    
+    Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0) 
+    
+    BlockProp = propSpawn("models/XQM/panel360.mdl",1)
+    BlockProp:setMass(50000)
+    BlockProp:setAlpha(0)
+    #noCollide(owner(), BlockProp) WHY DOESN'T THIS WORK >:(
+    
+    #include "lib/HoloStyleFunction"
+    
+    I = 2
+    NumHolo = 65       
+}
+if(I<=NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I)
+    holoScale(I,vec())
+    holoMaterial(I,"models/debug/debugwhite")
+    I++
+}
+elseif(I>NumHolo)
+{    
+    #Estoc hinge
+    holoStyle(2, Base:toWorld(vec(0,0,0)), vec(0.2,0.2,0.2)*0, Base:toWorld(ang(0,0,0)), vec(255,0,0), "cube") 
+    holoStyle(3, Base:toWorld(vec(0,0,0)), vec(0.2,0.2,0.2)*0, Base:toWorld(ang(0,0,0)), vec(255,0,0), "cube") holoParent(3, 1) holoParent(2, 3)
+    
+    #Centre column
+    holoStyle(4, Base:toWorld(vec(0,-1.813,13)), vec(0.1,0.1,1.7), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(4, 1)
+    holoStyle(5, Base:toWorld(vec(0,-1.813,3)), vec(0.13,0.13,0.13), Base:toWorld(ang(0,0,0)), C2, "hq_cylinder") holoParent(5, 1)
+    holoClipEnabled(5,1)
+    holoClip(5,vec(0,0,0.3),vec(0,-0.5,-1),0)  
+    holoStyle(6, Base:toWorld(vec(0,-1.813,3.28)), vec(0.14,0.145,0.001), Base:toWorld(ang(0,0,-27.5)), C2, "hq_cylinder") holoParent(6, 1)
+    holoStyle(7, Base:toWorld(vec(0,-1.813,21.5)), vec(0.14,0.14,0.18), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(7, 1)
+    holoStyle(8, Base:toWorld(vec(0,-1.813,24)), vec(0.11,0.11,0.13), Base:toWorld(ang(0,0,0)), C2, "hq_tube_thick") holoParent(8, 1)
+    
+    #Spindles
+    J = 0
+    for(I=9,51,6)
+    {
+        #print(J + "degrees, holo: " + I)
+        holoStyle(I, Base:toWorld(vec(0.7 * cos(J),(-1.813) + 0.7*sin(J),22.8)), vec(0.1,0.1,0.1) / 10, Base:toWorld(ang(0,J,0)), vec(255,0,0), "cube") holoParent(I, 1)  
+        holoStyle(I+1, Base:toWorld(vec(3.5 * cos(J),(-1.813) + 3.5*sin(J),22.8)), vec(0.5,0.03,0.03), Base:toWorld(ang(0,J,0)), C3, "cube") holoParent(I+1, I)  
+        holoStyle(I+2, Base:toWorld(vec(9.4 * cos(J),(-1.813) + 9.4 *sin(J),22.55)), vec(0.5,0.025,0.025), Base:toWorld(ang(5,J,0)), C3, "cube") holoParent(I+2, I)  
+        holoStyle(I+3, Base:toWorld(vec(15.1 * cos(J),(-1.813) + 15.1 *sin(J),21.55)), vec(0.5,0.02,0.02), Base:toWorld(ang(15,J,0)), C3, "cube") holoParent(I+3, I) 
+        holoStyle(I+4, Base:toWorld(vec(6.5 * cos(J),(-1.813) + 6.5 *sin(J),22.5)), vec(0.05,0.05,0.05)*0, Base:toWorld(ang(0,J,0)), vec(255,0,0), "cube") holoParent(I+4, I)
+            holoStyle(I+5, Base:toWorld(vec(6.5 * cos(J),(-1.813) + 6.5 *sin(J),18.3)), vec(0.03,0.03,0.75), Base:toWorld(ang(0,J,0)), C3, "cube") holoParent(I+5, I+4)
+        J+=45
+    }  
+    
+    #57
+    holoStyle(57, Base:toWorld(vec(0,-1.813,16.5)), vec(0.12,0.12,0.15), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(57, 1)
+    holoStyle(58, Base:toWorld(vec(0,-1.813,21.2)), vec(2.7,2.7,0.35), Base:toWorld(ang(0,0,0)), C2*1.2, "hq_hdome_thin") holoParent(58, 1)
+    holoAlpha(58,250)
+    holoMaterial(58,"models/combine_scanner/scanner_eye")
+    holoClipEnabled(58,1)
+    holoClip(58,vec(0,0,1.5),vec(0,0,1),0)
+    #holoDisableShading(58,1)
+    
+    holoStyle(59, Base:toWorld(vec(0,-1.813,21.2)), vec(2.7,2.7,0.35), Base:toWorld(ang(0,0,0)), C4*1.2, "hq_hdome_thin") holoParent(59, 1)
+    holoAlpha(59,250)
+    holoMaterial(59,"models/combine_scanner/scanner_eye")
+    holoClipEnabled(59,1)
+    holoClip(59,vec(0,0,1.5),vec(0,0,-1),0)
+    #holoDisableShading(59,1)
+    
+    holoStyle(60, Base:toWorld(vec(0,-1.813,14)), vec(0.2,0.2,1.5), Base:toWorld(ang(0,0,0)), C2*1.2, "hq_sphere") holoParent(60, 1)
+    holoMaterial(60,"models/combine_scanner/scanner_eye")
+    
+    holoStyle(61, Base:toWorld(vec(0,0,0)), vec(1,1,1) * 0.403, Base:toWorld(ang(90,0,0)), C1, "hq_torus_thick") holoParent(61, 2)
+    holoClipEnabled(61,1)
+    holoClip(61,vec(),vec(1,0,0),0)
+    
+    #Estoc
+    #holoStyle(62, Base:toWorld(vec(0,-1.813,13)), vec(0.1,0.1,1.7), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(62, 2)
+    holoStyle(63, Base:toWorld(vec(0,1.813,0.3)), vec(0.1,0.1,0.05), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(63, 2)
+    holoStyle(64, Base:toWorld(vec(0,-1.813,1)), vec(0.1,0.1,0.2), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(64, 2)
+    holoStyle(65, Base:toWorld(vec(0,-1.813,11.3)), vec(0.03,0.03,1.5), Base:toWorld(ang(0,0,0)), vec(150,150,150), "hq_cone") holoParent(65, 2)     
+    I = 0
+    Hold = 5
+}
+elseif(I==0)
+{
+    if(owner():weapon():type() == BlockWeapon)
+    {
+        Hold = 1 
+        BlockProp:setPos(Base:toWorld(vec(0,-1.813,25)) + owner():vel() * 0.2)
+        BlockProp:setAng(Base:toWorld(ang(90,0,0)))  
+    }
+    elseif(owner():weapon():type() == MeleeWeapon)
+    {
+        Hold = 2
+    }
+    elseif(owner():weapon():type() == StabWeapon)
+    {
+        Hold = 3
+    }
+    else
+    {
+        Hold = 0    
+    }
+    
+    if($Hold)
+    {
+        if(Hold == 1)
+        {
+            #Blocking
+            Base:soundPlay(1,2,"weapons/tmp/tmp_clipout.wav")
+            holoPos(0,owner():attachmentPos("anim_attachment_rh"))   
+            holoAng(0,owner():attachmentAng("anim_attachment_rh")) 
+            holoParentAttachment(0,owner(),"anim_attachment_rh")
+            holoPos(1,Pivot:toWorld(vec(2.5,0,0.3)))
+            holoAng(1,Pivot:toWorld(ang(0,-90,-90))) 
+            
+            holoPos(3,Base:toWorld(vec()))   
+            holoAng(3,Base:toWorld(ang()))
+            holoParent(3,1)
+            holoPos(2,Base:toWorld(vec()))  
+            holoAng(2,Base:toWorld(ang()))
+            
+            owner():weapon():setAlpha(0)   
+            BlockProp:propNotSolid(0)
+            Anim = 0
+        }   
+        elseif(Hold == 2)
+        {
+            #Whackin'
+            Base:soundPlay(1,2,"weapons/draw_default.wav")
+            
+            holoPos(0,owner():attachmentPos("anim_attachment_rh"))   
+            holoAng(0,owner():attachmentAng("anim_attachment_rh")) 
+            holoParentAttachment(0,owner(),"anim_attachment_rh")
+            holoPos(1,Pivot:toWorld(vec(1,1,-2)))
+            holoAng(1,Pivot:toWorld(ang(0,0,0)))
+            
+            holoPos(3,Base:toWorld(vec()))   
+            holoAng(3,Base:toWorld(ang()))
+            holoParent(3,1)
+            holoPos(2,Base:toWorld(vec()))  
+            holoAng(2,Base:toWorld(ang()))
+            
+            owner():weapon():setAlpha(0)   
+            BlockProp:propNotSolid(1)
+            Anim = 100   
+        } 
+        elseif(Hold == 3)
+        {
+            #FULL ON SHANK MODE
+            Base:soundPlay(1,2,"weapons/draw_sword.wav")
+            
+            holoPos(0,owner():attachmentPos("anim_attachment_lh"))   
+            holoAng(0,owner():attachmentAng("anim_attachment_lh")) 
+            holoParentAttachment(0,owner(),"anim_attachment_lh")
+            holoPos(1,Pivot:toWorld(vec(1,1,-13)))
+            holoAng(1,Pivot:toWorld(ang(0,0,-5)))
+            
+            holoPos(3,owner():attachmentPos("anim_attachment_rh"))   
+            holoAng(3,owner():attachmentAng("anim_attachment_rh")) 
+            holoParentAttachment(3,owner(),"anim_attachment_rh")
+            holoPos(2,holoEntity(3):toWorld(vec(1,1,0)))
+            holoAng(2,holoEntity(3):toWorld(ang(0,0,0)))
+            
+            owner():weapon():setAlpha(0)   
+            BlockProp:propNotSolid(1)
+            Anim = 100   
+        } 
+        else
+        {
+            #Default
+            Base:soundPlay(1,2,"weapons/draw_primary.wav")
+            
+            holoPos(0,owner():attachmentPos("chest"))   
+            holoAng(0,owner():attachmentAng("chest")) 
+            holoParentAttachment(0,owner(),"chest")
+            holoPos(1,Pivot:toWorld(vec(-6,7,-11)))
+            holoAng(1,Pivot:toWorld(ang(0,0,30)))
+  
+            BlockProp:propNotSolid(1)
+            Anim = 100  
+        }
+    }
+    
+    SmAnim = Anim
+    
+    #Top
+    Ang = 0.84 * SmAnim
+    holoAng(9,Base:toWorld(ang(Ang,0,0)))
+    holoAng(15,Base:toWorld(ang(Ang,45,0)))
+    holoAng(21,Base:toWorld(ang(Ang,90,0)))
+    holoAng(27,Base:toWorld(ang(Ang,135,0)))
+    
+    holoAng(33,Base:toWorld(ang(Ang,180,0)))
+    holoAng(39,Base:toWorld(ang(Ang,225,0)))
+    holoAng(45,Base:toWorld(ang(Ang,270,0)))
+    holoAng(51,Base:toWorld(ang(Ang,315,0))) 
+     
+    #Inner spindles
+    AngB = 45 - SmAnim * 0.35
+    holoAng(13,Base:toWorld(ang(AngB,0,0)))
+    holoAng(19,Base:toWorld(ang(AngB,45,0)))
+    holoAng(25,Base:toWorld(ang(AngB,90,0)))
+    holoAng(31,Base:toWorld(ang(AngB,135,0)))
+    
+    holoAng(37,Base:toWorld(ang(AngB,180,0)))
+    holoAng(43,Base:toWorld(ang(AngB,225,0)))
+    holoAng(49,Base:toWorld(ang(AngB,270,0)))
+    holoAng(55,Base:toWorld(ang(AngB,315,0)))
+    
+    #Sliding part
+    holoPos(57,Base:toWorld(vec(0,-1.813,16.5 - sin(SmAnim*0.9) * 5)))
+    
+    #Umbrella part
+    holoAlpha(58,SmAnim == 100 ? 0 : 250)
+    holoAlpha(59,SmAnim == 100 ? 0 : 250)
+    holoAlpha(60,SmAnim == 100 ? 255 : 0)
+}
+
+if(last())
+{
+    BlockProp:propDelete()    
+}
