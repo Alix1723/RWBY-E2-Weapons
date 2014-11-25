@@ -1,0 +1,52 @@
+#[
+White Fang Lieutenant's Chainsaw
+
+he rules the white fang with his bicep powers
+
+HOW TO USE:
+
+REQUIRES:
+
+
+http://rwby.wikia.com/wiki/Lieutenant%27s_Chainsaw
+
+Written by Alix
+]#
+
+@name White Fang Lieutenant's Chainsaw
+@persist [Pivot Base]:entity
+@persist [C1]:vector
+@persist [Anim SmAnim I NumHolo Hold]
+@persist # []:string
+
+runOnTick(1)
+
+if(first())
+{
+    
+    entity():setAlpha(0)
+    
+    C1 = vec() 
+    
+    Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0) 
+    
+    #include "lib/HoloStyleFunction"
+    
+    I = 2
+    NumHolo = 0       
+}
+if(I<=NumHolo & I > 0 & holoCanCreate())
+{
+    holoCreate(I) holoScaleUnits(I,vec()) holoMaterial(I,"models/debug/debugwhite")
+    I++
+}
+elseif(I>NumHolo)
+{
+    
+    I = 0        
+}
+elseif(I<=0)
+{
+    
+}

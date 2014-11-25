@@ -31,10 +31,7 @@ if(first())
     
     #If you have access to sbox_E2_maxPropsPerSecond, increase it (>20) and set this to 1 to enable full speed prop firing mode
     UnlimitedSpawnRate = isSinglePlayer()
-    
-    #If things look weird/out of proporition, try changing this
-    #ScaleFix = 0
-    
+        
     entity():setAlpha(0)
     
     Pivot = holoCreate(1,entity():toWorld(vec(0,0,0)),vec(),entity():toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,entity())
@@ -262,18 +259,7 @@ if(I > NumHolo & I)
         holoStyle(124,Base:toWorld(vec(-45,0,-7)),vec(1,1,1),Base:toWorld(ang(0,180,0)),vec(255,255,255),"models/effects/muzzleflash/minigunmuzzle.mdl") holoParent(124,Base)
         holoMaterial(124,"")
         holoAlpha(124,0)
-        
-            #[if(ScaleFix)
-            {
-                for(I=17,40)
-                {
-                    if(holoEntity(I):model() == "models/props_phx/mechanics/slider1.mdl")
-                    {
-                        Scl = holoScale(I)
-                        holoScale(I,shiftL(Scl))
-                    }
-                }
-            }   ]#      
+             
     I = 0
     Hold = 4
     SmAnim = 10
@@ -416,7 +402,6 @@ elseif(I<=0)
                     P = propSpawn("models/props_junk/garbage_glassbottle003a.mdl",Base:toWorld(vec(-45,0,-7)),owner():eyeAngles() + ang(90,0,0),0)
                     P:setMass(1000)
                     P:setTrails(2,1,0.3,"trails/smoke",vec(255,255,255),150)
-                    #P:setAlpha(0)
                     P:applyForce(P:mass() * P:mass() * 10000 * owner():eye())
                     FirePropSpawnInterval = (UnlimitedSpawnRate) ? 0 : 2
                 }
@@ -480,7 +465,6 @@ elseif(I<=0)
         holoPos(65,Base:toWorld(vec(SmAnim > 50 ? 0.9 + SmAnim*0.16 : 0,0,-4)))
         holoPos(68,Base:toWorld(vec(SmAnim > 50 ? 8 + SmAnim*0.13 : 0,0,-4)))
         holoAng(68,Base:toWorld(ang(SmAnim > 50 ? SmAnim*0.8 : 0,0,0)))
-        
         
         holoPos(77,Base:toWorld(vec(5 -(0.1 * SmAnim),0,-9)))
         holoPos(85,Base:toWorld(vec(23 -(0.46 * SmAnim),0,-9)))    

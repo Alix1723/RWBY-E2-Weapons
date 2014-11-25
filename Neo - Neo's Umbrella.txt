@@ -1,5 +1,5 @@
 #[
-Neo's Parasol
+Neo's Umbrella
 
 [SMUG INTENSIFIES]
 
@@ -32,10 +32,10 @@ if(first())
     
     entity():setAlpha(0)
     
-    C1 = vec(61,61,61) #Grey
+    C1 = vec(61,61,61)    #Grey
     C2 = vec(255,197,242) #Strawberry
-    C3 = vec(30,30,30) #Dark Grey
-    C4 = vec(123,93,79) #Chocolate
+    C3 = vec(30,30,30)    #Dark Grey
+    C4 = vec(123,93,79)   #Chocolate
     
     Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
     Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0) 
@@ -43,7 +43,6 @@ if(first())
     BlockProp = propSpawn("models/XQM/panel360.mdl",1)
     BlockProp:setMass(50000)
     BlockProp:setAlpha(0)
-    #noCollide(owner(), BlockProp) WHY DOESN'T THIS WORK >:(
     
     #include "lib/HoloStyleFunction"
     
@@ -52,14 +51,12 @@ if(first())
 }
 if(I<=NumHolo & I > 0 & holoCanCreate())
 {
-    holoCreate(I)
-    holoScale(I,vec())
-    holoMaterial(I,"models/debug/debugwhite")
+    holoCreate(I) holoScaleUnits(I,vec()) holoMaterial(I,"models/debug/debugwhite")
     I++
 }
 elseif(I>NumHolo)
 {    
-    #Estoc hinge
+    #Estoc hinge - this was moved futher down
     holoStyle(2, Base:toWorld(vec(0,0,0)), vec(0.2,0.2,0.2)*0, Base:toWorld(ang(0,0,0)), vec(255,0,0), "cube") 
     holoStyle(3, Base:toWorld(vec(0,0,0)), vec(0.2,0.2,0.2)*0, Base:toWorld(ang(0,0,0)), vec(255,0,0), "cube") holoParent(3, 1) holoParent(2, 3)
     
@@ -76,44 +73,43 @@ elseif(I>NumHolo)
     J = 0
     for(I=9,51,6)
     {
-        #print(J + "degrees, holo: " + I)
         holoStyle(I, Base:toWorld(vec(0.7 * cos(J),(-1.813) + 0.7*sin(J),22.8)), vec(0.1,0.1,0.1) / 10, Base:toWorld(ang(0,J,0)), vec(255,0,0), "cube") holoParent(I, 1)  
         holoStyle(I+1, Base:toWorld(vec(3.5 * cos(J),(-1.813) + 3.5*sin(J),22.8)), vec(0.5,0.03,0.03), Base:toWorld(ang(0,J,0)), C3, "cube") holoParent(I+1, I)  
         holoStyle(I+2, Base:toWorld(vec(9.4 * cos(J),(-1.813) + 9.4 *sin(J),22.55)), vec(0.5,0.025,0.025), Base:toWorld(ang(5,J,0)), C3, "cube") holoParent(I+2, I)  
         holoStyle(I+3, Base:toWorld(vec(15.1 * cos(J),(-1.813) + 15.1 *sin(J),21.55)), vec(0.5,0.02,0.02), Base:toWorld(ang(15,J,0)), C3, "cube") holoParent(I+3, I) 
         holoStyle(I+4, Base:toWorld(vec(6.5 * cos(J),(-1.813) + 6.5 *sin(J),22.5)), vec(0.05,0.05,0.05)*0, Base:toWorld(ang(0,J,0)), vec(255,0,0), "cube") holoParent(I+4, I)
             holoStyle(I+5, Base:toWorld(vec(6.5 * cos(J),(-1.813) + 6.5 *sin(J),18.3)), vec(0.03,0.03,0.75), Base:toWorld(ang(0,J,0)), C3, "cube") holoParent(I+5, I+4)
+        
         J+=45
     }  
     
-    #57
+    #Sliding cylinder
     holoStyle(57, Base:toWorld(vec(0,-1.813,16.5)), vec(0.12,0.12,0.15), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(57, 1)
+    
+    #Top
     holoStyle(58, Base:toWorld(vec(0,-1.813,21.2)), vec(2.7,2.7,0.35), Base:toWorld(ang(0,0,0)), C2*1.2, "hq_hdome_thin") holoParent(58, 1)
     holoAlpha(58,250)
     holoMaterial(58,"models/combine_scanner/scanner_eye")
     holoClipEnabled(58,1)
     holoClip(58,vec(0,0,1.5),vec(0,0,1),0)
-    #holoDisableShading(58,1)
     
     holoStyle(59, Base:toWorld(vec(0,-1.813,21.2)), vec(2.7,2.7,0.35), Base:toWorld(ang(0,0,0)), C4*1.2, "hq_hdome_thin") holoParent(59, 1)
     holoAlpha(59,250)
     holoMaterial(59,"models/combine_scanner/scanner_eye")
     holoClipEnabled(59,1)
     holoClip(59,vec(0,0,1.5),vec(0,0,-1),0)
-    #holoDisableShading(59,1)
     
     holoStyle(60, Base:toWorld(vec(0,-1.813,14)), vec(0.2,0.2,1.5), Base:toWorld(ang(0,0,0)), C2*1.2, "hq_sphere") holoParent(60, 1)
     holoMaterial(60,"models/combine_scanner/scanner_eye")
     
+    #Estoc
     holoStyle(61, Base:toWorld(vec(0,0,0)), vec(1,1,1) * 0.403, Base:toWorld(ang(90,0,0)), C1, "hq_torus_thick") holoParent(61, 2)
     holoClipEnabled(61,1)
     holoClip(61,vec(),vec(1,0,0),0)
-    
-    #Estoc
-    #holoStyle(62, Base:toWorld(vec(0,-1.813,13)), vec(0.1,0.1,1.7), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(62, 2)
     holoStyle(63, Base:toWorld(vec(0,1.813,0.3)), vec(0.1,0.1,0.05), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(63, 2)
     holoStyle(64, Base:toWorld(vec(0,-1.813,1)), vec(0.1,0.1,0.2), Base:toWorld(ang(0,0,0)), C1, "hq_cylinder") holoParent(64, 2)
     holoStyle(65, Base:toWorld(vec(0,-1.813,11.3)), vec(0.03,0.03,1.5), Base:toWorld(ang(0,0,0)), vec(150,150,150), "hq_cone") holoParent(65, 2)     
+    
     I = 0
     Hold = 5
 }
@@ -122,7 +118,9 @@ elseif(I==0)
     if(owner():weapon():type() == BlockWeapon)
     {
         Hold = 1 
-        BlockProp:setPos(Base:toWorld(vec(0,-1.813,25)) + owner():vel() * 0.2)
+        
+        #Keep block prop in place
+        BlockProp:setPos(Base:toWorld(vec(0,-1.813,25)) + owner():vel() * 0.15)
         BlockProp:setAng(Base:toWorld(ang(90,0,0)))  
     }
     elseif(owner():weapon():type() == MeleeWeapon)
