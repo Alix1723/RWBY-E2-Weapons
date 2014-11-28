@@ -15,25 +15,28 @@ Written by Alix
 
 @name White Fang Lieutenant's Chainsaw
 @persist [Pivot Base]:entity
-@persist [C1]:vector
-@persist [Anim SmAnim I NumHolo Hold]
-@persist # []:string
+@persist [I NumHolo Hold M1 M2]
+@persist [MeleeWeapon SawWeapon]:string
 
 runOnTick(1)
 
 if(first())
 {
+    MeleeWeapon = "weapon_crowbar"
+    SawWeapon = "weapon_physcannon"
+    
     entity():setAlpha(0)
-    
-    
-    
     Pivot = holoCreate(0) holoScale(0,vec()) holoParent(0,entity())
-    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),C1,"cube") holoParent(1,0) 
+    Base = holoCreate(1,Pivot:toWorld(vec(0,0,0)),vec(0.2,0.2,0.2)*0,Pivot:toWorld(ang(0,0,0)),vec(),"cube") holoParent(1,0) 
     
-    #include "lib/HoloStyleFunction"
+    function entity holoStyle(Index,Position:vector,Scale:vector,Angle:angle,Colour:vector,Model:string)
+        {
+            holoPos(Index,Position) holoScale(Index,Scale) holoAng(Index,Angle) holoColor(Index,Colour) holoModel(Index,Model) 
+            return holoEntity(Index)   
+        }
     
     I = 2
-    NumHolo = 15       
+    NumHolo = 41       
 }
 if(I<=NumHolo & I > 0 & holoCanCreate())
 {
@@ -44,6 +47,7 @@ elseif(I>NumHolo)
 {
     C1 = vec(120,120,120) 
     C2 = vec(90,90,90)
+    C3 = vec(61,61,61)
     
     #Main body
     holoStyle(2, Pivot:toWorld(vec(0,0,0)), vec(0.85,0.55,0.55), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(2, 1)
@@ -57,10 +61,122 @@ elseif(I>NumHolo)
     holoStyle(10, Pivot:toWorld(vec(0,0,-2.24)), vec(0.4,0.15,0.7), Pivot:toWorld(ang(45,0,0)), C2, "cube") holoParent(10, 1)
     
     #Handle
+    holoStyle(11, Pivot:toWorld(vec(-6.1,0,-6)), vec(0.22,0.1,0.05), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(11, 1)
+    holoStyle(12, Pivot:toWorld(vec(-5.2,0,-3.9)), vec(0.15,0.1,0.32), Pivot:toWorld(ang(-25,0,0)), C1, "cube") holoParent(12, 1)
+    holoStyle(13, Pivot:toWorld(vec(-7.5,0,-5.4)), vec(0.04,0.1,0.15), Pivot:toWorld(ang(-15,0,0)), C1, "cube") holoParent(13, 1)
+    holoStyle(14, Pivot:toWorld(vec(-8.2,0,-3.45)), vec(0.3,0.25,0.1), Pivot:toWorld(ang(-35,0,90)), C1, "hq_tube") holoParent(14, 1)
+    holoClipEnabled(14,1,1)
+    holoClip(14,1,vec(0,0,0),vec(-0.1,-0.6,0),0)
+    holoClipEnabled(14,2,1)
+    holoClip(14,2,vec(0,0,0),vec(1,-0.4,0),0)
+    holoStyle(15, Pivot:toWorld(vec(-5.8,0,-0.9)), vec(0.2,0.1,0.33), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(15, 1)
+    holoStyle(16, Pivot:toWorld(vec(-6,0,0)), vec(0.16,0.16,0.12), Pivot:toWorld(ang(22.5,0,90)), C2, "octagon") holoParent(16, 1)  
+    holoStyle(17, Pivot:toWorld(vec(-9,0,0)), vec(0.6,0.1,0.05), Pivot:toWorld(ang(-5,0,0)), C1, "cube") holoParent(17, 1)
+    holoStyle(18, Pivot:toWorld(vec(-12.9,0,-0.75)), vec(0.11,0.1,0.06), Pivot:toWorld(ang(-40,0,0)), C1, "cube") holoParent(18, 1)
+    holoStyle(19, Pivot:toWorld(vec(-12.5,0,-0.95)), vec(0.13,0.1,0.06), Pivot:toWorld(ang(-60,0,0)), C1, "cube") holoParent(19, 1)
+    holoStyle(20, Pivot:toWorld(vec(-12,0,-1.15)), vec(0.12,0.08,0.07), Pivot:toWorld(ang(-70,0,0)), C2, "cube") holoParent(20, 1)
+    holoStyle(21, Pivot:toWorld(vec(-8,0,-0.6)), vec(0.65,0.08,0.08), Pivot:toWorld(ang(-2,0,0)), C2, "cube") holoParent(21, 1)
+    holoStyle(22, Pivot:toWorld(vec(-8,0,0.4)), vec(0.7,0.08,0.08), Pivot:toWorld(ang(-2,0,0)), C2, "cube") holoParent(22, 1)
+    holoStyle(23, Pivot:toWorld(vec(-13,0,0)), vec(0.1,0.08,0.15), Pivot:toWorld(ang(55,0,0)), C2, "cube") holoParent(23, 1)
+    holoStyle(24, Pivot:toWorld(vec(-12,0,0.31)), vec(0.12,0.08,0.1), Pivot:toWorld(ang(10,0,0)), C2, "cube") holoParent(24, 1)
+    holoStyle(25, Pivot:toWorld(vec(-6.7,0,1.5)), vec(0.05,0.1,0.1), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(25, 1)
+    holoStyle(26, Pivot:toWorld(vec(-5.72,0,2)), vec(0.15,0.15,0.1), Pivot:toWorld(ang(0,0,90)), C1, "hq_tube") holoParent(26, 1)
+    holoClipEnabled(26,1)
+    holoClip(26,vec(),vec(0,-1,0),0)
+    holoStyle(27, Pivot:toWorld(vec(-5.75,0,1.13)), vec(0.12,0.1,0.04), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(27, 1)
+    holoStyle(28, Pivot:toWorld(vec(-4,0,5)), vec(0.2,0.06,0.04), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(28, 1)
+    
+    #Saw blade
+    holoStyle(29, Pivot:toWorld(vec(35,0,0)), vec(5,0.07,0.5), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(29, 1)
+    holoStyle(30, Pivot:toWorld(vec(65,0,0)), vec(0.6,0.5,0.07), Pivot:toWorld(ang(0,0,90)), C1, "hq_cylinder") holoParent(30, 1)
+    holoStyle(31, Pivot:toWorld(vec(35,0,0)), vec(5,0.05,0.6), Pivot:toWorld(ang(0,0,0)), C2, "cube") holoParent(31, 1)
+    holoStyle(32, Pivot:toWorld(vec(65,0,0)), vec(0.7,0.6,0.05), Pivot:toWorld(ang(0,0,90)), C2, "hq_cylinder") holoParent(32, 1)
+    
+    holoStyle(33, Pivot:toWorld(vec(11,0,2)), vec(0.8,0.15,0.4), Pivot:toWorld(ang(0,0,0)), C3, "cube") holoParent(33, 1)
+    holoStyle(34, Pivot:toWorld(vec(17.9,0,1.25)), vec(0.35,0.15,0.27), Pivot:toWorld(ang(0,0,0)), C3, "cube") holoParent(34, 1)
+    holoStyle(35, Pivot:toWorld(vec(21,0,2)), vec(0.35,0.15,0.4), Pivot:toWorld(ang(0,0,0)), C3, "cube") holoParent(35, 1)
+    holoStyle(36, Pivot:toWorld(vec(5.68,0,1.8)), vec(0.2,0.15,0.4), Pivot:toWorld(ang(-15,0,0)), C3, "cube") holoParent(36, 1)
+    
+    holoStyle(37, Pivot:toWorld(vec(21,0,1.8)), vec(0.15,0.2,0.15), Pivot:toWorld(ang(0,0,0)), C1, "cube") holoParent(37, 1)
+    holoStyle(38, Pivot:toWorld(vec(21,-0.3,3)), vec(0.1,0.25,0.3), Pivot:toWorld(ang(0,0,0)), C3, "cube") holoParent(38, 1)
+    
+    holoStyle(39, Pivot:toWorld(vec(21,2,6)), vec(0.1,0.12,0.4), Pivot:toWorld(ang(0,0,-45)), C3, "cube") holoParent(39, 1)
+    holoStyle(40, Pivot:toWorld(vec(21,1,6)), vec(0.1,0.12,0.49), Pivot:toWorld(ang(0,0,-55)), C3, "cube") holoParent(40, 1)
+    holoStyle(41, Pivot:toWorld(vec(21,6.5,7.55)), vec(0.12,0.6,0.12), Pivot:toWorld(ang(0,0,0)), C3, "cube") holoParent(41, 1)
     
     I = 0        
 }
 elseif(I<=0)
 {
+    #Inputs
+    M1 = owner():keyAttack1()
     
+    #Wepon mode
+    if(owner():weapon():type() == MeleeWeapon)
+    {
+        Hold = 1
+        
+        if(M1 & $M1)
+        {
+            #Swing blade
+            
+        }
+    }
+    elseif(owner():weapon():type() == SawWeapon)
+    {
+        Hold = 2
+    }
+    else
+    {
+        Hold = 0    
+    }
+    
+    #Positioning
+    if($Hold)
+    {
+        if(Hold == 1)
+        {
+            #Make visible
+            for(I=2,41)
+            {
+                holoAlpha(I,255)    
+            }
+            
+            #Crowbar
+            holoPos(0,owner():attachmentPos("anim_attachment_rh"))
+            holoAng(0,owner():attachmentAng("anim_attachment_rh"))
+                holoParentAttachment(0,owner(),"anim_attachment_rh")  
+            holoPos(1,Pivot:toWorld(vec(3,1,10)))
+            holoAng(1,Pivot:toWorld(ang(-70,40,0)))
+            
+            owner():weapon():setAlpha(0)
+            Base:soundPlay(1,2,"weapons/draw_machete_sniper.wav") soundPitch(1,80)
+        }
+        elseif(Hold == 2)
+        {
+            #Make visible
+            for(I=2,41)
+            {
+                holoAlpha(I,255)    
+            }
+            
+            #Gravgun/twohanded
+            holoPos(0,owner():attachmentPos("anim_attachment_rh"))
+            holoAng(0,owner():attachmentAng("anim_attachment_rh"))
+                holoParentAttachment(0,owner(),"anim_attachment_rh")  
+            holoPos(1,Pivot:toWorld(vec(-13.5,0,-2.5)))
+            holoAng(1,Pivot:toWorld(ang(0,0,0)))
+            
+            owner():weapon():setAlpha(0)
+            Base:soundPlay(1,2,"weapons/draw_machete_sniper.wav") soundPitch(1,80)
+        }
+        else
+        {
+            #Make invis
+            for(I=2,41)
+            {
+                holoAlpha(I,0)    
+            }
+        }
+    }
 }
