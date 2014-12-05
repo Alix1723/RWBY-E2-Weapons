@@ -1,5 +1,5 @@
 @name Simple Holo Gun Example
-@persist [Pivot Base]:entity Hold R M1
+@persist [Pivot Base]:entity Hold R M1 Cooldown
 
 #Execute the E2 every frame
 runOnTick(1)
@@ -7,10 +7,10 @@ runOnTick(1)
 if(first()) #If it's the first tick, do this holo stuff
 {
     #Pivot goes onto your attachment pos, and doesn't move
-    Pivot = holoCreate(1,entity():pos(),vec()) holoParent(1,entity()) #This is what the base is parented to
+    Pivot = holoCreate(1,entity():pos(),vec(0.5,0.5,0.5),ang(),vec(0,0,255)) holoAlpha(1,100) holoParent(1,entity()) #This is what the base is parented to
     
     #Think of base like a controller for the rest of the model - move this around relative to the pivot
-    Base = holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec()) holoParent(2,1) #This is what the rest of your models are parented to
+    Base = holoCreate(2,Pivot:toWorld(vec(0,0,0)),vec(0.5,0.5,0.5),ang(),vec(255,0,0)) holoAlpha(2,100) holoParent(2,1) #This is what the rest of your models are parented to
     
     #This is the actual gun model, and whatever else you wanna add to it
     holoCreate(3,Pivot:toWorld(vec(0,0,2)),vec(1,1,1),Pivot:toWorld(ang(0,0,0)),vec(255,255,255),"models/weapons/w_models/w_revolver.mdl") holoParent(3,2)    
@@ -18,12 +18,12 @@ if(first()) #If it's the first tick, do this holo stuff
 }
 
 #Input keys and buttons
-M1 = owner():keyAttack1()
+M2 = owner():keyAttack2()
 R = owner():keyReload()
 
 
 #Check what weapon you have out
-if(owner():weapon():type() == "weapon_357") 
+if(owner():weapon():type() == "laserpointer")#"weapon_357") 
 {
     Hold = 1      #Hold is a variable in @persist that determines if your gun is out or not
 }
@@ -45,7 +45,7 @@ if($Hold)
         holoParentAttachment(1,owner(),"anim_attachment_rh")
         
         #Now move and rotate the Base relative to the Pivot, in order to line up the model with your hands
-        holoPos(2,Pivot:toWorld(vec(0,0,0)))
+        holoPos(2,Pivot:toWorld(vec(3,0,0)))
         holoAng(2,Pivot:toWorld(ang(0,0,0)))
         
         #Make the gun visible
@@ -63,10 +63,34 @@ if($Hold)
 #Anything you want to happen every tick goes after here
 if(Hold == 1)
 {
-    #Any special firing effects, prop bullets, etc go here
+    #Making sounds
     if(R & $R)
     {
         Base:soundPlay(1,2,"vo/heavy_cloakedspy0"+randint(1,4)+".wav") 
     }      
+    
+    #Firing props
+    if(M2& Cooldown <= 0)
+    {
+        #Spawn a prop in front of your eyes
+        Projectile = propSpawn("models/props_junk/watermelon01.mdl",(owner():pos() + vec(0,0,50)) + owner():eye() * 25,owner():eyeAngles(),0)
+        #Set its mass
+        Projectile:setMass(25)
+        #Apply force to it so it flies forward
+        Projectile:applyForce(owner():eye() * Projectile:mass() * 1000)
+        #Set a fancy trail on it
+        Projectile:setTrails(10,1,1,"trails/laser",vec(255,150,150),150)
+        #Play a noise 
+        Base:soundPlay(2,2,"weapons/pomson_fire_01.wav") 
+        
+        Cooldown = 25 #Ticks between shots, reduce to increase spam-ness
+    }
+    
+    #If you've fired a shot
+    if(Cooldown > 0)
+    {
+        #Reduce cooldown by 1 every tick until it's 0
+        Cooldown--    
+    }
 }
 
